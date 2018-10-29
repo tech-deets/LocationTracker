@@ -60,39 +60,30 @@ public class MyContactActivity extends AppCompatActivity {
             @Override
             public void run() {
                 getNumber(getApplicationContext().getContentResolver());
-                printList();
                 getDatabaseList();
-//                runOnUiThread();
             }
         }).start();
 //        rcv1.addOnItemTouchListener(new RecyclerItemClickListener(this, rcv1, new RecyclerItemClickListener.OnItemClickListener() {
 //            @Override
 //            public void onItemClick(View view, int position) {
-//
 //            }
-//
 //            @Override
 //            public void onItemLongClick(View view, int position) {
 //                }
-//
 //        }));
 //        rcv1.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
 //            @Override
 //            public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
 //                return false;
 //            }
-//
 //            @Override
 //            public void onTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
-//
 //            }
-//
 //            @Override
 //            public void onRequestDisallowInterceptTouchEvent(boolean b) {
-//
 //            }
 //        });
-    }
+    }///////////////////////on create ends
 
     public void getNumber(ContentResolver cr) {
         Cursor phones = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
@@ -114,20 +105,9 @@ public class MyContactActivity extends AppCompatActivity {
         phones.close();// close cursor
     }
 
-    public void printList() {
-        int size = contactList.size();
-        Log.d("No. of Contacts", size + "");
-        int i = 0;
-        while (i < size) {
-            Log.d("Name: ", contactList.get(i).getName()+"Phone: "+contactList.get(i).getPhoneNumber());
-            i++;
-        }
-    }
-
     public void getDatabaseList() {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Users");
-        // final DatabaseReference myref=databaseReference.child(phoneNumber);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -138,43 +118,22 @@ public class MyContactActivity extends AppCompatActivity {
                     databaseList.add(new Users(user.getName(), "+91"+user.getPhoneNumber(), user.getEmail(), user.getPhoto()));
                 }
                 int size = databaseList.size();
-                Log.d("No. of Contacts", size + "");
-                int i = 0;
-                while (i < size) {
-                    Log.d("name", databaseList.get(i).getName());
-                    Log.d("number", databaseList.get(i).getPhoneNumber());
-                    Log.d("PhotoUrl", databaseList.get(i).getPhoto());
-                    i++;
-                }
                 Toast.makeText(getApplicationContext(), "the datase list is fetched", Toast.LENGTH_SHORT).show();
-                // FirebaseDatabase.getInstance().goOffline();
-                getFilteredList();
+ /////////////// following two lines are used to get common contacts///////////////////
+                filteredList = databaseList;
+                filteredList.retainAll(contactList);
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-//                        tv1.setText(x+"");
                         showList();
                     }
                 });
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-    }
-
-    public void getFilteredList() {
-        Log.d("inside filter list", "start list------------");
-        filteredList = databaseList;
-        Log.d("FilterList: ", filteredList.size()+"");
-        filteredList.retainAll(contactList);
-        int size = filteredList.size()-1;
-        Log.d("NoOfContacts: ", size + "");
-        for(int i =0;i<size;i++) {
-            Log.d("FilterName: ", filteredList.get(i).getName()+" Filter Number: "+filteredList.get(i).getPhoneNumber());
-            Log.d("PhotoUrl", filteredList.get(i).getPhoto());
-        }
     }
 
     public void showList(){
@@ -182,7 +141,6 @@ public class MyContactActivity extends AppCompatActivity {
         rcv=(RecyclerView)(findViewById(R.id.rcv1));
         MyRecyclerAdapter myad=new MyRecyclerAdapter();
         rcv.setAdapter(myad);
-        //Specifying Layout Manager to RecyclerView is Compulsary for Proper Rendering
         LinearLayoutManager simpleverticallayout= new LinearLayoutManager(this);
         rcv.setLayoutManager(simpleverticallayout);
     }
@@ -194,7 +152,6 @@ public class MyContactActivity extends AppCompatActivity {
         class MyViewHolder extends RecyclerView.ViewHolder
         {
             CardView singlecardview;
-            // We have Changed View (which represent single row) to CardView in whole code
             public MyViewHolder(CardView itemView) {
                 super(itemView);
                 singlecardview = (itemView);
