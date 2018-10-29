@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Please enter your mobile number"
+            android:textSize="20dp"
+            android:textColor="#101010"
+            android:gravity="center"
+            android:layout_margin="20dp"/>
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tap CONTINUE to create your account with your phone number."
+            android:textSize="15dp"
+            android:gravity="center"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginBottom="20dp"/>
+        <TextView
+            android:id="@+id/timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="20dp"
+            android:visibility="gone"
+            android:textColor="#e34b73" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/et1"
+        android:inputType="phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:hint="Phone Number"
+        />
+
+    <TextView
+        android:id="@+id/tv111"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginHorizontal="20dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16dp" />
+
+    <Button
+        android:id="@+id/continuebt"
+        android:onClick="go"
+        android:layout_marginTop="20dp"
+        android:text="Continue"
+        android:background="@drawable/buttontheme"
+        android:textColor="#fff"
+        android:layout_width="200dp"
+        android:textSize="15dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content" />
+
+
+    <EditText
+        android:id="@+id/code"
+        android:inputType="number"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:hint="Enter (6-digit) Verification Code"
+        />
+
+    <Button
+        android:id="@+id/bt2"
+        android:onClick="verify"
+        android:text="Verify"
+        android:background="@drawable/buttontheme"
+        android:textColor="#fff"
+        android:layout_width="200dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/signup2"
+        android:layout_margin="20dp"
+        android:background="@drawable/buttontheme"
+        android:visibility="invisible"
+        android:textColor="#fff"
+        android:onClick="getDetails"
+        android:text="Next"
+        android:textSize="18sp"
+        android:layout_gravity="center"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Home"
+    android:orientation="vertical"
+    android:background="@drawable/background"
+    android:gravity="center">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="80dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Welcome"
+            android:gravity="center"
+            android:textColor="#fff"
+            android:textSize="50sp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:layout_margin="20dp"
+            android:text="Location tracker will help you to keep track on your beloved ones where every they go"
+            android:textColor="#fff"
+            />
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/signInBt"
+        android:onClick="signIn"
+        android:background="@drawable/buttontransparent"
+        android:text="SignIn"
+        android:textColor="#3F51B5"
+        android:layout_margin="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="150dp"
+        android:textSize="18sp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/signUpBt"
+        android:layout_margin="15dp"
+        android:onClick="signUp"
+        android:text="SIGN UP"
+        android:textSize="18sp"
+        android:background="@drawable/buttontheme"
+        android:textColor="#fff"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content" />
+</LinearLayout>
