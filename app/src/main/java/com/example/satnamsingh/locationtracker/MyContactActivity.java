@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,13 +42,11 @@ public class MyContactActivity extends AppCompatActivity {
     static private ArrayList<Users> databaseList = new ArrayList<>();
     static private ArrayList<Users> filteredList = new ArrayList<>();
     static private ArrayList<GroupList>  groupList =new ArrayList<>();
-
-    // private ArrayList<Users>
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
-    RecyclerView rcv1,rcv2;
-    MyRecyclerAdapter myad;
-    MyRecyclerAdapter1 myad1;
+    private RecyclerView rcv1,rcv2;
+    private MyRecyclerAdapter myad;
+    private MyRecyclerAdapter1 myad1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,22 +80,22 @@ public class MyContactActivity extends AppCompatActivity {
 //                }
 //
 //        }));
-        rcv1.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
-
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean b) {
-
-            }
-        });
+//        rcv1.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+//            @Override
+//            public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
+//                return false;
+//            }
+//
+//            @Override
+//            public void onTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
+//
+//            }
+//
+//            @Override
+//            public void onRequestDisallowInterceptTouchEvent(boolean b) {
+//
+//            }
+//        });
     }
 
     public void getNumber(ContentResolver cr) {
@@ -244,7 +243,7 @@ public class MyContactActivity extends AppCompatActivity {
 
         contactName_tv.setText(i.getName());
         contactPhone_tv.setText(i.getPhoneNumber());
-        Glide.with(getApplicationContext()).load(i.getPhoto()).thumbnail(0.3f).into(contactPhoto_iv);
+        Glide.with(getApplicationContext()).load(i.getPhoto()).apply(RequestOptions.circleCropTransform()).thumbnail(0.3f).into(contactPhoto_iv);
         contactInvite_cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -265,13 +264,9 @@ public class MyContactActivity extends AppCompatActivity {
                             groupList.remove(count);
                             myad1.notifyDataSetChanged();
                             break;
-
                         }
                         count++;
                     }
-
-
-
                 }
             }
         });
@@ -333,7 +328,7 @@ public class MyContactActivity extends AppCompatActivity {
             GroupList i=groupList.get(position);
 
             contactName_tv.setText(i.getName());
-            Glide.with(getApplicationContext()).load(i.getPhoto()).thumbnail(0.3f).into(contactPhoto_iv);
+            Glide.with(getApplicationContext()).load(i.getPhoto()).apply(RequestOptions.circleCropTransform()).thumbnail(0.3f).into(contactPhoto_iv);
             Log.d("MYMESSAGE","On Bind Of View Holder Called");
         }
 
