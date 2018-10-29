@@ -133,6 +133,8 @@ public class MyContactActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot singleDS : dataSnapshot.getChildren()) {
                     Users user = singleDS.getValue(Users.class);
+                    if(user.getPhoneNumber().contains(GlobalData.phoneNumber))
+                        continue;
                     databaseList.add(new Users(user.getName(), "+91"+user.getPhoneNumber(), user.getEmail(), user.getPhoto()));
                 }
                 int size = databaseList.size();
@@ -167,13 +169,11 @@ public class MyContactActivity extends AppCompatActivity {
         filteredList = databaseList;
         Log.d("FilterList: ", filteredList.size()+"");
         filteredList.retainAll(contactList);
-        int size = filteredList.size();
+        int size = filteredList.size()-1;
         Log.d("NoOfContacts: ", size + "");
-        int i = 0;
-        while (i < size) {
+        for(int i =0;i<size;i++) {
             Log.d("FilterName: ", filteredList.get(i).getName()+" Filter Number: "+filteredList.get(i).getPhoneNumber());
             Log.d("PhotoUrl", filteredList.get(i).getPhoto());
-            i++;
         }
     }
 
@@ -185,7 +185,6 @@ public class MyContactActivity extends AppCompatActivity {
         //Specifying Layout Manager to RecyclerView is Compulsary for Proper Rendering
         LinearLayoutManager simpleverticallayout= new LinearLayoutManager(this);
         rcv.setLayoutManager(simpleverticallayout);
-        Log.d("MYMESSAGE","On Create of RecyclerView Demo Called");
     }
     /////// Inner Class  ////////
     // Create ur own RecyclerAdapter
@@ -211,7 +210,6 @@ public class MyContactActivity extends AppCompatActivity {
         CardView cardView = (CardView) (viewthatcontainscardview.findViewById(R.id.cardviewcontact));
         // This will call Constructor of MyViewHolder, which will further copy its reference
         // to customview (instance variable name) to make its usable in all other methods of class
-        Log.d("MYMESSAGE","On CreateView Holder Done");
         return new MyViewHolder(cardView);
     }
 
