@@ -2,12 +2,7 @@ package com.example.satnamsingh.locationtracker;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -15,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -45,20 +39,22 @@ public class MyContactActivity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private RecyclerView rcv1,rcv2;
-    private MyRecyclerAdapter myad;
-    private MyRecyclerAdapter1 myad1;
+    private MyRecyclerAdapter myRecyclerAdapter;
+    private GroupListAdapter groupListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_contact);
         this.setTitle("My Contacts");
+
         rcv2=(RecyclerView)(findViewById(R.id.rcv2));
-        myad1=new MyRecyclerAdapter1();
-        rcv2.setAdapter(myad1);
+        groupListAdapter =new GroupListAdapter();
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        rcv2.setAdapter(groupListAdapter);
         rcv2.setLayoutManager(layoutManager);
+
         filteredList.clear();
         new Thread(new Runnable() {
             @Override
@@ -254,7 +250,7 @@ public class MyContactActivity extends AppCompatActivity {
                     String phoneNumber=filteredList.get(position).getPhoneNumber();
                     groupList.add(new GroupList(name,photo,phoneNumber));
 //                           showList1();
-                    myad1.notifyDataSetChanged();
+                    groupListAdapter.notifyDataSetChanged();
                 }else{
                     //removePhone=filteredList.get(position).getPhoneNumber();
                     int count=0;
@@ -262,7 +258,7 @@ public class MyContactActivity extends AppCompatActivity {
 
                         if(gp.getPhoneNumber().equals(filteredList.get(position).getPhoneNumber())) {
                             groupList.remove(count);
-                            myad1.notifyDataSetChanged();
+                            groupListAdapter.notifyDataSetChanged();
                             break;
                         }
                         count++;
@@ -282,7 +278,7 @@ public class MyContactActivity extends AppCompatActivity {
     }
     /////// Inner Class  ////////
     // Create ur own RecyclerAdapter
-    class MyRecyclerAdapter1 extends RecyclerView.Adapter<MyRecyclerAdapter1.MyViewHolder1>
+    class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.MyViewHolder1>
     {
         // Define ur own View Holder (Refers to Single Row)
         class MyViewHolder1 extends RecyclerView.ViewHolder
@@ -296,7 +292,7 @@ public class MyContactActivity extends AppCompatActivity {
         }
         // Inflate ur Single Row / CardView from XML here
         @Override
-        public MyRecyclerAdapter1.MyViewHolder1 onCreateViewHolder(ViewGroup parent, int viewType)
+        public GroupListAdapter.MyViewHolder1 onCreateViewHolder(ViewGroup parent, int viewType)
         {
             LayoutInflater inflater  = LayoutInflater.from(parent.getContext());
             View viewthatcontainscardview = inflater.inflate(R.layout.cardviewgroup,parent,false);
@@ -308,7 +304,7 @@ public class MyContactActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(MyRecyclerAdapter1.MyViewHolder1 holder, final int position)
+        public void onBindViewHolder(GroupListAdapter.MyViewHolder1 holder, final int position)
         {
             CardView localcardview = holder.singlecardview;
             localcardview.setOnClickListener(new View.OnClickListener() {
