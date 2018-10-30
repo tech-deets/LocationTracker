@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -63,26 +62,6 @@ public class MyContactActivity extends AppCompatActivity {
                 getDatabaseList();
             }
         }).start();
-//        rcv1.addOnItemTouchListener(new RecyclerItemClickListener(this, rcv1, new RecyclerItemClickListener.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, int position) {
-//            }
-//            @Override
-//            public void onItemLongClick(View view, int position) {
-//                }
-//        }));
-//        rcv1.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-//            @Override
-//            public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
-//                return false;
-//            }
-//            @Override
-//            public void onTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
-//            }
-//            @Override
-//            public void onRequestDisallowInterceptTouchEvent(boolean b) {
-//            }
-//        });
     }///////////////////////on create ends
 
     public void getNumber(ContentResolver cr) {

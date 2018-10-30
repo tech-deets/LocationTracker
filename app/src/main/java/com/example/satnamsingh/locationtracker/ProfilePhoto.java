@@ -32,15 +32,16 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 public class ProfilePhoto extends AppCompatActivity {
-    ImageView imv1;
-    Uri uri;
-    FirebaseStorage firebaseStorage;
-    StorageReference storageReference;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
-    String phoneNumber;
+    private ImageView imv1;
+    private Uri uri;
+    private FirebaseStorage firebaseStorage;
+    private StorageReference storageReference;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
+    private String phoneNumber;
     private ProgressDialog pd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +97,7 @@ public class ProfilePhoto extends AppCompatActivity {
             {
                 imv1.setImageBitmap(null);
                 Bitmap bmp = (Bitmap) (backintent.getExtras().get("data"));
-                uri = getImageUri(this,bmp);
-                //  imv1.setImageBitmap(bmp);
+                uri = getImageUri(getApplicationContext(),bmp);
                imv1.setImageURI(uri);
 
             }
@@ -108,20 +108,22 @@ public class ProfilePhoto extends AppCompatActivity {
             {
                 imv1.setImageBitmap(null);
                 uri = backintent.getData();
+                Bitmap bmp = null;
+                try {
+                    bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(),uri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Bitmap bitmap = Bitmap.createScaledBitmap(bmp, 500, 500, true);
+                uri = getImageUri(getApplicationContext(),bmp);
                 imv1.setImageURI(uri);
             }
         }
     }
 
-    private Uri getImageUri(Context context, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
 
     public void uploadPhoto(View v){
-       // String phoneNumber="9780338031";
+        // String phoneNumber="9780338031";
         Log.d("phone number",phoneNumber);
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
@@ -150,8 +152,7 @@ public class ProfilePhoto extends AppCompatActivity {
                             Toast.makeText(ProfilePhoto.this, "Photo uploaded successfully", Toast.LENGTH_SHORT).show();
                         }
                     });
-                }
-            })
+                }})
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
@@ -160,13 +161,20 @@ public class ProfilePhoto extends AppCompatActivity {
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                             pd.show();
-                    }
-            });
+                        }
+                    });
 
         }
+    }
+
+    private Uri getImageUri(Context context, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 /////////////   Following Functions are for run time permission on button click  /////////////////////
 
@@ -177,14 +185,13 @@ public class ProfilePhoto extends AppCompatActivity {
                         == PackageManager.PERMISSION_GRANTED;
         return result1;
     }
-
     public void requestPermission()
     {
         //Show ASK FOR PERSMISSION DIALOG (passing array of permissions that u want to ask)
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
     }
+
     // After User Selects Desired Permissions, thid method is automatically called
-    // It has request code, permissions array and corresponding grantresults array
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
@@ -205,6 +212,7 @@ public class ProfilePhoto extends AppCompatActivity {
             }
         }
     }
-//////////////////////////////////////////////////////////////////////////////////////////////////////
+    // It has request code, permissions array and corresponding grantresults array
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }

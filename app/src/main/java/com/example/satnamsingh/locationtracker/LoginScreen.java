@@ -38,9 +38,10 @@ public class LoginScreen extends AppCompatActivity {
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private FirebaseAuth mAuth;
     private EditText loginPhone_et,code_et;
-    TextView login_tv1,login_tv2,login_tv3,login_timer;
+    private TextView login_tv1,login_tv2,login_tv3,login_timer;
     private Button verify_bt,login_bt;
     private boolean flag = false;
+    private Thread otpThread;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +90,7 @@ public class LoginScreen extends AppCompatActivity {
             login_tv1.setText("OTP is send to your mobile number\n");
             login_tv2.setText("Please wait");
             login_timer.setVisibility(View.VISIBLE);
-            new Thread(() ->
+            otpThread =new Thread(() ->
             {
                 for (int i = 120; i > 0; i--) {
                     final int j = i;
@@ -104,7 +105,8 @@ public class LoginScreen extends AppCompatActivity {
                     }
                 }
                 flag = false;
-            }).start();
+            });
+            otpThread.start();
 
             InputMethodManager inputManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
             inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
@@ -119,25 +121,20 @@ public class LoginScreen extends AppCompatActivity {
 
                     if (dataSnapshot.getValue() == null) {
                         Toast.makeText(LoginScreen.this, "User does not exist\nplease SignUp first", Toast.LENGTH_LONG).show();
-
+                        flag = false;
+                        otpThread.stop();
                     } else {
                         PhoneAuthProvider.getInstance().verifyPhoneNumber(loginPhone, 120, TimeUnit.SECONDS, LoginScreen.this, mCallbacks);
-
-
                         Log.d("MYMSG", " Veification Started");
                         //to open the new activity to get the details of the user
                         // getDetails();
                     }
-
                 }
-
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-
                 }
             });
         }
-
     }
 
     public void verifyCode(View v){
@@ -148,7 +145,6 @@ public class LoginScreen extends AppCompatActivity {
 
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(VerificationId, code);
         signInWithPhoneAuthCredential(credential);
-
     }
 
     private void signInWithPhoneAuthCredential(final PhoneAuthCredential credential) {
@@ -161,13 +157,12 @@ public class LoginScreen extends AppCompatActivity {
                             login_timer.setVisibility(View.GONE);
                             loginPhone_et.setEnabled(false);
                             code_et.setEnabled(false);
-
+                            userHomeActivity();
                         } else {
                             if (task.getException() instanceof
                                     FirebaseAuthInvalidCredentialsException) {
                                 // The verification code entered was invalid
                                 Toast.makeText(LoginScreen.this, "Invalid code", Toast.LENGTH_LONG).show();
-
                             }
                         }
                     }
