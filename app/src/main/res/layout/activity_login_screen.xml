@@ -41,7 +41,7 @@
 
     <EditText
         android:id="@+id/loginPhone_et"
-        android:inputType="number"
+        android:inputType="phone"
         android:hint="Phone Number"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="20dp"

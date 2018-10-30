@@ -1,5 +1,6 @@
 package com.example.satnamsingh.locationtracker;
 
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.provider.ContactsContract;
@@ -49,7 +50,7 @@ public class MyContactActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_contact);
-        this.setTitle("My Contacts");
+        this.setTitle("Create Group");
 
         rcv2=(RecyclerView)(findViewById(R.id.rcv2));
         groupListAdapter =new GroupListAdapter();
@@ -103,14 +104,12 @@ public class MyContactActivity extends AppCompatActivity {
                     Users user = singleDS.getValue(Users.class);
                     if(user.getPhoneNumber().contains(GlobalData.phoneNumber))
                         continue;
-                    databaseList.add(new Users(user.getName(), "+91"+user.getPhoneNumber(), user.getEmail(), user.getPhoto()));
+                    databaseList.add(new Users(user.getName(), user.getPhoneNumber(), user.getEmail(), user.getPhoto()));
                 }
                 int size = databaseList.size();
-                Toast.makeText(getApplicationContext(), "the datase list is fetched", Toast.LENGTH_SHORT).show();
  /////////////// following two lines are used to get common contacts///////////////////
                 filteredList = databaseList;
                 filteredList.retainAll(contactList);
-
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -120,6 +119,7 @@ public class MyContactActivity extends AppCompatActivity {
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                Log.d("MYMSG","error while fetching");
             }
         });
     }
@@ -162,12 +162,6 @@ public class MyContactActivity extends AppCompatActivity {
     public void onBindViewHolder(MyRecyclerAdapter.MyViewHolder holder, final int position)
     {
         CardView localcardview = holder.singlecardview;
-        localcardview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Toast.makeText(getApplicationContext(),position+" clicked",Toast.LENGTH_LONG).show();
-            }
-        });
         TextView contactName_tv,contactPhone_tv;
         CheckBox contactInvite_cb;
         final ImageView contactPhoto_iv;
@@ -183,6 +177,19 @@ public class MyContactActivity extends AppCompatActivity {
         contactName_tv.setText(i.getName());
         contactPhone_tv.setText(i.getPhoneNumber());
         Glide.with(getApplicationContext()).load(i.getPhoto()).apply(RequestOptions.circleCropTransform()).thumbnail(0.3f).into(contactPhoto_iv);
+        localcardview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Toast.makeText(getApplicationContext(),position+" clicked",Toast.LENGTH_LONG).show();
+                if (contactInvite_cb.isChecked()) {
+                    contactInvite_cb.setChecked(false);
+                }else
+                {
+                    contactInvite_cb.setChecked(true);
+
+                }
+            }
+        });
         contactInvite_cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -209,9 +216,7 @@ public class MyContactActivity extends AppCompatActivity {
                 }
             }
         });
-        Log.d("MYMESSAGE","On Bind Of View Holder Called");
     }
-
         @Override
     public int getItemCount() {
         Log.d("MYMESSAGE","get Item Count Called");
@@ -285,16 +290,22 @@ public class MyContactActivity extends AppCompatActivity {
 
     public void createGroup(View v){
         EditText groupName_et=findViewById(R.id.groupName_et);
-        Toast.makeText(getApplicationContext(),"group clicked", Toast.LENGTH_SHORT).show();
         final String groupName =groupName_et.getText().toString();
-        boolean emptyFields=true;
-
+        boolean emptyFields;
         if (groupName.trim().equals("")|| groupList.size()==0) {
             emptyFields=true;
-            Toast messageToast = Toast.makeText(getApplicationContext(), "Provide a Group Name", Toast.LENGTH_SHORT);
-            messageToast.setGravity(Gravity.CENTER, 0, 0);
-            messageToast.show();
-            Toast.makeText(getApplicationContext(), "group clicked name", Toast.LENGTH_SHORT).show();
+            if(groupName.trim().equals(""))
+            {
+                Toast toast = Toast.makeText(getApplicationContext(), "Provide a Group Name", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+            }
+            if(groupList.size()==0)
+            {
+                Toast toast = Toast.makeText(getApplicationContext(), "group clicked name", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER,0,0);
+                toast.show();
+            }
 
         }else {
             emptyFields = false;
@@ -305,7 +316,6 @@ public class MyContactActivity extends AppCompatActivity {
             final DatabaseReference databaseReference;
             firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference("Groups");
-
             String owner = GlobalData.phoneNumber;
 
             members.add(GlobalData.phoneNumber);
@@ -313,11 +323,9 @@ public class MyContactActivity extends AppCompatActivity {
             DatabaseReference pushData = databaseReference.push();
             final String pushId = pushData.getKey();
             Toast.makeText(getApplicationContext(), "the group is created", Toast.LENGTH_SHORT).show();
-
             Log.d("thepushidforthegroupis", pushId);
             groupData = new GroupData(pushId, groupName, owner, members);
             databaseReference.child(pushId).setValue(groupData);
-
 
             final DatabaseReference groupcodedb = FirebaseDatabase.getInstance().getReference("Users")
                     .child(GlobalData.phoneNumber).child("GroupCode");
@@ -328,20 +336,17 @@ public class MyContactActivity extends AppCompatActivity {
 
                     ArrayList<String> grpCodes = (ArrayList<String>) dataSnapshot.getValue();
                     if(grpCodes == null){
-
                         grpCodes = new ArrayList<>();
                     }
-
                     grpCodes.add(pushId);
                     groupcodedb.setValue(grpCodes);
-
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
                 }
             });
+
             final DatabaseReference groupNamedb = FirebaseDatabase.getInstance().getReference("Users")
                     .child(GlobalData.phoneNumber).child("GroupName");
             groupNamedb.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -356,7 +361,6 @@ public class MyContactActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
                 }
             });
 
@@ -376,11 +380,11 @@ public class MyContactActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
                     }
                 });
 
             }
+            this.finish();
         }
     }
 

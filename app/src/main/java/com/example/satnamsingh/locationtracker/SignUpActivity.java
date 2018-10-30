@@ -146,6 +146,8 @@ public class SignUpActivity extends AppCompatActivity {
             inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
 
             phoneNumber = et1.getText().toString();
+            if(!phoneNumber.startsWith("+91"))
+                phoneNumber = "+91"+phoneNumber;
             DatabaseReference reference = databaseReference.child(phoneNumber);
             reference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -215,7 +217,6 @@ public class SignUpActivity extends AppCompatActivity {
                                     FirebaseAuthInvalidCredentialsException) {
                                 // The verification code entered was invalid
                                 Toast.makeText(SignUpActivity.this, "Invalid code", Toast.LENGTH_SHORT).show();
-
                             }
                         }
                     }
@@ -228,16 +229,4 @@ public class SignUpActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-//    public void GotoUserHomeActivity() {
-//        //Save Phone No in Local Storage for Future use and Change Activity
-//        SharedPreferences sharedPreferences = getSharedPreferences("mypref1", MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//
-//        editor.putString("mobileno", phoneNumber);
-//
-//        editor.commit();
-//
-//        Intent in = new Intent(this, UserHomeActivity.class);
-//        startActivity(in);
-//    }
 }

@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/m1" android:title="one" android:icon="@drawable/ic_launcher_background" app:showAsAction="always" />
-    <item android:id="@+id/m2" android:title="two" android:icon="@drawable/ic_launcher_background" app:showAsAction="always" />
+    <item android:id="@+id/m1" android:title="Create Group" android:icon="@drawable/creategroup" app:showAsAction="always" />
+    <item android:id="@+id/m2" android:title="two"  app:showAsAction="always" />
     <item android:id="@+id/m3" android:title="three" app:showAsAction="ifRoom" />
     <item android:id="@+id/m4" android:title="four"  app:showAsAction="ifRoom" />
     <item android:id="@+id/m5" android:title="five" app:showAsAction="ifRoom" />

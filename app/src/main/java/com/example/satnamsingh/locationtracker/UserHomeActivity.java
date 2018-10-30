@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -76,6 +77,9 @@ public class UserHomeActivity extends AppCompatActivity {
                 }
                 else if(menuItem.getItemId()==R.id.m2)
                 {
+                    Intent in = new Intent(getApplicationContext(),ProfilePhoto.class);
+                    in.putExtra("phone",GlobalData.phoneNumber);
+                    startActivity(in);
                     Toast.makeText(UserHomeActivity.this, "Item two is selected", Toast.LENGTH_LONG).show();
                 }
                 else
@@ -115,7 +119,7 @@ public class UserHomeActivity extends AppCompatActivity {
                     Log.d("MYMSG", GlobalData.photo+"\n");
                     Log.d("MYMSG", GlobalData.email+"\n");
 
-                    Glide.with(getApplicationContext()).load(GlobalData.photo).thumbnail(0.5f).into(profilePhoto);
+                    Glide.with(getApplicationContext()).load(GlobalData.photo).apply(RequestOptions.circleCropTransform()).thumbnail(0.3f).into(profilePhoto);
                     profileName.setText(""+GlobalData.name);
                     profilePhone.setText(""+GlobalData.phoneNumber);
 

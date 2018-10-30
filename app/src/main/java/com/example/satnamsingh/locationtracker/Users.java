@@ -29,6 +29,10 @@ public class Users {
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        if(this.phoneNumber.startsWith("+91"))
+        {
+            this.phoneNumber =this.phoneNumber.replace("+91","");
+        }
         this.photo = photo;
     }
 
@@ -36,6 +40,10 @@ public class Users {
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        if(this.phoneNumber.startsWith("+91"))
+        {
+            this.phoneNumber = this.phoneNumber.replace("+91","");
+        }
         this.photo ="https://firebasestorage.googleapis.com/v0/b/locationtracker-28250.appspot.com/o/default_pic.jpg?alt=media&token=7ed5b932-09bf-422e-aa5e-77eca30f378f";
     }
 

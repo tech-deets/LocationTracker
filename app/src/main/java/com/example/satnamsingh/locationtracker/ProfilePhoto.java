@@ -55,6 +55,14 @@ public class ProfilePhoto extends AppCompatActivity {
         pd.setTitle("Uploading profile photo");
         pd.setMessage("please wait while picture is being uploaded\nDo not close the app!!");
         pd.setCancelable(false);
+        findViewById(R.id.skipbt).setOnClickListener((view)-> {
+                firebaseDatabase=FirebaseDatabase.getInstance();
+                databaseReference=firebaseDatabase.getReference("Users");
+                databaseReference.child(phoneNumber).child("photo").
+                        setValue("https://firebasestorage.googleapis.com/v0/b/locationtracker-28250.appspot.com/o/default_pic.jpg?alt=media&token=7ed5b932-09bf-422e-aa5e-77eca30f378f");
+                finish();
+        }
+        );
 
     }
     //Launch Camera Activity
@@ -114,8 +122,8 @@ public class ProfilePhoto extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Bitmap bitmap = Bitmap.createScaledBitmap(bmp, 500, 500, true);
-                uri = getImageUri(getApplicationContext(),bmp);
+                Bitmap bitmap = Bitmap.createScaledBitmap(bmp, 400, 400, true);
+                uri = getImageUri(getApplicationContext(),bitmap);
                 imv1.setImageURI(uri);
             }
         }
@@ -150,6 +158,7 @@ public class ProfilePhoto extends AppCompatActivity {
                             databaseReference.child(phoneNumber).child("photo").setValue(photo);
                             pd.dismiss();
                             Toast.makeText(ProfilePhoto.this, "Photo uploaded successfully", Toast.LENGTH_SHORT).show();
+                            finish();
                         }
                     });
                 }})
@@ -190,9 +199,7 @@ public class ProfilePhoto extends AppCompatActivity {
         //Show ASK FOR PERSMISSION DIALOG (passing array of permissions that u want to ask)
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
     }
-
     // After User Selects Desired Permissions, thid method is automatically called
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
     {
