@@ -1,6 +1,8 @@
 package com.example.satnamsingh.locationtracker;
 
+import android.media.Image;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -33,6 +35,7 @@ public class MyInvitations extends AppCompatActivity {
     private ArrayList<String> invitational;
     private ArrayList<GroupData> groupal;
     private ArrayList<Users> adminal;
+    private TextView total_invites_tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,59 +43,54 @@ public class MyInvitations extends AppCompatActivity {
         setContentView(R.layout.activity_my_invitations);
 
         adminal = new ArrayList<>();
-
+        total_invites_tv = findViewById(R.id.total_invites_tv);
         recyclerView = (RecyclerView) (findViewById(R.id.invites_rcv));
         myRecyclerAdapter = new InvitationListRecycler();
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this);
-        recyclerView.setAdapter(myRecyclerAdapter);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(myRecyclerAdapter);
         invitational = new ArrayList<>();
-        groupal=new ArrayList<>();
-        adminal=new ArrayList<>();
+        groupal = new ArrayList<>();
+        adminal = new ArrayList<>();
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("Users").child(GlobalData.phoneNumber).child("Invitations");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                invitational = (ArrayList<String>) dataSnapshot.getValue();
-                if (invitational == null) {
-                    invitational = new ArrayList<>();
-                    Log.d("\n\nMYMSG", "list is empty---------------");
-                }
-                Log.d("\n\nMYMSG", "-----list is full---------------");
-                Log.d("\n\nMYMSG", invitational.get(0)+"\n the size of invitation list is  :"+invitational.size()+"\n");
+        new Thread(new GetData()).start();
+    }
 
-                for (int i = 0; i < invitational.size(); i++) {
-                    final DatabaseReference memberref_db = FirebaseDatabase.getInstance().getReference("Groups").
-                            child(invitational.get(i));
-                    memberref_db.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            GroupData group = dataSnapshot.getValue(GroupData.class);
-                            if (groupal == null)
-                                groupal = new ArrayList<>();
-                            groupal.add(group);
-                            Log.d("\n\nMYMSG", "size of group al is : " + groupal.size());
-                        }
+    public class GetData implements Runnable {
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                        }
-                    });
-                }
-                    for (int i = 0; i < groupal.size(); i++) {
-                        final DatabaseReference user_db = FirebaseDatabase.getInstance().getReference("Users").
-                                child(groupal.get(i).getGroupOwner());
-                        user_db.addListenerForSingleValueEvent(new ValueEventListener() {
+        @Override
+        public void run() {
+
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            databaseReference = firebaseDatabase.getReference("Users").child(GlobalData.phoneNumber).child("Invitations");
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    invitational = (ArrayList<String>) dataSnapshot.getValue();
+                    if (invitational == null) {
+                        invitational = new ArrayList<>();
+                        Log.d("\n\nMYMSG", "list is empty---------------");
+                    }
+                    Log.d("\n\nMYMSG", "-----list is full---------------");
+                    Log.d("\n\nMYMSG", invitational.get(0) + "\n the size of invitation list is  :" + invitational.size() + "\n");
+
+                    for (int i = 0; i < invitational.size(); i++) {
+                        Log.d("Invites: ", invitational.get(i));
+                        String invite = invitational.get(i);
+                        total_invites_tv.setText(""+invitational.size());
+                        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                        DatabaseReference inviteRef = firebaseDatabase.getReference("Groups").child(invite);
+
+                        inviteRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                Users admin = dataSnapshot.getValue(Users.class);
-                                if (adminal == null)
-                                    adminal = new ArrayList<>();
-                                adminal.add(admin);
-                                Log.d("MYMSG INVITE Admin", admin + "\n");
+
+                                GroupData groupData = dataSnapshot.getValue(GroupData.class);
+                                Log.d("GroupName: ", groupData.getGroupName());
+                                groupal.add(groupData);
+                                myRecyclerAdapter.notifyDataSetChanged();
                             }
 
                             @Override
@@ -101,23 +99,53 @@ public class MyInvitations extends AppCompatActivity {
                             }
                         });
                     }
-                myRecyclerAdapter.notifyDataSetChanged();
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d("MYMSG", "error while fetching");
-            }
-        });
+//                    for (int i = 0; i < groupal.size(); i++) {
+//                        Log.d("MYMSG","group al is cancelled");
+//
+//                        final DatabaseReference user_db = FirebaseDatabase.getInstance().getReference("Users").
+//                                child(groupal.get(i).getGroupOwner());
+//                        user_db.addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(DataSnapshot dataSnapshot) {
+//                                Users admin = dataSnapshot.getValue(Users.class);
+//                                if (adminal == null)
+//                                    adminal = new ArrayList<>();
+//                                adminal.add(admin);
+//                                Log.d("MYMSG INVITE Admin", admin + "\n");
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(DatabaseError databaseError) {
+//                                Log.d("MYMSG","admin al is cancelled");
+//
+//                            }
+//                        });
+//                      }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.d("MYMSG", "error while fetching");
+                }
+            });
+
+
+        }
+    }
+
+    public void getGroups(View view) {
+
+
 
     }
 
-    class InvitationListRecycler extends RecyclerView.Adapter<InvitationListRecycler.MyViewHolder>
-    {
+    class InvitationListRecycler extends RecyclerView.Adapter<InvitationListRecycler.MyViewHolder> {
         // Define ur own View Holder (Refers to Single Row)
-        class MyViewHolder extends RecyclerView.ViewHolder
-        {
+        class MyViewHolder extends RecyclerView.ViewHolder {
             CardView singlecardview;
+
             public MyViewHolder(CardView itemView) {
                 super(itemView);
                 singlecardview = (itemView);
@@ -126,10 +154,9 @@ public class MyInvitations extends AppCompatActivity {
 
         // Inflate ur Single Row / CardView from XML here
         @Override
-        public InvitationListRecycler.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-        {
-            LayoutInflater inflater  = LayoutInflater.from(parent.getContext());
-            View viewthatcontainscardview = inflater.inflate(R.layout.invites_cardview,parent,false);
+        public InvitationListRecycler.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View viewthatcontainscardview = inflater.inflate(R.layout.invites_cardview, parent, false);
             CardView cardView = (CardView) (viewthatcontainscardview.findViewById(R.id.invites_cardview));
             // This will call Constructor of MyViewHolder, which will further copy its reference
             // to customview (instance variable name) to make its usable in all other methods of class
@@ -140,25 +167,40 @@ public class MyInvitations extends AppCompatActivity {
         public void onBindViewHolder(InvitationListRecycler.MyViewHolder holder, final int position) {
 
             CardView localcardview = holder.singlecardview;
-            TextView groupName_tv,ownerName_tv,ownerPhone_tv;
-            Button accept_bt,decline_bt;
+            TextView groupName_tv, ownerName_tv, ownerPhone_tv;
+            FloatingActionButton accept_bt, decline_bt;
             ImageView owner_photo_iv;
 
-            owner_photo_iv=findViewById(R.id.owner_photo_iv);
-            groupName_tv=findViewById(R.id.groupName_tv);
-            ownerName_tv=findViewById(R.id.ownerName_tv);
-            ownerPhone_tv=findViewById(R.id.ownerPhone_tv);
-            accept_bt=findViewById(R.id.accept_bt);
-            decline_bt=findViewById(R.id.decline_bt);
+            owner_photo_iv = (ImageView)localcardview.findViewById(R.id.owner_photo_iv);
+            groupName_tv = (TextView)localcardview.findViewById(R.id.groupName_tv);
+            ownerName_tv = (TextView)localcardview.findViewById(R.id.ownerName_tv);
+            ownerPhone_tv = (TextView)localcardview.findViewById(R.id.ownerPhone_tv);
+            accept_bt = (FloatingActionButton) localcardview.findViewById(R.id.accept_bt);
+            decline_bt = (FloatingActionButton) localcardview.findViewById(R.id.decline_bt);
 
+            GroupData groupData = groupal.get(position);
+            String groupName = groupData.getGroupName();
+            groupName_tv.setText("Group: "+groupName);
+            String no = groupData.getGroupOwner();
 
-            Users user=adminal.get(position);
-            String groupName=groupal.get(position).getGroupName();
-            groupName_tv.setText(groupName);
-            ownerName_tv.setText(user.getName());
-            ownerPhone_tv.setText(user.getPhoneNumber());
-            Glide.with(getApplicationContext()).load(user.getPhoto()).apply(RequestOptions.circleCropTransform())
-                    .thumbnail(0.3f).into(owner_photo_iv);
+            databaseReference = firebaseDatabase.getReference("Users").child(no);
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Users users = dataSnapshot.getValue(Users.class);
+                    String ownerName = users.getName();
+                    ownerName_tv.setText(ownerName);
+                    Glide.with(getApplicationContext()).load(users.getPhoto()).apply(RequestOptions.circleCropTransform())
+                            .thumbnail(0.3f).into(owner_photo_iv);
+                    ownerPhone_tv.setText(users.getPhoneNumber());
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
 
             accept_bt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -181,13 +223,12 @@ public class MyInvitations extends AppCompatActivity {
             });
 
 
-
-
         }
+
         @Override
         public int getItemCount() {
-            Log.d("MYMESSAGE","get Item Count Called");
-            return invitational.size();
+            Log.d("MYMESSAGE", "get Item Count Called");
+            return groupal.size();
         }
         ////////////////////////////
     }
