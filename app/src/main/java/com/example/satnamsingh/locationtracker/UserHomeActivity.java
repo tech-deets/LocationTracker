@@ -78,7 +78,6 @@ public class UserHomeActivity extends AppCompatActivity {
                 else if(menuItem.getItemId()==R.id.m2)
                 {
                     Intent in = new Intent(getApplicationContext(),MyInvitations.class);
-
                     startActivity(in);
                     Toast.makeText(UserHomeActivity.this, "Item two is selected", Toast.LENGTH_LONG).show();
                 }
