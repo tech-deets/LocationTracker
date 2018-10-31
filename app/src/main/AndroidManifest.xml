@@ -33,7 +33,8 @@
         <activity
             android:name=".UserHomeActivity"
             android:theme="@style/NoActionBarTheme" />
-        <activity android:name=".MyContactActivity"></activity>
+        <activity android:name=".MyContactActivity" />
+        <activity android:name=".MyInvitations"></activity>
     </application>
 
 </manifest>
