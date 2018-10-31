@@ -49,6 +49,7 @@ public class MyInvitations extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         invitational = new ArrayList<>();
         groupal=new ArrayList<>();
+        adminal=new ArrayList<>();
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Users").child(GlobalData.phoneNumber).child("Invitations");
@@ -61,8 +62,7 @@ public class MyInvitations extends AppCompatActivity {
                     Log.d("\n\nMYMSG", "list is empty---------------");
                 }
                 Log.d("\n\nMYMSG", "-----list is full---------------");
-                Log.d("\n\nMYMSG", invitational.get(0));
-                Log.d("\n\nMYMSG", "inside on start------------");
+                Log.d("\n\nMYMSG", invitational.get(0)+"\n the size of invitation list is  :"+invitational.size()+"\n");
 
                 for (int i = 0; i < invitational.size(); i++) {
                     final DatabaseReference memberref_db = FirebaseDatabase.getInstance().getReference("Groups").
@@ -74,14 +74,15 @@ public class MyInvitations extends AppCompatActivity {
                             if (groupal == null)
                                 groupal = new ArrayList<>();
                             groupal.add(group);
-                            Log.d("\n\nMYMSG",groupal.get(0).getGroupName());
+                            Log.d("\n\nMYMSG", "size of group al is : " + groupal.size());
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
                         }
                     });
-                    for (int j = 0; j < groupal.size(); j++) {
+                }
+                    for (int i = 0; i < groupal.size(); i++) {
                         final DatabaseReference user_db = FirebaseDatabase.getInstance().getReference("Users").
                                 child(groupal.get(i).getGroupOwner());
                         user_db.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -100,7 +101,6 @@ public class MyInvitations extends AppCompatActivity {
                             }
                         });
                     }
-                }
                 myRecyclerAdapter.notifyDataSetChanged();
             }
 
@@ -109,12 +109,6 @@ public class MyInvitations extends AppCompatActivity {
                 Log.d("MYMSG", "error while fetching");
             }
         });
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
 
     }
 
@@ -178,13 +172,13 @@ public class MyInvitations extends AppCompatActivity {
 
                 }
             });
-                localcardview.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        // Toast.makeText(getApplicationContext(),position+" clicked",Toast.LENGTH_LONG).show();
+            localcardview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Toast.makeText(getApplicationContext(),position+" clicked",Toast.LENGTH_LONG).show();
 
-                    }
-                });
+                }
+            });
 
 
 
