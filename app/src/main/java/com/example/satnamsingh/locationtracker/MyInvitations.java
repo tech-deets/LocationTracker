@@ -74,7 +74,7 @@ public class MyInvitations extends AppCompatActivity {
                         Log.d("\n\nMYMSG", "list is empty---------------");
                     }
                     Log.d("\n\nMYMSG", "-----list is full---------------");
-                    Log.d("\n\nMYMSG", invitational.get(0) + "\n the size of invitation list is  :" + invitational.size() + "\n");
+//                    Log.d("\n\nMYMSG", invitational.get(0) + "\n the size of invitation list is  :" + invitational.size() + "\n");
 
                     for (int i = 0; i < invitational.size(); i++) {
                         Log.d("Invites: ", invitational.get(i));

@@ -123,6 +123,7 @@ public class LoginScreen extends AppCompatActivity {
                         Toast.makeText(LoginScreen.this, "User does not exist\nplease SignUp first", Toast.LENGTH_LONG).show();
                         flag = false;
                         otpThread.stop();
+
                     } else {
                         PhoneAuthProvider.getInstance().verifyPhoneNumber(loginPhone, 120, TimeUnit.SECONDS, LoginScreen.this, mCallbacks);
                         Log.d("MYMSG", " Veification Started");

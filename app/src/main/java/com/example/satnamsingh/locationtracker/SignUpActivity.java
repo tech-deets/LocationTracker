@@ -146,8 +146,8 @@ public class SignUpActivity extends AppCompatActivity {
             inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
 
             phoneNumber = et1.getText().toString();
-            if(!phoneNumber.startsWith("+91"))
-                phoneNumber = "+91"+phoneNumber;
+//            if(!phoneNumber.startsWith("+91"))
+//                phoneNumber = "+91"+phoneNumber;
             DatabaseReference reference = databaseReference.child(phoneNumber);
             reference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
