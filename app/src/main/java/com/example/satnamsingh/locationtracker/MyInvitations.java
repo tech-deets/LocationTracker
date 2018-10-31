@@ -179,7 +179,6 @@ public class MyInvitations extends AppCompatActivity {
 
             GroupData groupData = groupal.get(position);
             String groupName = groupData.getGroupName();
-            
             groupName_tv.setText("Group: "+groupName);
             String no = groupData.getGroupOwner();
             Log.d("MYMSG NUMBER: ",no);
