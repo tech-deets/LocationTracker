@@ -63,7 +63,6 @@ public class UserHomeActivity extends AppCompatActivity {
         profilePhone = headerView.findViewById(R.id.textview_phonenumber);
         Intent in =getIntent();
         phoneNumber=in.getStringExtra("phone");
-        GlobalData.phoneNumber=phoneNumber;
         fetchData();
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -96,7 +95,7 @@ public class UserHomeActivity extends AppCompatActivity {
     public void fetchData(){
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Users");
-        DatabaseReference reference = databaseReference.child(phoneNumber);
+        DatabaseReference reference = databaseReference.child(GlobalData.phoneNumber);
      //   Log.d("phone number")
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
