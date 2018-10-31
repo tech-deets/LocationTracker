@@ -147,7 +147,7 @@ public class SignUpActivity extends AppCompatActivity {
 
             phoneNumber = et1.getText().toString();
             if(!phoneNumber.startsWith("+91"))
-                phoneNumber = "+91"+phoneNumber;
+                phoneNumber = phoneNumber.replace("+91","");
             DatabaseReference reference = databaseReference.child(phoneNumber);
             reference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override

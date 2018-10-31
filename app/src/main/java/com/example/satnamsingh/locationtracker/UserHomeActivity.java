@@ -63,6 +63,7 @@ public class UserHomeActivity extends AppCompatActivity {
         profilePhone = headerView.findViewById(R.id.textview_phonenumber);
         Intent in =getIntent();
         phoneNumber=in.getStringExtra("phone");
+        GlobalData.phoneNumber=phoneNumber;
         fetchData();
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {

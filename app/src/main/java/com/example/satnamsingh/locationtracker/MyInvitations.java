@@ -74,7 +74,6 @@ public class MyInvitations extends AppCompatActivity {
                         Log.d("\n\nMYMSG", "list is empty---------------");
                     }
                     Log.d("\n\nMYMSG", "-----list is full---------------");
-                    Log.d("\n\nMYMSG", invitational.get(0) + "\n the size of invitation list is  :" + invitational.size() + "\n");
 
                     for (int i = 0; i < invitational.size(); i++) {
                         Log.d("Invites: ", invitational.get(i));
@@ -182,7 +181,7 @@ public class MyInvitations extends AppCompatActivity {
             String groupName = groupData.getGroupName();
             groupName_tv.setText("Group: "+groupName);
             String no = groupData.getGroupOwner();
-
+            Log.d("MYMSG NUMBER: ",no);
             databaseReference = firebaseDatabase.getReference("Users").child(no);
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override

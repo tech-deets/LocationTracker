@@ -45,16 +45,16 @@ public class SignUpActivity2 extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "User name cannot be empty\nPlease Enter the user name", Toast.LENGTH_LONG).show();
                     throw new Exception("Please Enter the user name");
                 }else {
-                    SharedPreferences sharedPreferences =getSharedPreferences("LocationTrackerUser.txt",MODE_PRIVATE);
-                    SharedPreferences.Editor editor =sharedPreferences.edit();
-                    editor.putString("phoneNumber",phoneNumber);
-                    editor.commit();
                     Users user = new Users(phoneNumber, name, email);
 
                     //This will generate PUSHID and then setvalue
 //                databaseReference.setValue(phonenumber);
                     databaseReference.child(phonenumber).setValue(user);
 
+                    SharedPreferences sharedPreferences =getSharedPreferences("LocationTrackerUser.txt",MODE_PRIVATE);
+                    SharedPreferences.Editor editor =sharedPreferences.edit();
+                    editor.putString("phoneNumber",phoneNumber);
+                    editor.commit();
                     Toast.makeText(this, "Record Added", Toast.LENGTH_SHORT).show();
                     Intent in = new Intent(this, ProfilePhoto.class);
                     in.putExtra("phone", phonenumber);
