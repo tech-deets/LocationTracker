@@ -1,6 +1,7 @@
 package com.example.satnamsingh.locationtracker;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,6 +45,10 @@ public class SignUpActivity2 extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "User name cannot be empty\nPlease Enter the user name", Toast.LENGTH_LONG).show();
                     throw new Exception("Please Enter the user name");
                 }else {
+                    SharedPreferences sharedPreferences =getSharedPreferences("LocationTrackerUser.txt",MODE_PRIVATE);
+                    SharedPreferences.Editor editor =sharedPreferences.edit();
+                    editor.putString("phoneNumber",phoneNumber);
+                    editor.commit();
                     Users user = new Users(phoneNumber, name, email);
 
                     //This will generate PUSHID and then setvalue
