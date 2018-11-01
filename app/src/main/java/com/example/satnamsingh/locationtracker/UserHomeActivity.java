@@ -2,6 +2,7 @@ package com.example.satnamsingh.locationtracker;
 
 import android.content.Intent;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.support.annotation.NonNull;
@@ -93,7 +94,11 @@ public class UserHomeActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 if(dataSnapshot.getValue(Users.class)==null){
-                    Toast.makeText(getApplicationContext(), "User Data Not Found", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "User Not Found\n It may be removed", Toast.LENGTH_LONG).show();
+                    SharedPreferences sharedPreferences =getSharedPreferences("LocationTrackerUser.txt",MODE_PRIVATE);
+                    SharedPreferences.Editor editor =sharedPreferences.edit();
+                    editor.putString("phoneNumber","");
+                    editor.commit();
 
                 }else {
 

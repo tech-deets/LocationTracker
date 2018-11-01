@@ -47,7 +47,8 @@ public class ProfilePhoto extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profilephoto);
-        imv1=(ImageView)(findViewById(R.id.imv1));
+
+        imv1=(findViewById(R.id.imv1));
         imv1.setImageResource(R.drawable.default_pic);
         Intent in= getIntent();
         phoneNumber=in.getStringExtra("phone");
