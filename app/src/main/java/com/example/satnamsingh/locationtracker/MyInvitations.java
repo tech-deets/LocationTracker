@@ -64,23 +64,22 @@ public class MyInvitations extends AppCompatActivity {
 
         @Override
         public void run() {
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////
             firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference("Users").child(GlobalData.phoneNumber).child("Invitations");
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-
-
-
-
                     invitational.clear();
                     groupal.clear();
 
                     invitational = (ArrayList<String>) dataSnapshot.getValue();
                     if (invitational == null) {
                         invitational = new ArrayList<>();
+                        total_invites_tv.setText("0");
+                        myRecyclerAdapter.notifyDataSetChanged();
                         Log.d("\n\nMYMSG", "list is empty---------------");
+
                     }
 
                     Log.d("\n\nMYMSG", "-----list is full---------------");
