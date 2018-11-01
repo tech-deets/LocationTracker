@@ -41,10 +41,9 @@ public class UserHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_home);
 
-        drawer=(DrawerLayout)findViewById(R.id.drawer);
-        navigationView =(NavigationView)findViewById(R.id.nav_view);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar_user_home);
+        drawer=findViewById(R.id.drawer);
+        navigationView =findViewById(R.id.nav_view);
+        toolbar = findViewById(R.id.toolbar_user_home);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if(actionBar!=null)
@@ -62,17 +61,15 @@ public class UserHomeActivity extends AppCompatActivity {
         profilePhone.setText(""+phoneNumber);
         fetchData();
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        navigationView.setNavigationItemSelectedListener((menuItem)-> {
                 if(menuItem.getItemId()==R.id.menu_create_group)
                 {
-                    Intent in = new Intent(getApplicationContext(),MyContactActivity.class);
+                    Intent intent = new Intent(getApplicationContext(),MyContactActivity.class);
                     startActivity(in);
                 }
                 else if(menuItem.getItemId()==R.id.menu_invites)
                 {
-                    Intent in = new Intent(getApplicationContext(),MyInvitations.class);
+                    Intent intent = new Intent(getApplicationContext(),MyInvitations.class);
                     startActivity(in);
                 }
                 else if(menuItem.getItemId()==R.id.menu_groups)
@@ -82,7 +79,6 @@ public class UserHomeActivity extends AppCompatActivity {
                 //Close Drawer after logic is executed
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
-            }
         });
         //////////////////// NavigationView listener ends/////////////////////////////////
     }
@@ -96,7 +92,7 @@ public class UserHomeActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if(dataSnapshot.getValue()==null){
+                if(dataSnapshot.getValue(Users.class)==null){
                     Toast.makeText(getApplicationContext(), "User Data Not Found", Toast.LENGTH_LONG).show();
 
                 }else {
@@ -126,7 +122,7 @@ public class UserHomeActivity extends AppCompatActivity {
         }
         else if(item.getItemId()==R.id.menu_create_group)
         {
-
+//
         }
         else if(item.getItemId()==R.id.menu_invites)
         {
