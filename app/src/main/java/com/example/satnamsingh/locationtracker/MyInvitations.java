@@ -107,30 +107,6 @@ public class MyInvitations extends AppCompatActivity {
                             }
                         });
                     }
-
-//                    for (int i = 0; i < groupal.size(); i++) {
-//                        Log.d("MYMSG","group al is cancelled");
-//
-//                        final DatabaseReference user_db = FirebaseDatabase.getInstance().getReference("Users").
-//                                child(groupal.get(i).getGroupOwner());
-//                        user_db.addListenerForSingleValueEvent(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(DataSnapshot dataSnapshot) {
-//                                Users admin = dataSnapshot.getValue(Users.class);
-//                                if (adminal == null)
-//                                    adminal = new ArrayList<>();
-//                                adminal.add(admin);
-//                                Log.d("MYMSG INVITE Admin", admin + "\n");
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(DatabaseError databaseError) {
-//                                Log.d("MYMSG","admin al is cancelled");
-//
-//                            }
-//                        });
-//                      }
-
                 }
 
                 @Override
