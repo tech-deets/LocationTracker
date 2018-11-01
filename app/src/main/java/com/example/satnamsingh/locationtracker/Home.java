@@ -67,7 +67,8 @@ public class Home extends AppCompatActivity {
     }
     public void requestPermission() {
         //Show ASK FOR PERSMISSION DIALOG (passing array of permissions that u want to ask)
-        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS}, 1);
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_CONTACTS,
+                Manifest.permission.WRITE_CONTACTS}, 1);
     }
     // After User Selects Desired Permissions, thid method is automatically called
     // It has request code, permissions array and corresponding grantresults array
