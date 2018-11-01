@@ -321,9 +321,8 @@ public class MyInvitations extends AppCompatActivity {
             localcardview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // Toast.makeText(getApplicationContext(),position+" clicked",Toast.LENGTH_LONG).show();
-
-                }
+                     //Toast.makeText(getApplicationContext(),position+" clicked",Toast.LENGTH_LONG).show();
+}
             });
 
 
