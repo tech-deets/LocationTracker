@@ -64,7 +64,7 @@ public class MyInvitations extends AppCompatActivity {
 
         @Override
         public void run() {
-//////////////////////////////////////////////////////////////////////////////////////////////////////
+
             firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference("Users").child(GlobalData.phoneNumber).child("Invitations");
             databaseReference.addValueEventListener(new ValueEventListener() {
