@@ -71,7 +71,7 @@ public class MyInvitations extends AppCompatActivity {
 
 
 
-
+                    
                     invitational.clear();
                     groupal.clear();
 
@@ -178,34 +178,34 @@ public class MyInvitations extends AppCompatActivity {
             FloatingActionButton accept_bt, decline_bt;
             ImageView owner_photo_iv;
 
-            owner_photo_iv = (ImageView) localcardview.findViewById(R.id.owner_photo_iv);
-            groupName_tv = (TextView) localcardview.findViewById(R.id.groupName_tv);
-            ownerName_tv = (TextView) localcardview.findViewById(R.id.ownerName_tv);
-            ownerPhone_tv = (TextView) localcardview.findViewById(R.id.ownerPhone_tv);
+            owner_photo_iv = (ImageView)localcardview.findViewById(R.id.owner_photo_iv);
+            groupName_tv = (TextView)localcardview.findViewById(R.id.groupName_tv);
+            ownerName_tv = (TextView)localcardview.findViewById(R.id.ownerName_tv);
+            ownerPhone_tv = (TextView)localcardview.findViewById(R.id.ownerPhone_tv);
             accept_bt = (FloatingActionButton) localcardview.findViewById(R.id.accept_bt);
             decline_bt = (FloatingActionButton) localcardview.findViewById(R.id.decline_bt);
 
             GroupData groupData = groupal.get(position);
             String groupName = groupData.getGroupName();
-            groupName_tv.setText("Group: " + groupName);
+            groupName_tv.setText("Group: "+groupName);
             String no = groupData.getGroupOwner();
-            Log.d("MYMSG NUMBER: ", no);
+            Log.d("MYMSG NUMBER: ",no);
             databaseReference = firebaseDatabase.getReference("Users").child(no);
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     //Log.d("THEUsERIDIS",dataSnapshot.getValue(Users.class).toString());
-                    if (dataSnapshot.getValue(Users.class) == null) {
+                        if(dataSnapshot.getValue(Users.class)==null){
 
-                    } else {
-                        Users users = new Users(dataSnapshot.getValue(Users.class));
+                        }else{
+                            Users users = new Users(dataSnapshot.getValue(Users.class));
 //                        Log.d("MYMSG",users.getPhoneNumber());
-                        String ownerName = users.getName();
-                        ownerName_tv.setText(ownerName);
-                        Glide.with(getApplicationContext()).load(users.getPhoto()).apply(RequestOptions.circleCropTransform())
-                                .thumbnail(0.3f).into(owner_photo_iv);
-                        ownerPhone_tv.setText(users.getPhoneNumber());
-                    }
+                            String ownerName = users.getName();
+                            ownerName_tv.setText(ownerName);
+                            Glide.with(getApplicationContext()).load(users.getPhoto()).apply(RequestOptions.circleCropTransform())
+                                    .thumbnail(0.3f).into(owner_photo_iv);
+                            ownerPhone_tv.setText(users.getPhoneNumber());
+                        }
 
                 }
 
@@ -219,53 +219,6 @@ public class MyInvitations extends AppCompatActivity {
             accept_bt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String groupId = groupData.getGroupId();
-                    //remove the card
-                    //and remove the invitation from firebase.
-
-                    Log.d("MTMSG", "thegroudid is----" + groupId);
-                    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                    DatabaseReference databaseReference = firebaseDatabase.getReference("Users").child(GlobalData.phoneNumber).child("Invitations");
-                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            //invitational=(ArrayList<String>)dataSnapshot.getValue();
-
-                            ArrayList<String> al_invitations = (ArrayList<String>) dataSnapshot.getValue();
-
-                            if (al_invitations == null) {
-                                al_invitations = new ArrayList<>();
-                            }
-
-                            int index = -1;
-                            for (int i = 0; i < al_invitations.size(); i++) {
-                                if (al_invitations.get(i).equals(groupId)) {
-                                    index = i;
-                                    break;
-                                }
-                            }
-
-
-                            if (index != -1) {
-                                al_invitations.remove(index);
-
-                            }
-                            databaseReference.setValue(al_invitations);
-                            acceptGroupInvite(groupId);
-                            addEntryGroupName(groupData.getGroupName());
-                            addEntryMember(groupId);
-                            myRecyclerAdapter.notifyDataSetChanged();
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-
-
-
 
 
                 }
@@ -273,14 +226,13 @@ public class MyInvitations extends AppCompatActivity {
             decline_bt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    String groupId = groupData.getGroupId();
+                    String groupId=groupData.getGroupId();
                     //remove the card
                     //and remove the invitation from firebase.
 
-                    Log.d("MTMSG", "thegroudid is----" + groupId);
-                    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                    DatabaseReference databaseReference = firebaseDatabase.getReference("Users").child(GlobalData.phoneNumber).child("Invitations");
+                    Log.d("MTMSG","thegroudid is----"+groupId);
+                  FirebaseDatabase  firebaseDatabase =FirebaseDatabase.getInstance();
+                 DatabaseReference   databaseReference=firebaseDatabase.getReference("Users").child(GlobalData.phoneNumber).child("Invitations");
                     databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -288,20 +240,24 @@ public class MyInvitations extends AppCompatActivity {
 
                             ArrayList<String> al_invitations = (ArrayList<String>) dataSnapshot.getValue();
 
-                            if (al_invitations == null) {
+                            if(al_invitations==null)
+                            {
                                 al_invitations = new ArrayList<>();
                             }
 
-                            int index = -1;
-                            for (int i = 0; i < al_invitations.size(); i++) {
-                                if (al_invitations.get(i).equals(groupId)) {
+                            int index=-1;
+                            for(int i=0;i<al_invitations.size();i++)
+                            {
+                                if(al_invitations.get(i).equals(groupId))
+                                {
                                     index = i;
                                     break;
                                 }
                             }
 
 
-                            if (index != -1) {
+                            if(index!=-1)
+                            {
                                 al_invitations.remove(index);
 
                             }
@@ -314,6 +270,7 @@ public class MyInvitations extends AppCompatActivity {
 
                         }
                     });
+
 
 
                 }
@@ -334,79 +291,6 @@ public class MyInvitations extends AppCompatActivity {
             Log.d("MYMESSAGE", "get Item Count Called");
             return groupal.size();
         }
-
         ////////////////////////////
-        public void acceptGroupInvite(String groupId) {
-            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-            DatabaseReference databaseReference = firebaseDatabase.getReference("Users")
-                    .child(GlobalData.phoneNumber).child("GroupCode");
-            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    ArrayList<String> al_groupCodes = (ArrayList<String>) dataSnapshot.getValue();
-
-                    if (al_groupCodes == null) {
-                        al_groupCodes = new ArrayList<>();
-
-                    }
-                    al_groupCodes.add(groupId);
-                    databaseReference.setValue(al_groupCodes);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
-
-        public void addEntryGroupName(String groupName) {
-            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-            DatabaseReference databaseReference = firebaseDatabase.getReference("Users")
-                    .child(GlobalData.phoneNumber).child("GroupName");
-            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    ArrayList<String> al_groupNames = (ArrayList<String>) dataSnapshot.getValue();
-
-                    if (al_groupNames == null) {
-                        al_groupNames = new ArrayList<>();
-
-                    }
-                    al_groupNames.add(groupName);
-                    databaseReference.setValue(al_groupNames);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
-
-        public void addEntryMember(String groupId) {
-            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-            DatabaseReference databaseReference = firebaseDatabase.getReference("Groups")
-                    .child(groupId).child("groupMembers");
-            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    ArrayList<String> al_groupMembers = (ArrayList<String>) dataSnapshot.getValue();
-
-                    if (al_groupMembers == null) {
-                        al_groupMembers = new ArrayList<>();
-
-                    }
-                    al_groupMembers.add(GlobalData.phoneNumber);
-                    databaseReference.setValue(al_groupMembers);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
     }
-
 }
