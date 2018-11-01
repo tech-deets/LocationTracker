@@ -25,7 +25,6 @@ public class Home extends AppCompatActivity {
             if (checkPermission()) {
                 SharedPreferences sharedPreferences = getSharedPreferences("LocationTrackerUser.txt", MODE_PRIVATE);
                 String phoneNumber = sharedPreferences.getString("phoneNumber", "");
-//              Log.d("phone number stored", phoneNumber);
                 if (phoneNumber == null || phoneNumber == "")
                 {
                     //Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
