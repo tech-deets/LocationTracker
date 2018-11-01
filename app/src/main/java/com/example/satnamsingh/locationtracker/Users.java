@@ -10,6 +10,7 @@ public class Users {
     private ArrayList<String> Invitations;
     private ArrayList<String> GroupName;
     private ArrayList<String> GroupCode;
+
     Users(){
 
     }
@@ -71,10 +72,10 @@ public class Users {
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        if(this.phoneNumber.startsWith("+91"))
-        {
-            this.phoneNumber = this.phoneNumber.replace("+91","");
-        }
+        //if(this.phoneNumber.startsWith("+91"))
+        //{
+            //this.phoneNumber = this.phoneNumber.replace("+91","");
+        //}
         this.photo ="https://firebasestorage.googleapis.com/v0/b/locationtracker-28250.appspot.com/o/default_pic.jpg?alt=media&token=7ed5b932-09bf-422e-aa5e-77eca30f378f";
     }
 
@@ -91,6 +92,13 @@ public class Users {
         Invitations = invitations;
         GroupName = groupName;
         GroupCode = groupCode;
+    }
+    public Users(Users u){
+        this.name = u.name;
+        this.email = u.email;
+        this.phoneNumber = u.phoneNumber;
+        this.photo = u.photo;
+
     }
 
     public String getPhoto() {

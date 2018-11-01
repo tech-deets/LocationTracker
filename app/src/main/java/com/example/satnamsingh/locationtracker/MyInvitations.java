@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MyInvitations extends AppCompatActivity {
@@ -64,15 +65,22 @@ public class MyInvitations extends AppCompatActivity {
 
             firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference("Users").child(GlobalData.phoneNumber).child("Invitations");
-            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+
+                    
+                    invitational.clear();
+                    groupal.clear();
 
                     invitational = (ArrayList<String>) dataSnapshot.getValue();
                     if (invitational == null) {
                         invitational = new ArrayList<>();
                         Log.d("\n\nMYMSG", "list is empty---------------");
                     }
+
                     Log.d("\n\nMYMSG", "-----list is full---------------");
 
                     for (int i = 0; i < invitational.size(); i++) {
@@ -186,12 +194,19 @@ public class MyInvitations extends AppCompatActivity {
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    Users users = dataSnapshot.getValue(Users.class);
-                    String ownerName = users.getName();
-                    ownerName_tv.setText(ownerName);
-                    Glide.with(getApplicationContext()).load(users.getPhoto()).apply(RequestOptions.circleCropTransform())
-                            .thumbnail(0.3f).into(owner_photo_iv);
-                    ownerPhone_tv.setText(users.getPhoneNumber());
+                    //Log.d("THEUsERIDIS",dataSnapshot.getValue(Users.class).toString());
+                        if(dataSnapshot.getValue(Users.class)==null){
+
+                        }else{
+                            Users users = new Users(dataSnapshot.getValue(Users.class));
+//                        Log.d("MYMSG",users.getPhoneNumber());
+                            String ownerName = users.getName();
+                            ownerName_tv.setText(ownerName);
+                            Glide.with(getApplicationContext()).load(users.getPhoto()).apply(RequestOptions.circleCropTransform())
+                                    .thumbnail(0.3f).into(owner_photo_iv);
+                            ownerPhone_tv.setText(users.getPhoneNumber());
+                        }
+
                 }
 
                 @Override
@@ -205,11 +220,58 @@ public class MyInvitations extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
+
                 }
             });
             decline_bt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    String groupId=groupData.getGroupId();
+                    //remove the card
+                    //and remove the invitation from firebase.
+
+                    Log.d("MTMSG","thegroudid is----"+groupId);
+                  FirebaseDatabase  firebaseDatabase =FirebaseDatabase.getInstance();
+                 DatabaseReference   databaseReference=firebaseDatabase.getReference("Users").child(GlobalData.phoneNumber).child("Invitations");
+                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            //invitational=(ArrayList<String>)dataSnapshot.getValue();
+
+                            ArrayList<String> al_invitations = (ArrayList<String>) dataSnapshot.getValue();
+
+                            if(al_invitations==null)
+                            {
+                                al_invitations = new ArrayList<>();
+                            }
+
+                            int index=-1;
+                            for(int i=0;i<al_invitations.size();i++)
+                            {
+                                if(al_invitations.get(i).equals(groupId))
+                                {
+                                    index = i;
+                                    break;
+                                }
+                            }
+
+
+                            if(index!=-1)
+                            {
+                                al_invitations.remove(index);
+
+                            }
+                            databaseReference.setValue(al_invitations);
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
 
                 }
             });
