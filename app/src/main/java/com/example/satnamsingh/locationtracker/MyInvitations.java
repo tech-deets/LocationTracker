@@ -1,8 +1,10 @@
 package com.example.satnamsingh.locationtracker;
 
+import android.content.DialogInterface;
 import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -226,52 +228,63 @@ public class MyInvitations extends AppCompatActivity {
             decline_bt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String groupId=groupData.getGroupId();
-                    //remove the card
-                    //and remove the invitation from firebase.
 
-                    Log.d("MTMSG","thegroudid is----"+groupId);
-                  FirebaseDatabase  firebaseDatabase =FirebaseDatabase.getInstance();
-                 DatabaseReference   databaseReference=firebaseDatabase.getReference("Users").child(GlobalData.phoneNumber).child("Invitations");
-                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MyInvitations.this);
+                    builder.setTitle("Reject Invitation");
+                    builder.setMessage("Do you want to reject the invitation for group");
+                    //builder.setCancelable(false);
+
+                    builder.setPositiveButton("Reject", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            //invitational=(ArrayList<String>)dataSnapshot.getValue();
+                        public void onClick(DialogInterface dialog, int which) {
+                            String groupId=groupData.getGroupId();
+                            //remove the card
+                            //and remove the invitation from firebase.
 
-                            ArrayList<String> al_invitations = (ArrayList<String>) dataSnapshot.getValue();
+                            Log.d("MYMSG","the group id is ----  "+groupId);
+                            FirebaseDatabase  firebaseDatabase =FirebaseDatabase.getInstance();
+                            DatabaseReference   databaseReference=firebaseDatabase.getReference("Users").child(GlobalData.phoneNumber).child("Invitations");
+                            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    //invitational=(ArrayList<String>)dataSnapshot.getValue();
+                                    ArrayList<String> al_invitations = (ArrayList<String>) dataSnapshot.getValue();
 
-                            if(al_invitations==null)
-                            {
-                                al_invitations = new ArrayList<>();
-                            }
+                                    if(al_invitations==null)
+                                    {
+                                        al_invitations = new ArrayList<>();
+                                    }
 
-                            int index=-1;
-                            for(int i=0;i<al_invitations.size();i++)
-                            {
-                                if(al_invitations.get(i).equals(groupId))
-                                {
-                                    index = i;
-                                    break;
+                                    int index=-1;
+                                    for(int i=0;i<al_invitations.size();i++)
+                                    {
+                                        if(al_invitations.get(i).equals(groupId))
+                                        {
+                                            index = i;
+                                            break;
+                                        }
+                                    }
+                                    if(index!=-1)
+                                    {
+                                        al_invitations.remove(index);
+                                    }
+                                    databaseReference.setValue(al_invitations);
                                 }
-                            }
 
-
-                            if(index!=-1)
-                            {
-                                al_invitations.remove(index);
-
-                            }
-                            databaseReference.setValue(al_invitations);
-
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                }
+                            });
                         }
-
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
+                        public void onClick(DialogInterface dialog, int which) {
                         }
                     });
 
-
+                    AlertDialog ad = builder.create();
+                    ad.show();
 
                 }
             });
