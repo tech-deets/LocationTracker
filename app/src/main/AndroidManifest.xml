@@ -36,7 +36,10 @@
         <activity android:name=".MyContactActivity" />
         <activity android:name=".MyInvitations" />
         <activity android:name=".MyGroupsActivity" />
-        <activity android:name=".GroupInfoDialogActivity"></activity>
+        <activity
+            android:name=".GroupInfoDialogActivity"
+            android:theme="@style/Theme.AppCompat.Dialog"
+            />
     </application>
 
 </manifest>
