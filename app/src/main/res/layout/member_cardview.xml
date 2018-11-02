@@ -15,7 +15,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/owner_photo_iv"
+                    android:id="@+id/member_photo_iv"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="7dp" />
@@ -26,7 +26,7 @@
                     android:orientation="vertical"
                     android:layout_marginLeft="10dp">
                     <TextView
-                        android:id="@+id/ownerName_tv"
+                        android:id="@+id/memberName_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -35,7 +35,7 @@
                         android:textSize="17sp" />
 
                     <TextView
-                        android:id="@+id/ownerPhone_tv"
+                        android:id="@+id/memberPhone_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
