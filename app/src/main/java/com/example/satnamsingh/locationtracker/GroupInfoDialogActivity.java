@@ -1,6 +1,8 @@
 package com.example.satnamsingh.locationtracker;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,17 +36,23 @@ ArrayList<String> groupMembers ;
     RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        setTheme(R.style.CustomDialogTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_info_dialog);
+//        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         Intent in=getIntent();
         String groupId=in.getStringExtra("groupId");
+        String groupName = in.getStringExtra("groupName");
         Log.d("MYMSGGROUPID",groupId);
-        groupName_tv=findViewById(R.id.groupName_tv);
+
         ownerName_tv=findViewById(R.id.ownerName_tv);
         ownerPhone_tv = findViewById(R.id.ownerPhone_tv);
         ownerPhoto_iv=findViewById(R.id.ownerPhoto_iv);
-       groupName_tv=findViewById(R.id.groupName_tv);
+        groupName_tv=findViewById(R.id.groupName_tv);
         recyclerView = (RecyclerView) (findViewById(R.id.group_memebers_rcv));
+        groupName_tv=findViewById(R.id.groupName_tv);
+
+        groupName_tv.setText("Group : "+groupName);
         myRecyclerAdapter = new MemberListRecycler();
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this);
@@ -51,11 +60,10 @@ ArrayList<String> groupMembers ;
         recyclerView.setAdapter(myRecyclerAdapter);
         groupMembers=new ArrayList<>();
         getGroupData(groupId);
-
-
-
-
-    }
+        findViewById(R.id.close_dialog_fbt).setOnClickListener((view)->{
+            finish();
+        });
+   }
     public void getGroupData(String groupId){
         FirebaseDatabase firebaseDatabase =FirebaseDatabase.getInstance();
         DatabaseReference databaseReference=firebaseDatabase.getReference("Groups").child(groupId)
@@ -125,7 +133,6 @@ ArrayList<String> groupMembers ;
                     }
                     Glide.with(getApplicationContext()).load(user.getPhoto()).apply(RequestOptions.circleCropTransform())
                             .thumbnail(0.3f).into(ownerPhoto_iv);
-
                 }
                 else{
                         Log.d("MYMSG","else executed");

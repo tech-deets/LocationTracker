@@ -4,7 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyGroupsActivity">
+    tools:context=".MyGroupsActivity"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="#333"
+            android:text="Total Groups : "/>
+        <TextView
+            android:id="@+id/total_group_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:text="0"
+            android:textColor="#333"
+            android:layout_marginLeft="5dp"
+            />
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/mygroups_rcv"
         android:layout_marginTop="5dp"

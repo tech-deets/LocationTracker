@@ -37,18 +37,8 @@
                 android:layout_marginTop="5dp"
                 android:paddingLeft="10sp"
                 android:textColor="#000000"
-                android:layout_gravity="center"
                 android:textSize="18sp"
                 android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:paddingLeft="10sp"
-                android:text="Created By :-"
-                android:textColor="#000000"
-                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -67,14 +57,27 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginLeft="10dp">
-                    <TextView
-                        android:id="@+id/ownerName_tv"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="owner"
-                        android:textColor="#222"
-                        android:textSize="17sp" />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Admin:-"
+                            android:textColor="#000000"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/ownerName_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="owner"
+                            android:textColor="#222"
+                            android:textSize="17sp" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/ownerPhone_tv"
@@ -94,6 +97,7 @@
         android:id="@+id/groupInfo_iv"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginTop="25dp"
         android:layout_gravity="center"
         android:layout_marginHorizontal="2dp"
         android:background="@drawable/info_icon"/>
