@@ -40,6 +40,7 @@ ArrayList<String> groupMembers ;
         Log.d("MYMSGGROUPID",groupId);
         groupName_tv=findViewById(R.id.groupName_tv);
         ownerName_tv=findViewById(R.id.ownerName_tv);
+        ownerPhone_tv = findViewById(R.id.ownerPhone_tv);
         ownerPhoto_iv=findViewById(R.id.ownerPhoto_iv);
        groupName_tv=findViewById(R.id.groupName_tv);
         recyclerView = (RecyclerView) (findViewById(R.id.group_memebers_rcv));
@@ -70,12 +71,7 @@ ArrayList<String> groupMembers ;
                 }
                 Log.d("MYMSG",groupMembers.toString());
             //    Log.d("MYMSG",groupData.getGroupId());
-
-
-
-
-
-
+                myRecyclerAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -83,6 +79,7 @@ ArrayList<String> groupMembers ;
 
             }
         });
+
         FirebaseDatabase firebaseDatabase1 =FirebaseDatabase.getInstance();
         DatabaseReference databaseReference1=firebaseDatabase1.getReference("Groups").child(groupId);
         databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -191,7 +188,7 @@ ArrayList<String> groupMembers ;
                     Glide.with(getApplicationContext()).load(user.getPhoto()).apply(RequestOptions.circleCropTransform())
                             .thumbnail(0.3f).into(member_photo_iv);
 //                    Log.d("MYMSG",user.getPhoneNumber());
-                        myRecyclerAdapter.notifyDataSetChanged();
+
                 }
 
                 @Override
@@ -199,22 +196,6 @@ ArrayList<String> groupMembers ;
 
                 }
             });
-
-
-            localcardview.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //Toast.makeText(getApplicationContext(),position+" clicked",Toast.LENGTH_LONG).show();
-                    Intent in =new Intent();
-                    in.putExtra("groupId",groupData.getGroupId());
-
-                    startActivity(in);
-                }
-            });
-
-
-
-
         }
         @Override
         public int getItemCount() {
