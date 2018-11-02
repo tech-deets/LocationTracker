@@ -70,6 +70,8 @@ public class LoginScreen extends AppCompatActivity {
             @Override
             public void onVerificationFailed(FirebaseException e) {
                 Log.d("MYMSG", "onVerificationFailed");
+                Toast.makeText(LoginScreen.this, "Users Authentication failed\nPlease Check PhoneNumber or Internet connection"
+                        , Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -123,6 +125,7 @@ public class LoginScreen extends AppCompatActivity {
                         Toast.makeText(LoginScreen.this, "User does not exist\nplease SignUp first", Toast.LENGTH_LONG).show();
                         flag = false;
                         otpThread.stop();
+                        login_timer.setVisibility(View.GONE);
 
                     } else {
                         PhoneAuthProvider.getInstance().verifyPhoneNumber(loginPhone, 120, TimeUnit.SECONDS, LoginScreen.this, mCallbacks);
@@ -133,19 +136,25 @@ public class LoginScreen extends AppCompatActivity {
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
+                    Toast.makeText(LoginScreen.this, "Error while fetching Cloud Data", Toast.LENGTH_LONG).show();
                 }
             });
         }
     }
 
-    public void verifyCode(View v){
-        String code = code_et.getText().toString();
+    public void verifyCode(View v) {
+        if (!(code_et.getText() == null || code_et.getText().equals(""))) {
+            String code = code_et.getText().toString();
 
-        InputMethodManager inputManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+            InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(VerificationId, code);
-        signInWithPhoneAuthCredential(credential);
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(VerificationId, code);
+            signInWithPhoneAuthCredential(credential);
+        }
+        else{
+            Toast.makeText(this, "Please enter the OTP ", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void signInWithPhoneAuthCredential(final PhoneAuthCredential credential) {
@@ -154,7 +163,6 @@ public class LoginScreen extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            //Toast.makeText(MainActivity.this, "Phone Verified", Toast.LENGTH_SHORT).show();
                             login_timer.setVisibility(View.GONE);
                             loginPhone_et.setEnabled(false);
                             code_et.setEnabled(false);
@@ -178,9 +186,9 @@ public class LoginScreen extends AppCompatActivity {
         editor.commit();
         Toast.makeText(LoginScreen.this, "Data loaded to shared preferences", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, UserHomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("phone", loginPhone);
         startActivity(intent);
-        this.finish();
     }
 }
 

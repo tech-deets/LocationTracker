@@ -46,11 +46,9 @@ public class SignUpActivity2 extends AppCompatActivity {
                     throw new Exception("Please Enter the user name");
                 }else {
                     Users user = new Users(phoneNumber, name, email);
-
-                    //This will generate PUSHID and then setvalue
-//                databaseReference.setValue(phonenumber);
+ //                 This will generate PUSHID and then setvalue
+//                  databaseReference.setValue(phonenumber);
                     databaseReference.child(phonenumber).setValue(user);
-
                     SharedPreferences sharedPreferences =getSharedPreferences("LocationTrackerUser.txt",MODE_PRIVATE);
                     SharedPreferences.Editor editor =sharedPreferences.edit();
                     editor.putString("phoneNumber",phoneNumber);
@@ -64,7 +62,6 @@ public class SignUpActivity2 extends AppCompatActivity {
             {
                 ex.printStackTrace();
             }
-
         });
     }
 }

@@ -60,7 +60,7 @@
                     android:id="@+id/owner_photo_iv"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_marginLeft="7dp" />
+                    android:layout_marginLeft="15dp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
