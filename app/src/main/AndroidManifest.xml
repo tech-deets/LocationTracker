@@ -38,9 +38,12 @@
         <activity android:name=".MyGroupsActivity" />
         <activity
             android:name=".GroupInfoDialogActivity"
-        android:theme="@style/CustomDialogTheme"
-        />
-        <!--android:theme="@style/Theme.AppCompat.Dialog"-->
+            android:theme="@style/CustomDialogTheme" />
+        <!-- android:theme="@style/Theme.AppCompat.Dialog" -->
+        <service
+            android:name=".LocationTrackerService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

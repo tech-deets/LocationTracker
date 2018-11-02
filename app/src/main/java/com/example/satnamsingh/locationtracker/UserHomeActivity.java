@@ -60,33 +60,36 @@ public class UserHomeActivity extends AppCompatActivity {
         phoneNumber=in.getStringExtra("phone");
         GlobalData.phoneNumber=phoneNumber;
         profilePhone.setText(""+phoneNumber);
+        Intent intent=new Intent(this, LocationTrackerService.class);
+        intent.setAction("START SIGNAL");
+        startService(intent);
         fetchData();
 
         navigationView.setNavigationItemSelectedListener((menuItem)-> {
                 if(menuItem.getItemId()==R.id.menu_create_group)
                 {
-                    Intent intent = new Intent(getApplicationContext(),MyContactActivity.class);
-                    startActivity(intent);
+                    Intent intet = new Intent(getApplicationContext(),MyContactActivity.class);
+                    startActivity(intet);
                 }
                 else if(menuItem.getItemId()==R.id.menu_invites)
                 {
-                    Intent intent = new Intent(getApplicationContext(),MyInvitations.class);
-                    startActivity(intent);
+                    Intent inte = new Intent(getApplicationContext(),MyInvitations.class);
+                    startActivity(inte);
                 }
                 else if(menuItem.getItemId()==R.id.menu_groups)
                 {
                     Toast.makeText(UserHomeActivity.this, "groups is clicked", Toast.LENGTH_LONG).show();
-                    Intent intent =new Intent(getApplicationContext(),MyGroupsActivity.class);
-                    startActivity(intent);
+                    Intent locationService =new Intent(getApplicationContext(),MyGroupsActivity.class);
+                    startActivity(locationService);
                 }else if (menuItem.getItemId()==R.id.menu_logout)
                 {
                     SharedPreferences sharedPreferences =getSharedPreferences("LocationTrackerUser.txt",MODE_PRIVATE);
                     SharedPreferences.Editor editor =sharedPreferences.edit();
                     editor.putString("phoneNumber","");
                     editor.commit();
-                    Intent intent = new Intent(getApplicationContext(),Home.class);
+                    Intent inten = new Intent(getApplicationContext(),Home.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                    startActivity(inten);
                 }
                 //Close Drawer after logic is executed
                 drawer.closeDrawer(GravityCompat.START);
@@ -150,4 +153,5 @@ public class UserHomeActivity extends AppCompatActivity {
         }
         return true;
     }
+
 }
