@@ -35,7 +35,8 @@
             android:theme="@style/NoActionBarTheme" />
         <activity android:name=".MyContactActivity" />
         <activity android:name=".MyInvitations" />
-        <activity android:name=".MyGroupsActivity"></activity>
+        <activity android:name=".MyGroupsActivity" />
+        <activity android:name=".GroupInfoDialogActivity"></activity>
     </application>
 
 </manifest>
