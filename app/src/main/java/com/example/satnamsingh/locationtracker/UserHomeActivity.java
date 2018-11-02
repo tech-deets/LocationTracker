@@ -66,16 +66,18 @@ public class UserHomeActivity extends AppCompatActivity {
                 if(menuItem.getItemId()==R.id.menu_create_group)
                 {
                     Intent intent = new Intent(getApplicationContext(),MyContactActivity.class);
-                    startActivity(in);
+                    startActivity(intent);
                 }
                 else if(menuItem.getItemId()==R.id.menu_invites)
                 {
                     Intent intent = new Intent(getApplicationContext(),MyInvitations.class);
-                    startActivity(in);
+                    startActivity(intent);
                 }
                 else if(menuItem.getItemId()==R.id.menu_groups)
                 {
                     Toast.makeText(UserHomeActivity.this, "groups is clicked", Toast.LENGTH_LONG).show();
+                    Intent intent =new Intent(getApplicationContext(),MyGroupsActivity.class);
+                    startActivity(intent);
                 }
                 //Close Drawer after logic is executed
                 drawer.closeDrawer(GravityCompat.START);

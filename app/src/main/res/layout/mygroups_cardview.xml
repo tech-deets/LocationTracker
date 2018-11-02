@@ -2,7 +2,7 @@
 <android.support.v7.widget.CardView android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/invites_cardview"
+    android:id="@+id/mygroups_cardview"
     android:layout_marginBottom="10dp"
     android:layout_marginRight="5dp"
     android:layout_marginLeft="5dp"
@@ -57,7 +57,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/owner_photo_iv"
+                    android:id="@+id/ownerPhoto_iv"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="15dp" />
@@ -91,6 +91,7 @@
 
         </LinearLayout>
     <ImageView
+        android:id="@+id/groupInfo_iv"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center"
