@@ -35,12 +35,16 @@ public class MyGroupsActivity extends AppCompatActivity {
     private ArrayList<String> groupCodes_al;
     private ArrayList<GroupData> groupal;
     private ArrayList<Users> adminal;
+    private TextView total_group_tv;
    // private TextView total_invites_tv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_groups_activity);
+        this.setTitle("My Groups");
         adminal = new ArrayList<>();
+        total_group_tv = findViewById(R.id.total_group_tv);
+
        // total_invites_tv = findViewById(R.id.total_invites_tv);
         recyclerView = (RecyclerView) (findViewById(R.id.mygroups_rcv));
         myRecyclerAdapter = new MyGroupsRecycler();
@@ -71,18 +75,18 @@ public class MyGroupsActivity extends AppCompatActivity {
                     groupCodes_al = (ArrayList<String>) dataSnapshot.getValue();
                     if (groupCodes_al == null) {
                         groupCodes_al = new ArrayList<>();
-                       // total_invites_tv.setText("0");
                         myRecyclerAdapter.notifyDataSetChanged();
                         Log.d("\n\nMYMSG", "list is empty---------------");
 
                     }
+                    total_group_tv.setText(""+ groupCodes_al.size());
 
                     Log.d("\n\nMYMSG", "-----list is full---------------");
 
                     for (int i = 0; i < groupCodes_al.size(); i++) {
                         Log.d("groups: ", groupCodes_al.get(i));
                         String groupId = groupCodes_al.get(i);
-                        //total_invites_tv.setText(""+ groupCodes_al.size());
+                        total_group_tv.setText(""+ groupCodes_al.size());
                         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                         DatabaseReference inviteRef = firebaseDatabase.getReference("Groups").child(groupId);
 
@@ -91,10 +95,11 @@ public class MyGroupsActivity extends AppCompatActivity {
                             public void onDataChange(DataSnapshot dataSnapshot) {
 
                                 GroupData groupData = dataSnapshot.getValue(GroupData.class);
-
-                                Log.d("GroupName: ", groupData.getGroupName());
-                                groupal.add(groupData);
-                                myRecyclerAdapter.notifyDataSetChanged();
+                                if (groupData!=null) {
+                                    Log.d("GroupName: ", groupData.getGroupName());
+                                    groupal.add(groupData);
+                                    myRecyclerAdapter.notifyDataSetChanged();
+                                }
                             }
 
                             @Override
@@ -155,7 +160,6 @@ public class MyGroupsActivity extends AppCompatActivity {
             groupName_tv.setText("Group: " + groupName);
             String no = groupData.getGroupOwner();
             Log.d("MYMSG NUMBER: ", no);
-//            Users myuser;
             databaseReference = firebaseDatabase.getReference("Users").child(no);
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -165,16 +169,12 @@ public class MyGroupsActivity extends AppCompatActivity {
 
                     } else {
                         Users users = new Users(dataSnapshot.getValue(Users.class));
-//                        myuser=users;
-// Log.d("MYMSG",users.getPhoneNumber());
                          String ownerName = users.getName();
-                         //ownerNameGbl=ownerName;
                         ownerName_tv.setText(ownerName);
                         Glide.with(getApplicationContext()).load(users.getPhoto()).apply(RequestOptions.circleCropTransform())
                                 .thumbnail(0.3f).into(owner_photo_iv);
                         ownerPhone_tv.setText(users.getPhoneNumber());
                     }
-
                 }
 
                 @Override
@@ -185,14 +185,10 @@ public class MyGroupsActivity extends AppCompatActivity {
             groupInfo_iv.setOnClickListener(( view)-> {
                 Intent in =new Intent(getApplicationContext(),GroupInfoDialogActivity.class);
                 Toast.makeText(MyGroupsActivity.this, "card view clicked  "+position, Toast.LENGTH_LONG).show();
+                in.putExtra("groupName",groupName);
                 in.putExtra("groupId",groupData.getGroupId());
-
                 startActivity(in);
-
-
             });
-
-
             localcardview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

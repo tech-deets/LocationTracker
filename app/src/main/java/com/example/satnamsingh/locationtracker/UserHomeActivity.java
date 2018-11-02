@@ -78,6 +78,15 @@ public class UserHomeActivity extends AppCompatActivity {
                     Toast.makeText(UserHomeActivity.this, "groups is clicked", Toast.LENGTH_LONG).show();
                     Intent intent =new Intent(getApplicationContext(),MyGroupsActivity.class);
                     startActivity(intent);
+                }else if (menuItem.getItemId()==R.id.menu_logout)
+                {
+                    SharedPreferences sharedPreferences =getSharedPreferences("LocationTrackerUser.txt",MODE_PRIVATE);
+                    SharedPreferences.Editor editor =sharedPreferences.edit();
+                    editor.putString("phoneNumber","");
+                    editor.commit();
+                    Intent intent = new Intent(getApplicationContext(),Home.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 }
                 //Close Drawer after logic is executed
                 drawer.closeDrawer(GravityCompat.START);

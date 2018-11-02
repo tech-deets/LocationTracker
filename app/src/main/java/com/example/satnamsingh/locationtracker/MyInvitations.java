@@ -44,7 +44,7 @@ public class MyInvitations extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_invitations);
-
+        this.setTitle("Invites");
         adminal = new ArrayList<>();
         total_invites_tv = findViewById(R.id.total_invites_tv);
         recyclerView = (RecyclerView) (findViewById(R.id.invites_rcv));

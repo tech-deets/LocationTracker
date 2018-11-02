@@ -38,8 +38,9 @@
         <activity android:name=".MyGroupsActivity" />
         <activity
             android:name=".GroupInfoDialogActivity"
-            android:theme="@style/Theme.AppCompat.Dialog"
-            />
+        android:theme="@style/CustomDialogTheme"
+        />
+        <!--android:theme="@style/Theme.AppCompat.Dialog"-->
     </application>
 
 </manifest>
