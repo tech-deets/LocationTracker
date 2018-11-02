@@ -1,6 +1,7 @@
 package com.example.satnamsingh.locationtracker;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -140,7 +142,7 @@ public class MyGroupsActivity extends AppCompatActivity {
 
             TextView groupName_tv, ownerName_tv, ownerPhone_tv;
             ImageView owner_photo_iv,groupInfo_iv;
-
+            String ownerNameGbl,ownerPhoto;
 
             owner_photo_iv = (ImageView) localcardview.findViewById(R.id.ownerPhoto_iv);
             groupName_tv = (TextView) localcardview.findViewById(R.id.groupName_tv);
@@ -153,6 +155,7 @@ public class MyGroupsActivity extends AppCompatActivity {
             groupName_tv.setText("Group: " + groupName);
             String no = groupData.getGroupOwner();
             Log.d("MYMSG NUMBER: ", no);
+//            Users myuser;
             databaseReference = firebaseDatabase.getReference("Users").child(no);
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -162,8 +165,10 @@ public class MyGroupsActivity extends AppCompatActivity {
 
                     } else {
                         Users users = new Users(dataSnapshot.getValue(Users.class));
-//                        Log.d("MYMSG",users.getPhoneNumber());
-                        String ownerName = users.getName();
+//                        myuser=users;
+// Log.d("MYMSG",users.getPhoneNumber());
+                         String ownerName = users.getName();
+                         //ownerNameGbl=ownerName;
                         ownerName_tv.setText(ownerName);
                         Glide.with(getApplicationContext()).load(users.getPhoto()).apply(RequestOptions.circleCropTransform())
                                 .thumbnail(0.3f).into(owner_photo_iv);
@@ -178,6 +183,11 @@ public class MyGroupsActivity extends AppCompatActivity {
                 }
             });
             groupInfo_iv.setOnClickListener(( view)-> {
+                Intent in =new Intent(getApplicationContext(),GroupInfoDialogActivity.class);
+                Toast.makeText(MyGroupsActivity.this, "card view clicked  "+position, Toast.LENGTH_LONG).show();
+                in.putExtra("groupId",groupData.getGroupId());
+
+                startActivity(in);
 
 
             });
@@ -187,6 +197,7 @@ public class MyGroupsActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     //Toast.makeText(getApplicationContext(),position+" clicked",Toast.LENGTH_LONG).show();
+
                 }
             });
 
