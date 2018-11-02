@@ -85,7 +85,7 @@ public class UserHomeActivity extends AppCompatActivity {
                     editor.putString("phoneNumber","");
                     editor.commit();
                     Intent intent = new Intent(getApplicationContext(),Home.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    finishAffinity();
                     startActivity(intent);
                 }
                 //Close Drawer after logic is executed

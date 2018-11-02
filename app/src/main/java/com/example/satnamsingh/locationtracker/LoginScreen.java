@@ -186,8 +186,8 @@ public class LoginScreen extends AppCompatActivity {
         editor.commit();
         Toast.makeText(LoginScreen.this, "Data loaded to shared preferences", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, UserHomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("phone", loginPhone);
+        finishAffinity();
         startActivity(intent);
     }
 }

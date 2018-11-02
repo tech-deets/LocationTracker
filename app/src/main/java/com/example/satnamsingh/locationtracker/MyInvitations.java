@@ -79,9 +79,7 @@ public class MyInvitations extends AppCompatActivity {
                         total_invites_tv.setText("0");
                         myRecyclerAdapter.notifyDataSetChanged();
                         Log.d("\n\nMYMSG", "list is empty---------------");
-
                     }
-
                     Log.d("\n\nMYMSG", "-----list is full---------------");
 
                     for (int i = 0; i < invitational.size(); i++) {
