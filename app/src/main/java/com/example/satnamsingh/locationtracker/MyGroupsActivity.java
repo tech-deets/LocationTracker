@@ -56,8 +56,6 @@ public class MyGroupsActivity extends AppCompatActivity {
         groupal = new ArrayList<>();
         adminal = new ArrayList<>();
         new Thread(new GetData()).start();
-
-
     }
     public class GetData implements Runnable {
 
@@ -93,7 +91,6 @@ public class MyGroupsActivity extends AppCompatActivity {
                         inviteRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-
                                 GroupData groupData = dataSnapshot.getValue(GroupData.class);
                                 if (groupData!=null) {
                                     Log.d("GroupName: ", groupData.getGroupName());
@@ -101,7 +98,6 @@ public class MyGroupsActivity extends AppCompatActivity {
                                     myRecyclerAdapter.notifyDataSetChanged();
                                 }
                             }
-
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
 
@@ -109,7 +105,6 @@ public class MyGroupsActivity extends AppCompatActivity {
                         });
                     }
                 }
-
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     Log.d("MYMSG", "error while fetching");
@@ -196,10 +191,6 @@ public class MyGroupsActivity extends AppCompatActivity {
 
                 }
             });
-
-
-
-
         }
         @Override
         public int getItemCount() {
@@ -208,6 +199,5 @@ public class MyGroupsActivity extends AppCompatActivity {
             int size=groupal.size();
             return size;
         }
-
     }
 }

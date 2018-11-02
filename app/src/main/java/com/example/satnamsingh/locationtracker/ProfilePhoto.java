@@ -66,8 +66,8 @@ public class ProfilePhoto extends AppCompatActivity {
 
                 Intent uin = new Intent(getApplicationContext(),UserHomeActivity.class);
                 in.putExtra("phone",phoneNumber);
+                finishAffinity();
                 startActivity(uin);
-                finish();
         }
         );
 
@@ -167,8 +167,8 @@ public class ProfilePhoto extends AppCompatActivity {
                             Toast.makeText(ProfilePhoto.this, "Photo uploaded successfully", Toast.LENGTH_SHORT).show();
                             Intent in = new Intent(getApplicationContext(),UserHomeActivity.class);
                             in.putExtra("phone",phoneNumber);
+                            finishAffinity();
                             startActivity(in);
-                            finish();
                         }
                     });
                 }})
