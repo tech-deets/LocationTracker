@@ -27,11 +27,12 @@ public class LocationTrackerService extends Service {
 
         if(intent.getAction().trim().equals("START SIGNAL") && runningflag==false)
         {
-            startForegroundService();
             runningflag=true;
+            startForegroundService();
         }
-        else if(intent.getAction().trim().equals("STOP SIGNAL"))
+        else if(intent.getAction().trim().equals("STOP SIGNAL")&&runningflag==true)
         {
+            runningflag=false;
             stopForegroundService(intent);
         }
 
