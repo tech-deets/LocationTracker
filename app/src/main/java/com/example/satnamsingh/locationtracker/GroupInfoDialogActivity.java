@@ -65,38 +65,7 @@ ArrayList<String> groupMembers ;
         });
    }
     public void getGroupData(String groupId){
-        FirebaseDatabase firebaseDatabase =FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference=firebaseDatabase.getReference("Groups").child(groupId)
-                .child("groupMembers");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-               // groupData=dataSnapshot.getValue(GroupData.class);
-                //groupName_tv.setText(groupData.getGroupName());
-                groupMembers=(ArrayList<String>)dataSnapshot.getValue();
-                if(groupMembers==null){
-                    groupMembers=new ArrayList<>();
-                }
-//                int index=-1;
-//                for(int i=0;i<groupMembers.size();i++){
-//                    if(groupMembers.get(i).equals(groupData.getGroupOwner())){
-//                        index=i;
-//                        break;
-//                    }
-//                }
-//                if(index!=-1){
-//                    groupMembers.remove(index);
-//                }
-                Log.d("MYMSG",groupMembers.toString());
-            //    Log.d("MYMSG",groupData.getGroupId());
-                myRecyclerAdapter.notifyDataSetChanged();
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
         FirebaseDatabase firebaseDatabase1 =FirebaseDatabase.getInstance();
         DatabaseReference databaseReference1=firebaseDatabase1.getReference("Groups").child(groupId);
@@ -106,6 +75,41 @@ ArrayList<String> groupMembers ;
                 groupData=dataSnapshot.getValue(GroupData.class);
                 Log.d("MYMSG",groupData.getGroupOwner());
                 getOwnerData(groupData.getGroupOwner());
+                FirebaseDatabase firebaseDatabase =FirebaseDatabase.getInstance();
+                DatabaseReference databaseReference=firebaseDatabase.getReference("Groups").child(groupId)
+                        .child("groupMembers");
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // groupData=dataSnapshot.getValue(GroupData.class);
+                        //groupName_tv.setText(groupData.getGroupName());
+                        groupMembers=(ArrayList<String>)dataSnapshot.getValue();
+                        if(groupMembers==null){
+                            groupMembers=new ArrayList<>();
+                        }
+//
+                        Log.d("MYMSG",groupMembers.toString());
+                        //    Log.d("MYMSG",groupData.getGroupId());
+                        int index=-1;
+                        for(int i=0;i<groupMembers.size();i++){
+                            if(groupMembers.get(i).equals(groupData.getGroupOwner())){
+                                index=i;
+                                break;
+                            }
+                        }
+                        if(index!=-1){
+                            groupMembers.remove(index);
+                        }
+
+                        myRecyclerAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
             }
 
             @Override
@@ -114,13 +118,9 @@ ArrayList<String> groupMembers ;
             }
         });
 
-    }
-    public void getMemberData(String number){
-
-
-
 
     }
+
     public void getOwnerData(String groupOwner){
         FirebaseDatabase firebaseDatabase= FirebaseDatabase.getInstance();
         DatabaseReference databaseReference=firebaseDatabase.getReference("Users").child(groupOwner);
@@ -132,15 +132,8 @@ ArrayList<String> groupMembers ;
                     ownerName_tv.setText(user.getName());
                     Log.d("onwerphone",user.getName());
                     ownerPhone_tv.setText(user.getPhoneNumber());
-                    int index = 0;
-                    for (String number : groupMembers) {
-                        if (number.equals(user.getPhoneNumber())) {
-                            break;
 
-                        }
-                        index++;
 
-                    }
                     Glide.with(getApplicationContext()).load(user.getPhoto()).apply(RequestOptions.circleCropTransform())
                             .thumbnail(0.3f).into(ownerPhoto_iv);
                 }
@@ -223,5 +216,6 @@ ArrayList<String> groupMembers ;
         }
 
     }
+
 
 }

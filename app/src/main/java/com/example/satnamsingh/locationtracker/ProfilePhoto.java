@@ -81,7 +81,7 @@ public class ProfilePhoto extends AppCompatActivity {
                 Intent in = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(in, 100);
             } else {
-                Toast.makeText(this, "Permission Not Granted", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Permission Not Granted", Toast.LENGTH_SHORT).show();
                 requestPermission();
             }
         }
@@ -97,7 +97,7 @@ public class ProfilePhoto extends AppCompatActivity {
                 in.setType("image/*");
                 startActivityForResult(in, 110);
             } else {
-                Toast.makeText(this, "Permission Not Granted", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Permission Not Granted", Toast.LENGTH_SHORT).show();
                 requestPermission();
             }
         }
