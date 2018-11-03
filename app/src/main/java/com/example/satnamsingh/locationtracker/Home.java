@@ -33,6 +33,7 @@ public class Home extends AppCompatActivity {
                 {
                     Intent in = new Intent(this, UserHomeActivity.class);
                     in.putExtra("phone", phoneNumber);
+                    GlobalData.phoneNumber=phoneNumber;
                     startActivity(in);
                     finish();
                 }

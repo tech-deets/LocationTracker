@@ -64,6 +64,7 @@ public class LoginScreen extends AppCompatActivity {
                 code_et.setText(credential.getSmsCode());
                 loginPhone_et.setEnabled(false);
                 code_et.setEnabled(false);
+               // GlobalData.phoneNumber=loginPhone;
                 userHomeActivity();
             }
 
@@ -151,6 +152,7 @@ public class LoginScreen extends AppCompatActivity {
 
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(VerificationId, code);
             signInWithPhoneAuthCredential(credential);
+
         }
         else{
             Toast.makeText(this, "Please enter the OTP ", Toast.LENGTH_LONG).show();
@@ -166,6 +168,8 @@ public class LoginScreen extends AppCompatActivity {
                             login_timer.setVisibility(View.GONE);
                             loginPhone_et.setEnabled(false);
                             code_et.setEnabled(false);
+                           // GlobalData.phoneNumber=loginPhone;
+
                             userHomeActivity();
                         } else {
                             if (task.getException() instanceof
