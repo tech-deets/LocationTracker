@@ -230,18 +230,21 @@ public class LocationTrackerService extends Service {
 
 
             FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
-            DatabaseReference databaseReference=firebaseDatabase.getReference("Users").child(phoneNumber).child("Locations");
+            DatabaseReference databaseReference=firebaseDatabase.getReference("Users").child(phoneNumber).
+                    child("Locations").child(time+"");
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if(dataSnapshot.getValue()==null){
                         System.out.println("---arraylist empty");
+                    }else{
+                        //userLocations=(ArrayList<Locations>)dataSnapshot.getValue();
+
                     }
-                    Log.d("LOCATIONMSG","-----"+userLocations.size());
-                    userLocations=(ArrayList<Locations>)dataSnapshot.getValue();
-                    userLocations.add(userLocation);
-                    databaseReference.setValue(userLocations);
-                    Log.d("LOCATIONMSG-AFTERADDING","-----"+userLocations.size());
+                   // Log.d("LOCATIONMSG","-----"+userLocations.size());
+                    //userLocations.add(userLocation);
+                    databaseReference.setValue(userLocation);
+                   // Log.d("LOCATIONMSG-AFTERADDING","-----"+userLocations.size());
 
 
                 }
