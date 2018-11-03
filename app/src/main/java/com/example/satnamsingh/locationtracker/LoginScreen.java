@@ -169,6 +169,7 @@ public class LoginScreen extends AppCompatActivity {
                             loginPhone_et.setEnabled(false);
                             code_et.setEnabled(false);
                             GlobalData.phoneNumber=loginPhone;
+
                             userHomeActivity();
                         } else {
                             if (task.getException() instanceof
