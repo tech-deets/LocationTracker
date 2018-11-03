@@ -87,7 +87,8 @@ public class LoginScreen extends AppCompatActivity {
     }
     public void login(View v) {
         if (flag) {
-            Toast.makeText(getApplicationContext(), "OTP is sent to your mobile number\nPlease wait for timer to resend OTP", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "OTP is sent to your mobile number\nPlease wait for timer to resend OTP",
+                    Toast.LENGTH_SHORT).show();
         } else {
             flag = true;
             login_tv1.setText("OTP is send to your mobile number\n");

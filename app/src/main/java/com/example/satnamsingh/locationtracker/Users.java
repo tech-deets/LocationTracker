@@ -10,18 +10,9 @@ public class Users {
     private ArrayList<String> Invitations;
     private ArrayList<String> GroupName;
     private ArrayList<String> GroupCode;
-    private ArrayList<Locations> userLocations;
 
     Users(){
 
-    }
-
-    public ArrayList<Locations> getUserLocations() {
-        return userLocations;
-    }
-
-    public void setUserLocations(ArrayList<Locations> userLocations) {
-        this.userLocations = userLocations;
     }
 
     public ArrayList<String> getInvitations() {

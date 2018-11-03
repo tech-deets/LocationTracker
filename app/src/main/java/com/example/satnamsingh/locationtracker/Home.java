@@ -22,7 +22,7 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.home);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             //Check If Permissions are already granted, otherwise show Ask Permission Dialog
-            if (checkPermission()) {
+            if(checkPermission()) {
                 SharedPreferences sharedPreferences = getSharedPreferences("LocationTrackerUser.txt", MODE_PRIVATE);
                 String phoneNumber = sharedPreferences.getString("phoneNumber", "");
                 if (phoneNumber == null || phoneNumber == "")

@@ -1,13 +1,12 @@
 package com.example.satnamsingh.locationtracker;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -65,6 +64,10 @@ public class UserHomeActivity extends AppCompatActivity {
         Intent intent=new Intent(this, LocationTrackerService.class);
         intent.setAction("START SIGNAL");
         startService(intent);
+        MapsFragment mapsFragment = new MapsFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.ll1,mapsFragment).commit();
+
         fetchData();
 
         navigationView.setNavigationItemSelectedListener((menuItem)-> {
@@ -83,12 +86,14 @@ public class UserHomeActivity extends AppCompatActivity {
                     Toast.makeText(UserHomeActivity.this, "groups is clicked", Toast.LENGTH_LONG).show();
                     Intent locationService =new Intent(getApplicationContext(),MyGroupsActivity.class);
                     startActivity(locationService);
+                }else if(menuItem.getItemId()==R.id.m4) {
+
                 }else if (menuItem.getItemId()==R.id.menu_logout)
-                {
-                    AlertDialog.Builder logOutDialog = new AlertDialog.Builder(UserHomeActivity.this);
-                    logOutDialog.setTitle("Log Out");
-                    logOutDialog.setMessage("Are you sure to Log out?");
-                    logOutDialog.setPositiveButton("Log Out",(dialog, which) ->{
+                    {
+                        AlertDialog.Builder logOutDialog = new AlertDialog.Builder(UserHomeActivity.this);
+                        logOutDialog.setTitle("Log Out");
+                        logOutDialog.setMessage("Are you sure to Log out?");
+                        logOutDialog.setPositiveButton("Log Out",(dialog, which) ->{
                             SharedPreferences sharedPreferences =getSharedPreferences("LocationTrackerUser.txt",MODE_PRIVATE);
                             SharedPreferences.Editor editor =sharedPreferences.edit();
                             editor.putString("phoneNumber","");
@@ -96,14 +101,14 @@ public class UserHomeActivity extends AppCompatActivity {
                             Intent logoutintent = new Intent(getApplicationContext(),Home.class);
                             finishAffinity();
                             startActivity(logoutintent);
-                    });
-                    /////////////this is cancel button do nothing /////////////
-                    logOutDialog.setNegativeButton("Cancel",(dialog,which)-> {
+                        });
+                        /////////////this is cancel button do nothing /////////////
+                        logOutDialog.setNegativeButton("Cancel",(dialog,which)-> {
 
-                    });
-                    AlertDialog alert = logOutDialog.create();
-                    alert.show();
-                    alert.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorPrimary));
+                        });
+                        AlertDialog alert = logOutDialog.create();
+                        alert.show();
+                        alert.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorPrimary));
                 }
                 //Close Drawer after logic is executed
                 drawer.closeDrawer(GravityCompat.START);
