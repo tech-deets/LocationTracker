@@ -3,13 +3,14 @@ package com.example.satnamsingh.locationtracker;
 import java.util.ArrayList;
 
 public class Users {
-    private String name;
+     private String name;
     private String email;
     private String phoneNumber;
     private String photo;
     private ArrayList<String> Invitations;
     private ArrayList<String> GroupName;
     private ArrayList<String> GroupCode;
+    private ArrayList<Locations> userLocations;
 
     Users(){
 
