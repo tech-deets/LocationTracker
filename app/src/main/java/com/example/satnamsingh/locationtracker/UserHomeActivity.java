@@ -60,7 +60,7 @@ public class UserHomeActivity extends AppCompatActivity {
         profilePhone = headerView.findViewById(R.id.textview_phonenumber);
         Intent in =getIntent();
         phoneNumber=in.getStringExtra("phone");
-        GlobalData.phoneNumber=phoneNumber;
+       // GlobalData.phoneNumber=phoneNumber;
         profilePhone.setText(""+phoneNumber);
         Intent intent=new Intent(this, LocationTrackerService.class);
         intent.setAction("START SIGNAL");

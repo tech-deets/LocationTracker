@@ -43,9 +43,9 @@ public class LocationTrackerService extends Service {
     {
         //Logic to create a Foreground Service
 
-        Notification mynotif = simpleNotification("hello","Foreground Notification Running");
+      /*  Notification mynotif = simpleNotification("hello","Foreground Notification Running");
 
-        startForeground(1,mynotif);
+        startForeground(1,mynotif);*/
 
         // Logic to be run in Service
         new Thread(new myjob()).start();
@@ -66,7 +66,7 @@ public class LocationTrackerService extends Service {
 
         builder.setContentTitle(title);
         builder.setContentText(message);
-        builder.setSmallIcon(R.drawable.background);
+        builder.setSmallIcon(R.drawable.location_icon);
         builder.setContentInfo("Con Info");
 
         Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.background);
@@ -75,6 +75,7 @@ public class LocationTrackerService extends Service {
         // We can Specify Activity to be launched here
         Intent in=new Intent(this,UserHomeActivity.class);
         PendingIntent pin=PendingIntent.getActivity(this,0,in,0);
+
         builder.setContentIntent(pin);
 
         // Auto Cancel Notification after click (to launch activity)
@@ -136,12 +137,18 @@ public class LocationTrackerService extends Service {
         public void run() {
 
 
+               // Log.d("MYMESSAGE", i+"");
 
-            Log.d("MYMESSAGE", "");
+                Notification mynotif = simpleNotification("Location sharing" ,"updating location");
 
-            Notification mynotif = simpleNotification(" Location sharing" ,"Updating Location");
+                startForeground(1,mynotif);
 
-            startForeground(1,mynotif);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
 
         }
     }

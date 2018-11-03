@@ -62,6 +62,8 @@ public class ProfilePhoto extends AppCompatActivity {
                 databaseReference=firebaseDatabase.getReference("Users");
                 databaseReference.child(phoneNumber).child("photo").
                         setValue("https://firebasestorage.googleapis.com/v0/b/locationtracker-28250.appspot.com/o/default_pic.jpg?alt=media&token=7ed5b932-09bf-422e-aa5e-77eca30f378f");
+
+               //     GlobalData.phoneNumber=phoneNumber;
                 Intent uin = new Intent(getApplicationContext(),UserHomeActivity.class);
                 in.putExtra("phone",phoneNumber);
                 finishAffinity();
