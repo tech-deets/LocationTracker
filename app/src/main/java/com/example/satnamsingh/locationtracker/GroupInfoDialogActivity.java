@@ -77,6 +77,16 @@ ArrayList<String> groupMembers ;
                 if(groupMembers==null){
                     groupMembers=new ArrayList<>();
                 }
+//                int index=-1;
+//                for(int i=0;i<groupMembers.size();i++){
+//                    if(groupMembers.get(i).equals(groupData.getGroupOwner())){
+//                        index=i;
+//                        break;
+//                    }
+//                }
+//                if(index!=-1){
+//                    groupMembers.remove(index);
+//                }
                 Log.d("MYMSG",groupMembers.toString());
             //    Log.d("MYMSG",groupData.getGroupId());
                 myRecyclerAdapter.notifyDataSetChanged();
