@@ -5,17 +5,37 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class LocationTrackerService extends Service {
     boolean runningflag;
-
+    ArrayList<Locations> userLocations;
+    LocationManager lm;
     public LocationTrackerService() {
     }
 
@@ -47,7 +67,58 @@ public class LocationTrackerService extends Service {
         startForeground(1,mynotif);*/
 
         // Logic to be run in Service
-        new Thread(new myjob()).start();
+        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Location lastlcgps= lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        Location lastlcnw= lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        if(lastlcgps==null)
+        {
+//            tv1.setText("Last GPS Location Not available");
+        }
+        else
+        {
+//            tv1.setText("Last GPS Location available "+ lastlcgps.getLatitude()+","+ lastlcgps.getLongitude());
+        }
+
+        if(lastlcnw==null)
+        {
+//            tv2.setText("Last NW Location Not available");
+        }
+        else
+        {
+//            tv2.setText("Last NW Location available "+ lastlcnw.getLatitude()+"," + lastlcnw.getLongitude());
+        }
+        //---check if GPS_PROVIDER is enabled---
+        boolean gpsStatus = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        //---check if NETWORK_PROVIDER is enabled---
+        boolean networkStatus = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        mylocationlistener ml=new mylocationlistener();
+
+        if (gpsStatus==false && networkStatus==false)
+        {
+            Toast.makeText(this , "Both GPS and Newtork are disabled", Toast.LENGTH_LONG).show();
+
+            //---display the "Location services" settings page---
+            Intent in = new  Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(in);
+        }
+
+        if(gpsStatus==true)
+        {
+            Toast.makeText(this, "GPS is Enabled, using it", Toast.LENGTH_LONG).show();
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,0, ml);
+        }
+
+        if(networkStatus==true)
+        {
+            Toast.makeText(this, "Network Location is Enabled, using it", Toast.LENGTH_LONG).show();
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0,0, ml);
+        }
+
+
+       // new Thread(new myjob()).start();
 
     }
     void stopForegroundService(Intent intent)
@@ -131,24 +202,93 @@ public class LocationTrackerService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
     class myjob implements Runnable
-    {
+    {   Location location;
+         myjob(Location location){
+               this.location=location;
+         }
+
         @Override
         public void run() {
+            userLocations=new ArrayList<>();
+
+            double lat,lon;
+            SharedPreferences sharedPreferences =getSharedPreferences("LocationTrackerUser.txt",MODE_PRIVATE);
+            String phoneNumber=sharedPreferences.getString("phoneNumber","");
+//
+            //to get the current time
+            long time = System.currentTimeMillis();
+            System.out.println(time+"=--------------------");
+            //to get the curren date in specific format
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            Calendar c = Calendar.getInstance();
+            String date = sdf.format(c.getTime());
+            System.out.println(date+"=--------------------");
+            lat= location.getLatitude();
+            lon=  location.getLongitude();
+            Locations userLocation =new Locations(lat,lon,date,time);
+            System.out.println(userLocation.getLatitude());
 
 
-               // Log.d("MYMESSAGE", i+"");
+            FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
+            DatabaseReference databaseReference=firebaseDatabase.getReference("Users").child(phoneNumber).child("Locations");
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.getValue()==null){
+                        System.out.println("---arraylist empty");
+                    }
+                    Log.d("LOCATIONMSG","-----"+userLocations.size());
+                    userLocations=(ArrayList<Locations>)dataSnapshot.getValue();
+                    userLocations.add(userLocation);
+                    databaseReference.setValue(userLocations);
+                    Log.d("LOCATIONMSG-AFTERADDING","-----"+userLocations.size());
 
-                Notification mynotif = simpleNotification("Location sharing" ,"updating location");
 
-                startForeground(1,mynotif);
-
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            // Toast.makeText(getApplicationContext(), ""+date, Toast.LENGTH_SHORT).show();
+            //   Toast.makeText(getApplicationContext(), "location changed"+lat+" \n"+lon, Toast.LENGTH_SHORT).show();
+            Notification mynotif = simpleNotification("Location sharing" ,"updating location");
+            startForeground(1,mynotif);
+
+//                try {
+//                    Thread.sleep(1000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
 
 
         }
     }
+    class mylocationlistener implements LocationListener
+    {
+        public void onLocationChanged(Location location)
+        {
+            new Thread(new myjob(location)).start();
+
+        }
+
+        public void onProviderDisabled(String provider)
+        {
+
+        }
+
+        public void onProviderEnabled(String provider)
+        {
+
+        }
+
+        public void onStatusChanged(String provider, int status, Bundle extras)
+        {
+
+        }
+    }
+
+
 }
