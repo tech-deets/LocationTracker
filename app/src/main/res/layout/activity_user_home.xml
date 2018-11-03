@@ -25,7 +25,7 @@ android:fitsSystemWindows="true">
             android:id="@+id/toolbar_user_home"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/colorPrimary"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             />
 
