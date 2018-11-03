@@ -1,5 +1,6 @@
 package com.example.satnamsingh.locationtracker;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.content.SharedPreferences;
@@ -10,6 +11,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -83,13 +85,25 @@ public class UserHomeActivity extends AppCompatActivity {
                     startActivity(locationService);
                 }else if (menuItem.getItemId()==R.id.menu_logout)
                 {
-                    SharedPreferences sharedPreferences =getSharedPreferences("LocationTrackerUser.txt",MODE_PRIVATE);
-                    SharedPreferences.Editor editor =sharedPreferences.edit();
-                    editor.putString("phoneNumber","");
-                    editor.commit();
-                    Intent inten = new Intent(getApplicationContext(),Home.class);
-                    finishAffinity();
-                    startActivity(inten);
+                    AlertDialog.Builder logOutDialog = new AlertDialog.Builder(UserHomeActivity.this);
+                    logOutDialog.setTitle("Log Out");
+                    logOutDialog.setMessage("Are you sure to Log out?");
+                    logOutDialog.setPositiveButton("Log Out",(dialog, which) ->{
+                            SharedPreferences sharedPreferences =getSharedPreferences("LocationTrackerUser.txt",MODE_PRIVATE);
+                            SharedPreferences.Editor editor =sharedPreferences.edit();
+                            editor.putString("phoneNumber","");
+                            editor.commit();
+                            Intent logoutintent = new Intent(getApplicationContext(),Home.class);
+                            finishAffinity();
+                            startActivity(logoutintent);
+                    });
+                    /////////////this is cancel button do nothing /////////////
+                    logOutDialog.setNegativeButton("Cancel",(dialog,which)-> {
+
+                    });
+                    AlertDialog alert = logOutDialog.create();
+                    alert.show();
+                    alert.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorPrimary));
                 }
                 //Close Drawer after logic is executed
                 drawer.closeDrawer(GravityCompat.START);
