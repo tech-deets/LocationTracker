@@ -64,12 +64,15 @@ public class Home extends AppCompatActivity {
         boolean result2 =
                 ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CONTACTS)
                         == PackageManager.PERMISSION_GRANTED;
-        return result1 && result2;
+        boolean result3 =
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED;
+        return result1 && result2 && result3;
     }
     public void requestPermission() {
         //Show ASK FOR PERSMISSION DIALOG (passing array of permissions that u want to ask)
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_CONTACTS,
-                Manifest.permission.WRITE_CONTACTS}, 1);
+                Manifest.permission.WRITE_CONTACTS,Manifest.permission.ACCESS_FINE_LOCATION}, 1);
     }
     // After User Selects Desired Permissions, thid method is automatically called
     // It has request code, permissions array and corresponding grantresults array
@@ -79,10 +82,10 @@ public class Home extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             if (grantResults.length > 0) {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED&&grantResults[2]==PackageManager.PERMISSION_GRANTED) {
 //                    Toast.makeText(this, "Contacts read write PERMISSON GRANTED", Toast.LENGTH_SHORT).show();
                 }
-                if (grantResults[0] == PackageManager.PERMISSION_DENIED || grantResults[1] == PackageManager.PERMISSION_DENIED)
+                if (grantResults[0] == PackageManager.PERMISSION_DENIED || grantResults[1] == PackageManager.PERMISSION_DENIED||grantResults[2]==PackageManager.PERMISSION_DENIED)
                 {
 
                 }
