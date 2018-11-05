@@ -94,6 +94,9 @@ public class UserHomeActivity extends AppCompatActivity {
                         logOutDialog.setTitle("Log Out");
                         logOutDialog.setMessage("Are you sure to Log out?");
                         logOutDialog.setPositiveButton("Log Out",(dialog, which) ->{
+                            Intent stopServiceIntent = new Intent(UserHomeActivity.this,LocationTrackerService.class);
+                            stopServiceIntent.setAction("STOP SIGNAL");
+                            startService(stopServiceIntent);
                             SharedPreferences sharedPreferences =getSharedPreferences("LocationTrackerUser.txt",MODE_PRIVATE);
                             SharedPreferences.Editor editor =sharedPreferences.edit();
                             editor.putString("phoneNumber","");

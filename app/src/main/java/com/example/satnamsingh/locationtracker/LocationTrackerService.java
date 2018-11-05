@@ -35,6 +35,7 @@ import java.util.Date;
 public class LocationTrackerService extends Service {
     boolean runningflag;
     ArrayList<Locations> userLocations;
+    mylocationlistener ml;
     LocationManager lm;
     public LocationTrackerService() {
     }
@@ -94,7 +95,7 @@ public class LocationTrackerService extends Service {
 
         //---check if NETWORK_PROVIDER is enabled---
         boolean networkStatus = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        mylocationlistener ml=new mylocationlistener();
+        ml=new mylocationlistener();
 
         if (gpsStatus==false && networkStatus==false)
         {
@@ -125,6 +126,8 @@ public class LocationTrackerService extends Service {
     {
         Log.d("MYMESSAGE","STOP Service Called");
         runningflag=false;
+        lm.removeUpdates(ml);
+        ml=null;
         stopSelf();
         stopService(intent);
     }
