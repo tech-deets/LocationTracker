@@ -12,7 +12,8 @@ android:fitsSystemWindows="true">
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="10">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -37,8 +38,38 @@ android:fitsSystemWindows="true">
         android:id="@+id/ll1"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content"
+        android:layout_weight="7"
+        >
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:orientation="vertical">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="10">
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/groups_spinner"
+        android:layout_marginVertical="7dp"
+        android:layout_marginHorizontal="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="7"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select"
+        android:textColor="#fff"
+        android:background="@drawable/buttontheme"
+        android:layout_marginLeft="20dp"
+        />
 
+</LinearLayout>
 
     </LinearLayout>
 
