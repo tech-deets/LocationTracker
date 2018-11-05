@@ -109,13 +109,13 @@ public class LocationTrackerService extends Service {
         if(gpsStatus==true)
         {
             Toast.makeText(this, "GPS is Enabled, using it", Toast.LENGTH_LONG).show();
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,0, ml);
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000,0, ml);
         }
 
         if(networkStatus==true)
         {
             Toast.makeText(this, "Network Location is Enabled, using it", Toast.LENGTH_LONG).show();
-            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0,0, ml);
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000,0, ml);
         }
 
 
@@ -213,8 +213,9 @@ public class LocationTrackerService extends Service {
         @Override
         public void run() {
             userLocations=new ArrayList<>();
-
-            double lat,lon;
+            Notification mynotif = simpleNotification("Location sharing" ,"updating location");
+            startForeground(1,mynotif);
+            double latitude,longitude;
             SharedPreferences sharedPreferences =getSharedPreferences("LocationTrackerUser.txt",MODE_PRIVATE);
             String phoneNumber=sharedPreferences.getString("phoneNumber","");
 //
@@ -226,12 +227,15 @@ public class LocationTrackerService extends Service {
             Calendar c = Calendar.getInstance();
             String date = sdf.format(c.getTime());
             System.out.println(date+"=--------------------");
-            lat= location.getLatitude();
-            lon=  location.getLongitude();
-            Locations userLocation =new Locations(lat,lon,date,time);
+            latitude= location.getLatitude();
+            longitude=  location.getLongitude();
+            Locations userLocation =new Locations(latitude,longitude,date,time);
             System.out.println(userLocation.getLatitude());
 
 
+
+// check if the below code for adding location need to be added to the code above to add last location
+// . if execution flow is disturbed
             FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
             DatabaseReference databaseReference=firebaseDatabase.getReference("Users").child(phoneNumber).
                     child("Locations").child(time+"");
@@ -257,11 +261,27 @@ public class LocationTrackerService extends Service {
 
                 }
             });
+            FirebaseDatabase lastLocationReference=FirebaseDatabase.getInstance();
+            DatabaseReference lastLocation_db=lastLocationReference.getReference("Users").child(phoneNumber)
+                    .child("LastLocation");
+            lastLocation_db.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    DatabaseReference lastLocationLatitude =lastLocation_db.child("Latitude");
+                    DatabaseReference lastLocationLongitude=lastLocation_db.child("Longitude");
+                    lastLocationLatitude.setValue(latitude);
+                    lastLocationLongitude.setValue(longitude);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
 
             // Toast.makeText(getApplicationContext(), ""+date, Toast.LENGTH_SHORT).show();
             //   Toast.makeText(getApplicationContext(), "location changed"+lat+" \n"+lon, Toast.LENGTH_SHORT).show();
-            Notification mynotif = simpleNotification("Location sharing" ,"updating location");
-            startForeground(1,mynotif);
+           //previous notification called
 
 //                try {
 //                    Thread.sleep(1000);

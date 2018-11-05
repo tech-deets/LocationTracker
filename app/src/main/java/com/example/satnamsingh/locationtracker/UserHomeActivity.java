@@ -43,6 +43,10 @@ public class UserHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_home);
 
+        Intent intent=new Intent(this, LocationTrackerService.class);
+        intent.setAction("START SIGNAL");
+        startService(intent);
+
         drawer=findViewById(R.id.drawer);
         navigationView =findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar_user_home);
@@ -61,9 +65,9 @@ public class UserHomeActivity extends AppCompatActivity {
         phoneNumber=in.getStringExtra("phone");
        // GlobalData.phoneNumber=phoneNumber;
         profilePhone.setText(""+phoneNumber);
-        Intent intent=new Intent(this, LocationTrackerService.class);
-        intent.setAction("START SIGNAL");
-        startService(intent);
+
+
+
         MapsFragment mapsFragment = new MapsFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.ll1,mapsFragment).commit();
