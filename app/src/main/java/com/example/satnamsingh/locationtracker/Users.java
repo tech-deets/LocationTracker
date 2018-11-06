@@ -12,6 +12,10 @@ public class Users {
     private ArrayList<String> GroupCode;
     private ArrayList<Locations> userLocations;
 
+    public ArrayList<Locations> getUserLocations() {
+        return userLocations;
+    }
+
     Users(){
 
     }
@@ -100,11 +104,13 @@ public class Users {
     }
     public Users(Users u){
         this.name = u.name;
-        this.email = u.email;
+       // this.email = u.email;
         this.phoneNumber = u.phoneNumber;
         this.photo = u.photo;
+        this.userLocations=u.userLocations;
 
     }
+
 
     public String getPhoto() {
         return photo;

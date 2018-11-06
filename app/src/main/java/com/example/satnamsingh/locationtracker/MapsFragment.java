@@ -1,6 +1,8 @@
 package com.example.satnamsingh.locationtracker;
-
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +18,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -24,11 +28,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
 private String phoneNumber;
-    private GoogleMap mMap;
+     GoogleMap mMap;
     public MapsFragment(){
 
     }
@@ -38,8 +48,8 @@ private String phoneNumber;
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=  inflater.inflate(R.layout.fragment_maps, container, false);
-        Bundle bd=new Bundle();
-        phoneNumber=bd.getString("phone");
+//        Bundle bd=new Bundle();
+//        phoneNumber=bd.getString("phone");
         return view;
     }
 
@@ -65,69 +75,67 @@ private String phoneNumber;
 
 
 
-        FirebaseDatabase firebaseDatabase =FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference=firebaseDatabase.getReference("Users").child(GlobalData.phoneNumber)
-                .child("LastLocation");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null){
-                    final double[] latitude = new double[1];
-                final double[] longitude = new double[1];
-                final DatabaseReference[] db_latitude = {databaseReference.child("Latitude")};
-                final DatabaseReference[] db_longitude = {databaseReference.child("Longitude")};
-                db_latitude[0].addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-
-                        latitude[0] = (double) dataSnapshot.getValue();
-                        Log.d("LOCATION",latitude[0]+"");
-                        db_longitude[0].addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                longitude[0] = (double) dataSnapshot.getValue();
-                                mMap = googleMap;
-                                mMap.clear();
-                                LatLng lastLocation = new LatLng(latitude[0],longitude[0]);
-                                Log.d("MYLOCATIONONMAP",latitude[0]+"    "+longitude[0]);
-                                mMap.addMarker(new MarkerOptions().position(lastLocation).title("Current Location"));
-                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lastLocation,16));
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-                // Add a marker in Sydney and move the camera
-                    //LatLng mymarker = new LatLng(latitude[0], longitude[0]);
-
-                  //  MarkerOptions markerOptions =  new MarkerOptions().position(mymarker).title("Welcome to Amritsar");
-
-                    //mMap.addMarker(markerOptions);
-
-//                  //  mMap.addMarker(markerOptions);
-//                    //mMap.addMarker(new MarkerOptions().position(lastLocation).title("Last Location "));
+//        FirebaseDatabase firebaseDatabase =FirebaseDatabase.getInstance();
+//        DatabaseReference databaseReference=firebaseDatabase.getReference("Users").child(GlobalData.phoneNumber)
+//                .child("LastLocation");
+//        databaseReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (dataSnapshot != null){
+//                    final double[] latitude = new double[1];
+//                final double[] longitude = new double[1];
+//                final DatabaseReference[] db_latitude = {databaseReference.child("Latitude")};
+//                final DatabaseReference[] db_longitude = {databaseReference.child("Longitude")};
+//                db_latitude[0].addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
 //
-////                mMap.moveCamera(CameraUpdateFactory.newLatLng(lastLocation));
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+//                        latitude[0] = (double) dataSnapshot.getValue();
+//                        Log.d("LOCATION",latitude[0]+"");
+//                        db_longitude[0].addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(DataSnapshot dataSnapshot) {
+//                                longitude[0] = (double) dataSnapshot.getValue();
+//                                mMap = googleMap;
+//                                mMap.clear();
+//
+//                                LatLng lastLocation = new LatLng(latitude[0],longitude[0]);
+//                                Log.d("MYLOCATIONONMAP",latitude[0]+"    "+longitude[0]);
+//                                mMap.addMarker(new MarkerOptions().position(lastLocation).title("Current Location"));
+//                                mMap.addMarker(new MarkerOptions().position(lastLocation).title("cc"));
+//                                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lastLocation,16));
+////
+//
+//
+//
+//
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(DatabaseError databaseError) {
+//
+//                            }
+//                        });
+//
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//                });
+//
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
     }
+
 }

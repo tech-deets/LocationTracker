@@ -8,7 +8,10 @@ public class Locations {
     Locations(){
 
     }
-
+    public Locations(double latitude,double longitude){
+        this.latitude=latitude;
+        this.longitude=longitude;
+    }
     public Locations(double latitude, double longitude, String date, long time) {
         this.latitude = latitude;
         this.longitude = longitude;

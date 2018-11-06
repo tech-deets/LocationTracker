@@ -102,6 +102,7 @@ public class MyContactActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot singleDS : dataSnapshot.getChildren()) {
                     Users user = singleDS.getValue(Users.class);
+                  //  Log.d("MYCONTACTAVTIVITY",GlobalData.phoneNumber);
                     if(user.getPhoneNumber().contains(GlobalData.phoneNumber))
                         continue;
                     databaseList.add(new Users(user.getName(), user.getPhoneNumber(), user.getEmail(), user.getPhoto()));

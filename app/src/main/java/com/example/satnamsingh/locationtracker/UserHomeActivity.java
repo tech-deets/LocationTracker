@@ -3,6 +3,7 @@ package com.example.satnamsingh.locationtracker;
 import android.content.Intent;
 
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.media.Image;
 import android.os.Bundle;
 
@@ -32,6 +33,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,7 +47,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class UserHomeActivity extends AppCompatActivity {
+public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCallback {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private String phoneNumber;
@@ -54,13 +61,21 @@ public class UserHomeActivity extends AppCompatActivity {
     private  ArrayList<String> groupName;
     private Spinner groups_spinner ;
     private ArrayList<String> members;
-    private ArrayList<Users> userData;
+    public ArrayList<Users> userData;
     private SelectGroup groupListAdapter;
     private RecyclerView rcv;
+    ArrayList<Locations> lastLocation;
+    GoogleMap mMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_home);
+
+        SupportMapFragment mapFragmentv= (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragmentv.getMapAsync(this);
+
          groupCode =new ArrayList<>();
         groupName =new ArrayList<>();
         members=new ArrayList<>();
@@ -88,18 +103,8 @@ public class UserHomeActivity extends AppCompatActivity {
         phoneNumber=in.getStringExtra("phone");
        // GlobalData.phoneNumber=phoneNumber;
         profilePhone.setText(""+GlobalData.phoneNumber);
-Bundle mybd=new Bundle();
-mybd.putString("phone",phoneNumber);
-new Thread(new Runnable() {
-    @Override
-    public void run() {
-        MapsFragment mapsFragment = new MapsFragment();
-        mapsFragment.setArguments(mybd);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.ll1,mapsFragment).commit();
-
-    }
-}).start();
+//    Bundle mybd=new Bundle();
+//    mybd.putString("phone",phoneNumber);
 
 //        MapsFragment mapsFragment = new MapsFragment();
 //        FragmentManager fragmentManager = getSupportFragmentManager();
@@ -330,7 +335,7 @@ public void showGroupMembers(View v){
 
                 Users users = dataSnapshot.getValue(Users.class);
 
-                userData.add(new Users(users.getName(), users.getPhoto()));
+                userData.add(users);
 
                 groupListAdapter.notifyDataSetChanged();
             }
@@ -343,7 +348,18 @@ public void showGroupMembers(View v){
 
     }
 }
- class SelectGroup extends RecyclerView.Adapter<SelectGroup.MyViewHolder> {
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap=googleMap;
+        LatLng lastLocation = new LatLng(31,74);
+                             //   Log.d("MYLOCATIONONMAP",latitude[0]+"    "+longitude[0]);
+                                mMap.addMarker(new MarkerOptions().position(lastLocation).title("Current Location"));
+                                mMap.addMarker(new MarkerOptions().position(lastLocation).title("cc"));
+                                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lastLocation,16));
+    }
+
+    class SelectGroup extends RecyclerView.Adapter<SelectGroup.MyViewHolder> {
                    // Define ur own View Holder (Refers to Single Row)
                 class MyViewHolder extends RecyclerView.ViewHolder {
                        CardView singlecardview;
@@ -385,5 +401,11 @@ public void showGroupMembers(View v){
                    }
                }
 
-    }
+
+
+
+
+
+
+}
 
