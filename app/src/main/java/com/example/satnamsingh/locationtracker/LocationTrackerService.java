@@ -43,7 +43,7 @@ public class LocationTrackerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        Log.d("MYMESAGE","ON Start Command Called");
+        Log.d("MYMESSAGE","ON Start Command Called");
         Log.d("MYMESSAGE",intent.getAction());
 
         if(intent.getAction().trim().equals("START SIGNAL") && runningflag==false)

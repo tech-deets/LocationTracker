@@ -65,16 +65,15 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
     private SelectGroup groupListAdapter;
     private RecyclerView rcv;
     ArrayList<Locations> lastLocation;
-    GoogleMap mMap;
+    SupportMapFragment mapFragmentv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_home);
 
-        SupportMapFragment mapFragmentv= (SupportMapFragment) getSupportFragmentManager()
+         mapFragmentv= (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragmentv.getMapAsync(this);
 
          groupCode =new ArrayList<>();
         groupName =new ArrayList<>();
@@ -84,6 +83,7 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
         Intent intent=new Intent(this, LocationTrackerService.class);
         intent.setAction("START SIGNAL");
         startService(intent);
+        Log.d("MYMESSAGE","after calling service");
 
         drawer=findViewById(R.id.drawer);
         navigationView =findViewById(R.id.nav_view);
@@ -110,6 +110,7 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
 //        FragmentManager fragmentManager = getSupportFragmentManager();
 //        fragmentManager.beginTransaction().replace(R.id.ll1,mapsFragment).commit();
 
+        Log.d("MYMESSAGE","before fetch function");
         fetchData();
 
         navigationView.setNavigationItemSelectedListener((menuItem)-> {
@@ -160,7 +161,11 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
                 return true;
         });
         //////////////////// NavigationView listener ends/////////////////////////////////
+        Log.d("MYMESSAGE","before calling spinner function");
+
         showGroupListSpinner();
+        Log.d("MYMESSAGE","after calling spinner function");
+
         rcv=(RecyclerView)(findViewById(R.id.group_rcv));
         groupListAdapter =new SelectGroup();
         LinearLayoutManager layoutManager
@@ -347,16 +352,27 @@ public void showGroupMembers(View v){
         });
 
     }
+    mapFragmentv.getMapAsync(this);
 }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        GoogleMap mMap;
         mMap=googleMap;
-        LatLng lastLocation = new LatLng(31,74);
-                             //   Log.d("MYLOCATIONONMAP",latitude[0]+"    "+longitude[0]);
-                                mMap.addMarker(new MarkerOptions().position(lastLocation).title("Current Location"));
-                                mMap.addMarker(new MarkerOptions().position(lastLocation).title("cc"));
-                                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lastLocation,16));
+        Log.d("MEMBERSSIZE_IN",members.size()+"==========");
+
+        for(int i=0;i<members.size();i++){
+            double latitude=userData.get(i).getUserLocations().get(i).getLatitude();
+            double longitude =userData.get(i).getUserLocations().get(i).getLongitude();
+            Log.d("LOCATIONONMAPREADY","=----"+i+"---- " +latitude+"\n"+longitude);
+
+            LatLng lastLocation = new LatLng(latitude,longitude);
+            //   Log.d("MYLOCATIONONMAP",latitude[0]+"    "+longitude[0]);
+            mMap.addMarker(new MarkerOptions().position(lastLocation).title("Current Location"));
+            mMap.addMarker(new MarkerOptions().position(lastLocation).title("cc"));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lastLocation,4));
+        }
+
     }
 
     class SelectGroup extends RecyclerView.Adapter<SelectGroup.MyViewHolder> {
