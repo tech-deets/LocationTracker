@@ -58,6 +58,10 @@ public class Users {
         }
 
     }
+    public  Users(String name,String photo){
+        this.name =name;
+        this.photo=photo;
+    }
     public Users(String name, String phoneNumber, String email, String photo) {
         this.name = name;
         this.email = email;

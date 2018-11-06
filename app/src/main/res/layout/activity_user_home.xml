@@ -61,6 +61,7 @@ android:fitsSystemWindows="true">
         android:layout_height="wrap_content"
         android:layout_weight="7"/>
     <Button
+        android:onClick="showGroupMembers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Select"
@@ -69,7 +70,16 @@ android:fitsSystemWindows="true">
         android:layout_marginLeft="20dp"
         />
 
+
 </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/group_rcv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="horizontal"
+            android:background="#fff"
+            android:orientation="horizontal"/>
+
 
     </LinearLayout>
 

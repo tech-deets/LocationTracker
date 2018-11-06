@@ -62,34 +62,11 @@ public class LocationTrackerService extends Service {
     void startForegroundService()
     {
         //Logic to create a Foreground Service
-
-      /*  Notification mynotif = simpleNotification("hello","Foreground Notification Running");
-
-        startForeground(1,mynotif);*/
-
         // Logic to be run in Service
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location lastlcgps= lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         Location lastlcnw= lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-        if(lastlcgps==null)
-        {
-//            tv1.setText("Last GPS Location Not available");
-        }
-        else
-        {
-//            tv1.setText("Last GPS Location available "+ lastlcgps.getLatitude()+","+ lastlcgps.getLongitude());
-        }
-
-        if(lastlcnw==null)
-        {
-//            tv2.setText("Last NW Location Not available");
-        }
-        else
-        {
-//            tv2.setText("Last NW Location available "+ lastlcnw.getLatitude()+"," + lastlcnw.getLongitude());
-        }
         //---check if GPS_PROVIDER is enabled---
         boolean gpsStatus = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
@@ -100,7 +77,6 @@ public class LocationTrackerService extends Service {
         if (gpsStatus==false && networkStatus==false)
         {
             Toast.makeText(this , "Both GPS and Newtork are disabled", Toast.LENGTH_LONG).show();
-
             //---display the "Location services" settings page---
             Intent in = new  Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivity(in);
@@ -108,14 +84,14 @@ public class LocationTrackerService extends Service {
 
         if(gpsStatus==true)
         {
-            Toast.makeText(this, "GPS is Enabled, using it", Toast.LENGTH_LONG).show();
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000,0, ml);
+            //Toast.makeText(this, "GPS is Enabled, using it", Toast.LENGTH_LONG).show();
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000,0, ml);
         }
 
         if(networkStatus==true)
         {
-            Toast.makeText(this, "Network Location is Enabled, using it", Toast.LENGTH_LONG).show();
-            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000,0, ml);
+           // Toast.makeText(this, "Network Location is Enabled, using it", Toast.LENGTH_LONG).show();
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000,0, ml);
         }
 
 
@@ -180,22 +156,12 @@ public class LocationTrackerService extends Service {
 
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
-
-
             // Register the channel with the system
-
             notificationManager.createNotificationChannel(channel);
-
             Log.d("MYMESSAGE","NEW CODE Oreo");
         }
 
-        // DONT Notify here
-        // It will be done by ForegroundService
-        //notificationManager.notify(20,notification);
-
-        //notificationManager.cancel(20);
-
-        return notification;
+          return notification;
     }
 
 
@@ -218,7 +184,6 @@ public class LocationTrackerService extends Service {
             double latitude,longitude;
             SharedPreferences sharedPreferences =getSharedPreferences("LocationTrackerUser.txt",MODE_PRIVATE);
             String phoneNumber=sharedPreferences.getString("phoneNumber","");
-//
             //to get the current time
             long time = System.currentTimeMillis();
             System.out.println(time+"=--------------------");
@@ -231,8 +196,6 @@ public class LocationTrackerService extends Service {
             longitude=  location.getLongitude();
             Locations userLocation =new Locations(latitude,longitude,date,time);
             System.out.println(userLocation.getLatitude());
-
-
 
 // check if the below code for adding location need to be added to the code above to add last location
 // . if execution flow is disturbed
