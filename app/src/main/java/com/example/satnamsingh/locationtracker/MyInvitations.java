@@ -173,7 +173,7 @@ public class MyInvitations extends AppCompatActivity {
                     if (dataSnapshot.getValue(Users.class) == null) {
 
                     } else {
-                        Users users = new Users(dataSnapshot.getValue(Users.class));
+                        Users users = dataSnapshot.getValue(Users.class);
 //                        Log.d("MYMSG",users.getPhoneNumber());
                         String ownerName = users.getName();
                         ownerName_tv.setText(ownerName);

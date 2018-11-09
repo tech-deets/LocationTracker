@@ -7,13 +7,11 @@ android:id="@+id/drawer"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:fitsSystemWindows="true">
-
 <LinearLayout
-    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="10">
+    >
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -33,6 +31,12 @@ android:fitsSystemWindows="true">
 
     </android.support.design.widget.AppBarLayout>
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="20">
+
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -40,45 +44,59 @@ android:fitsSystemWindows="true">
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_height="0dp"
+        android:layout_weight="15"
+        />
+
     <LinearLayout
         android:id="@+id/ll2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="3"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:weightSum="10"
         android:orientation="vertical">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:weightSum="10">
-    <android.support.v7.widget.AppCompatSpinner
-        android:id="@+id/groups_spinner"
-        android:layout_marginVertical="7dp"
-        android:layout_marginHorizontal="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="7"/>
-    <Button
-        android:onClick="showGroupMembers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select"
-        android:textColor="#fff"
-        android:background="@drawable/buttontheme"
-        android:layout_marginLeft="20dp"
-        />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:orientation="horizontal"
+            android:weightSum="10">
 
-</LinearLayout>
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/group_rcv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scrollbars="horizontal"
-            android:background="#fff"
-            android:orientation="horizontal"/>
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/groups_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:layout_gravity="center"
+                android:layout_marginVertical="7dp"
+                android:layout_weight="7" />
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/buttontheme"
+                android:layout_weight="3"
+                android:text="Select"
+                android:textColor="#fff"
+                android:onClick="showGroupMembers"
+                android:layout_marginHorizontal="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="6"
+            >
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/group_rcv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal"
+                android:orientation="horizontal"
+                />
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -89,6 +107,7 @@ android:fitsSystemWindows="true">
 <!-- But Inside DrawerLayout Which will act a parent layout-->
 <!-- To add items in navigationview we can user any menus
  that are in menu  -->
+</LinearLayout>
 
 <android.support.design.widget.NavigationView
     android:id="@+id/nav_view"

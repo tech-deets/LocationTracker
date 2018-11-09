@@ -163,7 +163,7 @@ public class MyGroupsActivity extends AppCompatActivity {
                     if (dataSnapshot.getValue(Users.class) == null) {
 
                     } else {
-                        Users users = new Users(dataSnapshot.getValue(Users.class));
+                        Users users = dataSnapshot.getValue(Users.class);
                          String ownerName = users.getName();
                         ownerName_tv.setText(ownerName);
                         Glide.with(getApplicationContext()).load(users.getPhoto()).apply(RequestOptions.circleCropTransform())

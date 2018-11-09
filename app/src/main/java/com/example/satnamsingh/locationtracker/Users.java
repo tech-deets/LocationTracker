@@ -11,6 +11,45 @@ public class Users {
     private ArrayList<String> GroupName;
     private ArrayList<String> GroupCode;
     private ArrayList<Locations> userLocations;
+   // private Locations LastLocation;
+    //private LastLocation lastLocation;
+
+   // public Users(LastLocation lastLocation) {
+  //      this.lastLocation = lastLocation;
+    //}
+
+//    public Users(String name, String email, String phoneNumber, String photo, ArrayList<String> invitations, ArrayList<String> groupName, ArrayList<String> groupCode, ArrayList<Locations> userLocations, LastLocation lastLocation) {
+//        this.name = name;
+//        this.email = email;
+//        this.phoneNumber = phoneNumber;
+//        this.photo = photo;
+//        Invitations = invitations;
+//        GroupName = groupName;
+//        GroupCode = groupCode;
+//        this.userLocations = userLocations;
+//        this.lastLocation = lastLocation;
+//    }
+//
+//    public LastLocation getLastLocation() {
+//
+//        return lastLocation;
+//    }
+
+//    public void setLastLocation(LastLocation lastLocation) {
+//        this.lastLocation = lastLocation;
+//    }
+
+    public void setUserLocations(ArrayList<Locations> userLocations) {
+        this.userLocations = userLocations;
+    }
+
+//    public Locations getLastLocation() {
+//        return LastLocation;
+//    }
+//
+//    public void setLastLocation(Locations LastLocation) {
+//        this.LastLocation = LastLocation;
+//    }
 
     public ArrayList<Locations> getUserLocations() {
         return userLocations;
@@ -65,7 +104,13 @@ public class Users {
     public  Users(String name,String photo){
         this.name =name;
         this.photo=photo;
+
     }
+//    public  Users(String name,String photo,Locations lastLocation){
+//        this.name =name;
+//        this.photo=photo;
+////        this.LastLocation=lastLocation;
+//    }
     public Users(String name, String phoneNumber, String email, String photo) {
         this.name = name;
         this.email = email;
@@ -102,14 +147,26 @@ public class Users {
         GroupName = groupName;
         GroupCode = groupCode;
     }
-    public Users(Users u){
-        this.name = u.name;
-       // this.email = u.email;
-        this.phoneNumber = u.phoneNumber;
-        this.photo = u.photo;
-        this.userLocations=u.userLocations;
+//    public Users(Locations u){
+////        this.name = u.name;
+////       // this.email = u.email;
+////        this.phoneNumber = u.phoneNumber;
+////        this.photo = u.photo;
+//        //this.userLocations=u.userLocations;
+////        this.LastLocation =u;
+//    }
 
-    }
+//    public Users(String name, String email, String phoneNumber, String photo, ArrayList<String> invitations, ArrayList<String> groupName, ArrayList<String> groupCode, ArrayList<Locations> userLocations, Locations lastLocation) {
+//        this.name = name;
+//        this.email = email;
+//        this.phoneNumber = phoneNumber;
+//        this.photo = photo;
+//        Invitations = invitations;
+//        GroupName = groupName;
+//        GroupCode = groupCode;
+//        this.userLocations = userLocations;
+////        LastLocation = lastLocation;
+//    }
 
 
     public String getPhoto() {

@@ -44,23 +44,31 @@ public class LocationTrackerService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         Log.d("MYMESSAGE","ON Start Command Called");
-        Log.d("MYMESSAGE",intent.getAction());
-
+        //Toast.makeText(getApplicationContext(), "Service started", Toast.LENGTH_SHORT).show();
+    if(intent!=null){
+        Toast.makeText(this, "intent not null", Toast.LENGTH_SHORT).show();
         if(intent.getAction().trim().equals("START SIGNAL") && runningflag==false)
-        {
+        {        Log.d("MYMESSAGEINTENT----=:",intent.getAction());
+
             startForegroundService();
             runningflag=true;
         }
         else if(intent.getAction().trim().equals("STOP SIGNAL"))
-        {
+        {          Log.d("MYMESSAGEINTENT--:","STOPCSLLED"+intent.getAction());
+
             stopForegroundService(intent);
         }
+    }
+
+
+
 
 
         return super.onStartCommand(intent, flags, startId);
+
     }
     void startForegroundService()
-    {
+    {  Log.d("MYMESSAGEINTENT--:","inside froground service");
         //Logic to create a Foreground Service
         // Logic to be run in Service
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -85,17 +93,28 @@ public class LocationTrackerService extends Service {
         if(gpsStatus==true)
         {
             //Toast.makeText(this, "GPS is Enabled, using it", Toast.LENGTH_LONG).show();
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000,0, ml);
-        }
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,0, ml);
 
+        }
         if(networkStatus==true)
         {
            // Toast.makeText(this, "Network Location is Enabled, using it", Toast.LENGTH_LONG).show();
-            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000,0, ml);
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0,0, ml);
+        }
+        if(gpsStatus==true||networkStatus==true){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                }
+            }).start();
+            Notification mynotif = simpleNotification("hello","Foreground Notification Running");
+
+            startForeground(1,mynotif);
         }
 
 
-       // new Thread(new myjob()).start();
+
 
     }
     void stopForegroundService(Intent intent)
@@ -206,15 +225,18 @@ public class LocationTrackerService extends Service {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if(dataSnapshot.getValue()==null){
+                        System.out.print("dataSnapshot is empty**************");
                         //System.out.println("---arraylist empty");
                     }else{
-                        //userLocations=(ArrayList<Locations>)dataSnapshot.getValue();
+                        System.out.print("dataSnapshot is not   empty**************");
 
+                        //userLocations=(ArrayList<Locations>)dataSnapshot.getValue();
+                        Log.d("LOCATIONMSG","-----"+userLocations.size());
+                        //userLocations.add(userLocation);
+                        Log.d("LOCATIONMSG-AFTERADDING","-----"+userLocations.size());
                     }
-                    Log.d("LOCATIONMSG","-----"+userLocations.size());
-                    //userLocations.add(userLocation);
                     databaseReference.setValue(userLocation);
-                    Log.d("LOCATIONMSG-AFTERADDING","-----"+userLocations.size());
+
 
 
                 }
@@ -230,8 +252,8 @@ public class LocationTrackerService extends Service {
             lastLocation_db.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    DatabaseReference lastLocationLatitude =lastLocation_db.child("Latitude");
-                    DatabaseReference lastLocationLongitude=lastLocation_db.child("Longitude");
+                    DatabaseReference lastLocationLatitude =lastLocation_db.child("latitude");
+                    DatabaseReference lastLocationLongitude=lastLocation_db.child("longitude");
                     lastLocationLatitude.setValue(latitude);
                     lastLocationLongitude.setValue(longitude);
                 }
@@ -241,24 +263,13 @@ public class LocationTrackerService extends Service {
 
                 }
             });
-
-            // Toast.makeText(getApplicationContext(), ""+date, Toast.LENGTH_SHORT).show();
-            //   Toast.makeText(getApplicationContext(), "location changed"+lat+" \n"+lon, Toast.LENGTH_SHORT).show();
-           //previous notification called
-
-//                try {
-//                    Thread.sleep(1000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-
-
-        }
+             }
     }
     class mylocationlistener implements LocationListener
     {
         public void onLocationChanged(Location location)
         {
+            Toast.makeText(getApplicationContext(), "Calling the location service", Toast.LENGTH_SHORT).show();
             new Thread(new myjob(location)).start();
 
         }

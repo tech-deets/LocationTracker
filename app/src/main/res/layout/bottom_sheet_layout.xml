@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="horizontal"
+    android:weightSum="9"
+    android:padding="16dp">
+
+
+    <Button
+        android:id="@+id/track_bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Live Track"
+        android:background="@drawable/buttontheme"
+        android:textColor="#fff"
+        android:layout_weight="3"
+        android:layout_marginHorizontal="5dp"/>
+
+    <Button
+        android:id="@+id/history_bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location History"
+        android:layout_weight="3"
+        android:background="@drawable/buttontheme"
+        android:textColor="#fff"
+        android:layout_marginHorizontal="5dp"/>
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="button 1"
+        android:layout_weight="3"
+        android:background="@drawable/buttontheme"
+        android:textColor="#fff"
+        android:layout_marginHorizontal="5dp"/>
+
+</LinearLayout>
