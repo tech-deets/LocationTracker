@@ -82,6 +82,7 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
     private ArrayList<Locations> usersLastLocation;
     int userDataIndex=0;
     private RecyclerView rcv;
+    String memberPhone;
     GoogleMap mMap;
    // ArrayList<LastLocations> lastLocation;
     SupportMapFragment mapFragmentv;
@@ -379,7 +380,7 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
 
                     Users users = dataSnapshot.getValue(Users.class);
                     Log.d("LATITUDEANDLONG",users.getName()+"  "+users.getPhoneNumber());
-                    userData.add(new Users(users.getName(),users.getPhoto()));
+                    userData.add(new Users(users));
         DatabaseReference datab=FirebaseDatabase.getInstance().getReference("Users")
                 .child(member).child("LastLocation");
         datab.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -483,8 +484,12 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
                 @Override
                 public boolean onMarkerClick(Marker marker) {
                     BottomSheetGroup bottomSheet = new BottomSheetGroup();
-                    bottomSheet.show(getSupportFragmentManager(), "BottomSheetGroup");
 
+                    bottomSheet.show(getSupportFragmentManager(), "BottomSheetGroup");
+                    //Intent in=new Intent(getApplicationContext(),BottomSheetGroup.class);
+                    memberPhone=userData.get(index).getPhoneNumber();
+
+                    Log.d("MARKERCLICKED","---"+memberPhone);
                     Toast.makeText(UserHomeActivity.this, "marker clicked"+marker.getTitle(), Toast.LENGTH_SHORT).show();
                     return false;
                 }
@@ -497,6 +502,14 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
     //listener for bottomsheet's button clicked////////////////////
     @Override
     public void onButtonClicked(String text) {
+            if(text.trim().equals("liveTrack_bt")){
+                Intent in =new Intent(getApplicationContext(),LiveTrackingActivity.class);
+                Log.d("LIVELOCATIONMEMBER",memberPhone);
+                in.putExtra("member",memberPhone);
+                startActivity(in);
+
+            }
+
 
     }
 

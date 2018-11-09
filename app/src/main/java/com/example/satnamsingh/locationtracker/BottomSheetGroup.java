@@ -1,6 +1,7 @@
 package com.example.satnamsingh.locationtracker;
 
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,12 +19,13 @@ public class BottomSheetGroup extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.bottom_sheet_layout, container, false);
+
         track_bt = v.findViewById(R.id.track_bt);
         history_bt= v.findViewById(R.id.history_bt);
         track_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onButtonClicked("Button 1 clicked");
+                mListener.onButtonClicked("liveTrack_bt");
                 dismiss();
             }
         });

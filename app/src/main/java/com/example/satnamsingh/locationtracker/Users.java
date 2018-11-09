@@ -59,6 +59,7 @@ public class Users {
 
     }
 
+
     public ArrayList<String> getInvitations() {
         return Invitations;
     }
@@ -132,7 +133,11 @@ public class Users {
         //}
         this.photo ="https://firebasestorage.googleapis.com/v0/b/locationtracker-28250.appspot.com/o/default_pic.jpg?alt=media&token=7ed5b932-09bf-422e-aa5e-77eca30f378f";
     }
-
+public Users(Users u){
+        this.name=u.getName();
+        this.photo=u.getPhoto();
+        this.phoneNumber=u.getPhoneNumber();
+}
     public Users(String name, String email, String phoneNumber, String photo,
                  ArrayList<String> invitations, ArrayList<String> groupName, ArrayList<String> groupCode) {
         this.name = name;
@@ -167,7 +172,9 @@ public class Users {
 //        this.userLocations = userLocations;
 ////        LastLocation = lastLocation;
 //    }
+public Users(String name,String photo,String phoneNumber,boolean status){
 
+}
 
     public String getPhoto() {
         return photo;

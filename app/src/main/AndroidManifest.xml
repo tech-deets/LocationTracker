@@ -63,6 +63,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAGKoe3JWJyBZqoWOjzdS-Ym2dIH81_L5Y" />
 
+        <activity android:name=".LiveTrackingActivity"></activity>
     </application>
 
 </manifest>

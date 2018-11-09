@@ -281,6 +281,8 @@ public class LocationTrackerService extends Service {
 
         public void onProviderEnabled(String provider)
         {
+            Notification mynotif = simpleNotification("Location sharing" ,"updating location");
+            startForeground(1,mynotif);
 
         }
 
