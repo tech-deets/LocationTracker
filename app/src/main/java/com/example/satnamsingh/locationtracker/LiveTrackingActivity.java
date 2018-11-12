@@ -36,7 +36,6 @@ public class LiveTrackingActivity extends AppCompatActivity implements OnMapRead
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_tracking);
-        this.setTitle("Live Tracking");
         liveTrackingMapFragment= (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.liveTrackingMap);
         Intent in=getIntent();
