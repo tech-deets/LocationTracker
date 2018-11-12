@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="20"
+    >
+    <LinearLayout
+        android:id="@+id/ll2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="5"
+        android:weightSum="10"
+        android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/groups_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_gravity="center"
+            android:layout_marginVertical="7dp"
+            android:layout_weight="7" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/buttontheme"
+            android:layout_weight="3"
+            android:text="Select"
+            android:textColor="#fff"
+            android:layout_marginHorizontal="20dp"/>
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/group_rcv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal"
+                android:orientation="horizontal"
+                />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:hint="Select Location"
+            android:gravity="center"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginVertical="10dp"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        >
+        <!--this is place to add map-->
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </LinearLayout>
+</LinearLayout>
+</ScrollView>

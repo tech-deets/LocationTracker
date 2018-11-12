@@ -64,7 +64,8 @@
             android:value="AIzaSyAGKoe3JWJyBZqoWOjzdS-Ym2dIH81_L5Y" />
 
         <activity android:name=".LiveTrackingActivity" />
-        <activity android:name=".MemberHistoryActivity"></activity>
+        <activity android:name=".MemberHistoryActivity" />
+        <activity android:name=".GroupMeetingActivity"></activity>
     </application>
 
 </manifest>
