@@ -16,7 +16,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -125,8 +127,10 @@ public class MemberHistoryActivity extends AppCompatActivity implements OnMapRea
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Log.d("HISTORYHISTORY","in the onmap ready");
         mMap=googleMap;
-       Polyline line= mMap.addPolyline((new PolylineOptions().addAll(userLocation_al).color(Color.RED).width(20)));
-        //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(locate, 16));
+        mMap.addPolyline((new PolylineOptions().addAll(userLocation_al).color(Color.RED).width(20)));
+        //mMap.addMarker(new MarkerOptions().position(new LatLng(userLocation_al.get(0).latitude, userLocation_al.get(0).longitude)));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(userLocation_al.get(0).latitude, userLocation_al.get(0).longitude), 16));
     }
 }
