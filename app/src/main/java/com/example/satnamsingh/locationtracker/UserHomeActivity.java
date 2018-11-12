@@ -163,7 +163,12 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
                     startActivity(locationService);
                 }else if(menuItem.getItemId()==R.id.m4) {
 
-                }else if (menuItem.getItemId()==R.id.menu_logout)
+                }else if(menuItem.getItemId() == R.id.group_meeting)
+                {
+                    Intent groupMeeting = new Intent(getApplicationContext(),GroupMeetingActivity.class);
+                    startActivity(groupMeeting);
+                }
+                else if (menuItem.getItemId()==R.id.menu_logout)
                     {
                         AlertDialog.Builder logOutDialog = new AlertDialog.Builder(UserHomeActivity.this);
                         logOutDialog.setTitle("Log Out");

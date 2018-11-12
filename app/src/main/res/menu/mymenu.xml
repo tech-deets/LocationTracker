@@ -6,6 +6,7 @@
     <item android:id="@+id/menu_invites" android:title="Invites" android:icon="@drawable/invites_icon" app:showAsAction="ifRoom" />
     <item android:id="@+id/menu_groups" android:title="My Groups" android:icon="@drawable/group_icon" app:showAsAction="ifRoom" />
     <item android:id="@+id/m4" android:title="four"  app:showAsAction="ifRoom" />
+    <item android:id="@+id/group_meeting" android:title="Group Meeting"  app:showAsAction="ifRoom" />
     <item android:id="@+id/menu_logout" android:title="Log Out" android:icon="@drawable/logout_icon" app:showAsAction="ifRoom" />
 
 </menu>
