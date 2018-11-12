@@ -10,14 +10,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
-    <LinearLayout
-        android:id="@+id/ll2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="10"
-        android:orientation="vertical">
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,18 +51,19 @@
                 android:orientation="horizontal"
                 />
         </LinearLayout>
-    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp">
+
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:hint="Select Location"
-            android:gravity="center"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="40dp"
             android:layout_marginVertical="10dp"
-            />
+            android:gravity="center"
+            android:hint="Select Location" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -114,6 +107,7 @@
             android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:enabled="false"
+
             android:layout_marginHorizontal="5dp"/>
     </LinearLayout>
     <LinearLayout
@@ -141,7 +135,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="120dp"
         android:text="ADD"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/buttontheme"
         android:textColor="#fff"
         android:textSize="22sp"
         />

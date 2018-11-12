@@ -44,6 +44,7 @@ public class MemberHistoryActivity extends AppCompatActivity implements OnMapRea
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member_history);
+        this.setTitle("Location History");
         userLocation_al=new ArrayList<>();
         date_tv = findViewById(R.id.date_tv);
         historyMapFragment= (SupportMapFragment) getSupportFragmentManager()
