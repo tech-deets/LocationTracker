@@ -451,24 +451,41 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
         LatLng lastLocation = new LatLng(latitude, longitude);
         //   Log.d("MYLOCATIONONMAP",latitude[0]+"    "+longitude[0]);
 //            new MyAsyncTask().execute("https://picsum.photos/200/300/?random");
-        final int ii = i;
+        final int s = i;
         new Thread(new Runnable() {
             @Override
             public void run() {
 
                 try {
 
-                    URL url = new URL(userData.get(ii).getPhoto());
+                    URL url = new URL(userData.get(s).getPhoto());
                     Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            Marker marker;
 
-                            mMap.addMarker(new MarkerOptions().position(lastLocation).title(userData.get(ii).getName())
+                            marker= mMap.addMarker(new MarkerOptions().position(lastLocation).title(userData.get(s).getName())
                                     .icon(BitmapDescriptorFactory.fromBitmap(createCustomMarker(getApplicationContext(),
-                                            image, userData.get(ii).getName()))));
+                                            image, userData.get(s).getName()))));
+                            marker.setTag(userData.get(s).getPhoneNumber());
                             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, 4));
+                           // final int index=i;
+                            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                                @Override
+                                public boolean onMarkerClick(Marker marker) {
+                                    BottomSheetGroup bottomSheet = new BottomSheetGroup();
 
+                                    bottomSheet.show(getSupportFragmentManager(), "BottomSheetGroup");
+                                    //Intent in=new Intent(getApplicationContext(),BottomSheetGroup.class);
+                                    memberPhone=marker.getTag().toString();
+                                    Log.d("MARKERCLICKED","---value of "+marker.getTag());
+
+                                    Log.d("MARKERCLICKED","---"+memberPhone);
+                                    Toast.makeText(UserHomeActivity.this, "marker clicked"+marker.getTitle(), Toast.LENGTH_SHORT).show();
+                                    return false;
+                                }
+                            });
                         }
                     });
 
@@ -479,21 +496,21 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
 
             }
         }).start();
-        final int index=i;
-            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                @Override
-                public boolean onMarkerClick(Marker marker) {
-                    BottomSheetGroup bottomSheet = new BottomSheetGroup();
-
-                    bottomSheet.show(getSupportFragmentManager(), "BottomSheetGroup");
-                    //Intent in=new Intent(getApplicationContext(),BottomSheetGroup.class);
-                    memberPhone=userData.get(index).getPhoneNumber();
-
-                    Log.d("MARKERCLICKED","---"+memberPhone);
-                    Toast.makeText(UserHomeActivity.this, "marker clicked"+marker.getTitle(), Toast.LENGTH_SHORT).show();
-                    return false;
-                }
-            });
+//        final int index=i;
+//            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//                @Override
+//                public boolean onMarkerClick(Marker marker) {
+//                    BottomSheetGroup bottomSheet = new BottomSheetGroup();
+//
+//                    bottomSheet.show(getSupportFragmentManager(), "BottomSheetGroup");
+//                    //Intent in=new Intent(getApplicationContext(),BottomSheetGroup.class);
+//                    memberPhone=userData.get(index).getPhoneNumber();
+//
+//                    Log.d("MARKERCLICKED","---"+memberPhone);
+//                    Toast.makeText(UserHomeActivity.this, "marker clicked"+marker.getTitle(), Toast.LENGTH_SHORT).show();
+//                    return false;
+//                }
+//            });
 
         //mMap.addMarker(new MarkerOptions().position(lastLocation).title("cc"));
     }
@@ -509,6 +526,12 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
                 startActivity(in);
 
             }
+        if(text.trim().equals("history_bt")){
+            Intent in =new Intent(getApplicationContext(),MemberHistoryActivity.class);
+            Log.d("History",memberPhone);
+            in.putExtra("member",memberPhone);
+                startActivity(in);
+        }
 
 
     }

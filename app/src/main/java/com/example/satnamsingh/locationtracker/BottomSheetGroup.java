@@ -32,7 +32,7 @@ public class BottomSheetGroup extends BottomSheetDialogFragment {
         history_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onButtonClicked("Button 2 clicked");
+                mListener.onButtonClicked("history_bt");
                 dismiss();
             }
         });
