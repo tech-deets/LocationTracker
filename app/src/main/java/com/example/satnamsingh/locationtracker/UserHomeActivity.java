@@ -84,6 +84,7 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
     private ArrayList<Locations> usersLastLocation;
     int userDataIndex=0;
     private RecyclerView rcv;
+    private NavigationMenuView navigationMenuView;
     String memberPhone;
     GoogleMap mMap;
    // ArrayList<LastLocations> lastLocation;
@@ -110,7 +111,10 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
                 .findFragmentById(R.id.map);
         drawer=findViewById(R.id.drawer);
         navigationView =findViewById(R.id.nav_view);
-
+        NavigationMenuView navMenuView = (NavigationMenuView) navigationView.getChildAt(0);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration
+                (UserHomeActivity.this,DividerItemDecoration.VERTICAL);
+        navMenuView.addItemDecoration(dividerItemDecoration);
         toolbar = findViewById(R.id.toolbar_user_home);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
