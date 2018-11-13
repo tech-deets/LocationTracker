@@ -15,6 +15,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -189,11 +195,63 @@ public class LoginScreen extends AppCompatActivity {
         SharedPreferences.Editor editor =sharedPreferences.edit();
         editor.putString("phoneNumber",loginPhone);
         editor.commit();
-        Toast.makeText(LoginScreen.this, "Data loaded to shared preferences", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, UserHomeActivity.class);
-        intent.putExtra("phone", loginPhone);
-        finishAffinity();
-        startActivity(intent);
+
+        new Thread(new task()).start();
+
+
     }
+
+    class task implements Runnable
+    {
+
+        @Override
+        public void run() {
+
+            SharedPreferences sharedPreferences = getSharedPreferences("mypref1",MODE_PRIVATE);
+            String refreshedToken = sharedPreferences.getString("devicetoken",null);
+
+
+            RequestQueue requestQueue = Volley.newRequestQueue(LoginScreen.this);
+
+            String packagenameofapp = getPackageName();
+            String cloudserverip = "server1.vmm.education";
+
+            String url="http://"+ cloudserverip +"/VMMCloudMessaging/RecordDeviceInfo?devicetoken="+refreshedToken+"&packagenameofapp="+packagenameofapp+"&mobileno="+GlobalData.phoneNumber;
+
+            Log.d("MYMSG",url);
+            StringRequest stringRequest = new StringRequest(  Request.Method.GET, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+
+                            Log.d("MYMESSAGE", "RESPONSE "+response);
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("MYMESSAGE", error.toString());
+                        }
+                    }  );
+
+
+            requestQueue.add(stringRequest);
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(LoginScreen.this, "Data loaded to shared preferences", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(LoginScreen.this, UserHomeActivity.class);
+                    intent.putExtra("phone", loginPhone);
+                    finishAffinity();
+                    startActivity(intent);
+                }
+            });
+
+        }
+    }
+
+
 }
 
