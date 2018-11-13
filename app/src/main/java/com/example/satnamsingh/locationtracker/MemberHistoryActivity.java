@@ -118,7 +118,7 @@ public class MemberHistoryActivity extends AppCompatActivity implements OnMapRea
             day=dayOfMonth;
             month1 = month+1;
             year1=year;
-             date_tv.append(day+"/"+month+"/"+year);
+             date_tv.setText(day+"/"+month1+"/"+year);
 
         }
 

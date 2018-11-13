@@ -18,7 +18,7 @@
             android:weightSum="10">
 
             <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/groups_spinner"
+                android:id="@+id/groups_spinner_meetingPlace"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="5dp"
@@ -28,6 +28,7 @@
                 />
 
             <Button
+                android:onClick="showGroupMembersForMeeting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -44,7 +45,7 @@
             android:orientation="horizontal"
             >
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/group_rcv"
+                android:id="@+id/group_rcv_meetingPlace"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scrollbars="horizontal"
@@ -125,6 +126,7 @@
             />
 
         <LinearLayout
+            android:id="@+id/date_Lout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -133,6 +135,7 @@
             android:background="@drawable/edittext_disable_theme"
             android:orientation="horizontal">
             <TextView
+                android:id="@+id/meetingDate_tv"
                 android:layout_width="180dp"
                 android:layout_height="25dp"
                 android:textSize="17sp"
@@ -167,6 +170,7 @@
             android:layout_marginHorizontal="10dp"
             />
         <LinearLayout
+            android:id="@+id/time_Lout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -175,6 +179,7 @@
             android:background="@drawable/edittext_disable_theme"
             android:orientation="horizontal">
             <TextView
+                android:id="@+id/meetingTime_tv"
                 android:layout_width="180dp"
                 android:layout_height="25dp"
                 android:textSize="17sp"
