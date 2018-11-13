@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -128,9 +129,11 @@ public class MyContactActivity extends AppCompatActivity {
     public void showList(){
         RecyclerView rcv;
         rcv=(RecyclerView)(findViewById(R.id.rcv1));
+        LinearLayoutManager simpleverticallayout= new LinearLayoutManager(this);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,simpleverticallayout.getOrientation());
+        rcv.addItemDecoration(dividerItemDecoration);
         MyRecyclerAdapter myad=new MyRecyclerAdapter();
         rcv.setAdapter(myad);
-        LinearLayoutManager simpleverticallayout= new LinearLayoutManager(this);
         rcv.setLayoutManager(simpleverticallayout);
     }
     /////// Inner Class  ////////
