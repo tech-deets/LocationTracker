@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="-4dp"
+        android:layout_gravity="center"
+        >
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/transparent_card_theme"
+            tools:context=".GroupInfoDialogActivity"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/change_name_icon"
+                android:layout_marginVertical="10dp"
+                android:layout_marginHorizontal="10dp"/>
+            <EditText
+                android:id="@+id/change_name_tv"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext_disable_theme"
+                android:hint="Enter the New User Name"
+                android:textColor="#333"
+                android:textColorHint="#888"
+                android:layout_marginRight="10dp"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp">
+            <Button
+                android:id="@+id/change_name_bt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OK"
+                android:textColor="#fff"
+                android:textSize="20sp"
+                android:layout_marginVertical="5dp"
+                android:background="@drawable/buttontheme"
+                android:layout_marginHorizontal="40dp"
+            />
+            <Button
+                android:id="@+id/cancel_name_bt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginVertical="5dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/buttontheme"
+                android:textSize="20sp"
+                android:textColor="#fff"
+                android:text="CANCEL"
+            />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </FrameLayout>
+</FrameLayout>

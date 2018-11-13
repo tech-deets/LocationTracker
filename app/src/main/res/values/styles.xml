@@ -26,5 +26,9 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
+    <style name="NameDialogTheme" parent="Theme.AppCompat.Dialog">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 
 </resources>

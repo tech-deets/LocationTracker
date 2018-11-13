@@ -68,7 +68,9 @@
         <activity android:name=".LiveTrackingActivity" />
         <activity android:name=".MemberHistoryActivity" />
         <activity android:name=".GroupMeetingActivity" />
-        <activity android:name=".Settings"></activity>
+        <activity android:name=".Settings" />
+        <activity android:name=".ChangeUserName"
+            android:theme="@style/NameDialogTheme"></activity>
         <service
             android:name=".GetToken">
             <intent-filter>
@@ -82,6 +84,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
+
     </application>
 
 </manifest>
