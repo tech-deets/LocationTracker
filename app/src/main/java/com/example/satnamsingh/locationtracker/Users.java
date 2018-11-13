@@ -11,7 +11,28 @@ public class Users {
     private ArrayList<String> GroupName;
     private ArrayList<String> GroupCode;
     private ArrayList<Locations> userLocations;
-   // private Locations LastLocation;
+    private ArrayList<Meetings> meetingsList;
+
+    public ArrayList<Meetings> getMeetingsList() {
+        return meetingsList;
+    }
+
+    public Users(String name, String email, String phoneNumber, String photo, ArrayList<String> invitations, ArrayList<String> groupName, ArrayList<String> groupCode, ArrayList<Locations> userLocations, ArrayList<Meetings> meetingsList) {
+        this.name = name;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.photo = photo;
+        Invitations = invitations;
+        GroupName = groupName;
+        GroupCode = groupCode;
+        this.userLocations = userLocations;
+        this.meetingsList = meetingsList;
+    }
+
+    public void setMeetingsList(ArrayList<Meetings> meetingsList) {
+        this.meetingsList = meetingsList;
+    }
+    // private Locations LastLocation;
     //private LastLocation lastLocation;
 
    // public Users(LastLocation lastLocation) {

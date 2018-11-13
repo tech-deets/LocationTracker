@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -44,7 +45,7 @@ import java.util.Calendar;
 
 public class GroupMeetingActivity extends AppCompatActivity implements OnMapReadyCallback {
     SupportMapFragment meetingPlaceMapFragment;
-    LatLng meetingPlace;
+   // LatLng meetingPlace;
     GoogleMap mMap;
     boolean markerUsed=false;
     private ArrayList<String> groupCode;
@@ -63,6 +64,14 @@ public class GroupMeetingActivity extends AppCompatActivity implements OnMapRead
     TextView meetingDate_tv;
     LinearLayout time_Lout;
     TextView meetingTime_tv;
+    private String groupSelected;
+    private String meetingLocationName;
+    LatLng meetingLocation;
+    private String meetingAgenda;
+    private String meetingDate;
+    private  String meetingTime;
+    private  String meetingHost;
+    private EditText meetingAgenda_et;
 
 
     @Override
@@ -82,6 +91,7 @@ public class GroupMeetingActivity extends AppCompatActivity implements OnMapRead
         meetingDate_tv=findViewById(R.id.meetingDate_tv);
         time_Lout=findViewById(R.id.time_Lout);
         meetingTime_tv=findViewById(R.id.meetingTime_tv);
+        meetingAgenda_et=findViewById(R.id.meetingAgenda_et);
 
         groups_spinner=(Spinner)(findViewById(R.id.groups_spinner_meetingPlace));
         showGroupListSpinner();
@@ -113,12 +123,14 @@ public class GroupMeetingActivity extends AppCompatActivity implements OnMapRead
 //                        boolean timeFormat_12Hr=true;
 
                         if(selectedHour<=12){
-
+                            meetingTime=selectedHour + ":" + selectedMinute+" AM";
                             meetingTime_tv.setText( selectedHour + ":" + selectedMinute+" AM");
 
                         }
                         else {
                             selectedHour=selectedHour-12;
+                            meetingTime=selectedHour + ":" + selectedMinute+" PM";
+
                             meetingTime_tv.setText( selectedHour + ":" + selectedMinute+" PM");
 
                         }
@@ -139,8 +151,9 @@ public class GroupMeetingActivity extends AppCompatActivity implements OnMapRead
                 // TODO: Get info about the selected place.
               // Log.i(TAG, "Place: " + place.getName());
                Log.d("PLACE_SELECTED",""+place.getName());
-              meetingPlace= place.getLatLng();
-              Log.d("PLACE_SELECTED",meetingPlace.latitude+" "+meetingPlace.longitude);
+               meetingLocationName=""+place.getName();
+              meetingLocation= place.getLatLng();
+              Log.d("PLACE_SELECTED",meetingLocation.latitude+" "+meetingLocation.longitude);
                meetingPlaceMapFragment.getMapAsync(GroupMeetingActivity.this::onMapReady);
 
             }
@@ -174,8 +187,8 @@ public class GroupMeetingActivity extends AppCompatActivity implements OnMapRead
         }
         markerUsed=true;
         mMap=googleMap;
-        mMap.addMarker(new MarkerOptions().position(meetingPlace).title("Meeting place"));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(meetingPlace, 16));
+        mMap.addMarker(new MarkerOptions().position(meetingLocation).title("Meeting place"));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(meetingLocation, 16));
 
     }
     class GroupMembers extends RecyclerView.Adapter<GroupMembers.MyViewHolder> {
@@ -275,6 +288,7 @@ public class GroupMeetingActivity extends AppCompatActivity implements OnMapRead
                         members.clear();
                         if (position!= 0) {
                             Log.d("MYMESSAGE","---"+groupName.get(position));
+                            groupSelected=groupCode.get(position);
 
                             //Toast.makeText(UserHomeActivity.this, "Please selecct a group", Toast.LENGTH_SHORT).show();
                             FirebaseDatabase firebaseDatabase =FirebaseDatabase.getInstance();
@@ -386,10 +400,65 @@ public class GroupMeetingActivity extends AppCompatActivity implements OnMapRead
             day=dayOfMonth;
             month1 = month+1;
             year1=year;
+            meetingDate=day+"/"+month1+"/"+year;
             meetingDate_tv.setText(day+"/"+month1+"/"+year);
 
         }
 
     };
+public void hostMeeting(View v){
+    meetingAgenda=meetingAgenda_et.getText().toString();
+    meetingHost=GlobalData.phoneNumber;
+    if(groupSelected==null||meetingLocationName==null||meetingAgenda==null){
+        Toast.makeText(getApplicationContext(), "Please select a group for Meeting", Toast.LENGTH_SHORT).show();
+    }
+    else{
+        if(meetingLocationName==null){
+            Toast.makeText(getApplicationContext(), "Please Select a Location", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            if(meetingAgenda==null){
+                Toast.makeText(getApplicationContext(), "Please mention Meeting Agenda", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Meetings meetingDetails=new Meetings(groupSelected,members,meetingLocationName
+                ,meetingLocation.latitude,meetingLocation.longitude,meetingAgenda,
+                meetingDate,meetingTime,meetingHost);
+                DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Meetings");
+                DatabaseReference pushData = databaseReference.push();
+                final String pushId = pushData.getKey();
+                databaseReference.child(pushId).setValue(meetingDetails);
+                DatabaseReference users_db=FirebaseDatabase.getInstance().getReference("Users");
+                for(String member:members){
+                    DatabaseReference db=users_db.child(member).child("Meetings");
 
+                     db.addListenerForSingleValueEvent(new ValueEventListener() {
+                         ArrayList<String> meetings ;
+                         @Override
+                         public void onDataChange(DataSnapshot dataSnapshot) {
+                                 meetings=(ArrayList<String>)dataSnapshot.getValue();
+                                 if(meetings==null){
+                                     meetings=new ArrayList<>();
+                                 }
+                             Log.d("ONADDCLICK",pushId);
+                             meetings.add(pushId);
+                             db.setValue(meetings);
+                         }
+
+                         @Override
+                         public void onCancelled(DatabaseError databaseError) {
+
+                         }
+                     });
+                }
+
+
+
+
+            }
+
+        }
+    }
+
+}
 }
