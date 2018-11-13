@@ -154,13 +154,14 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
                     Intent locationService =new Intent(getApplicationContext(),MyGroupsActivity.class);
                     startActivity(locationService);
                 }else if(menuItem.getItemId()==R.id.m4) {
-                    Intent settingsIntent = new Intent(getApplicationContext(),Settings.class);
-                    startActivity(settingsIntent);
 
                 }else if(menuItem.getItemId() == R.id.group_meeting)
                 {
                     Intent groupMeeting = new Intent(getApplicationContext(),GroupMeetingActivity.class);
                     startActivity(groupMeeting);
+                }else if (menuItem.getItemId() == R.id.menu_settings){
+                    Intent settingsIntent = new Intent(getApplicationContext(),Settings.class);
+                    startActivity(settingsIntent);
                 }
                 //Close Drawer after logic is executed
                 drawer.closeDrawer(GravityCompat.START);

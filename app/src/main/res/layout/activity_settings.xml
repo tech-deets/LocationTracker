@@ -6,50 +6,109 @@
     android:layout_height="match_parent"
     tools:context=".Settings"
     android:orientation="vertical">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginHorizontal="5dp"
-    android:orientation="horizontal"
-    android:layout_marginBottom="5dp">
-    <ImageView
-        android:src="@drawable/settings_icon"
-        android:layout_marginHorizontal="5dp"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Change Profile Photo"
-        android:textSize="25dp"/>
-</LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#aaa"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
+    <!--this is for photo and name-->
     <LinearLayout
-        android:id="@+id/user_logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="5dp"
-        android:layout_marginBottom="5dp"
-        android:orientation="horizontal">
+        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="10dp">
         <ImageView
+            android:id="@+id/photo_settings"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginVertical="15dp"
+            android:layout_marginLeft="15dp"/>
+        <TextView
+            android:id="@+id/name_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="5dp"
-            android:src="@drawable/logout_icon"/>
+            android:textSize="25dp"
+            android:textColor="#333"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ccc"
+        />
+
+
+    <!--following Linear layouts are for options-->
+
+    <LinearLayout
+        android:id="@+id/change_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
+        android:orientation="horizontal"
+        android:layout_marginVertical="10dp"
+        >
+        <ImageView
+            android:src="@drawable/photo_icon"
+            android:layout_marginTop="5dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_gravity="bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <TextView
-            android:id="@+id/logout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Change Profile Photo"
-            android:textSize="25dp"/>
+            android:textSize="20dp"
+            android:textColor="#555"/>
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ccc"
+        android:layout_marginLeft="80dp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginVertical="10dp"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginHorizontal="20dp"
+            android:src="@drawable/change_name_icon"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change User Name"
+            android:textSize="20dp"
+            android:textColor="#555"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ccc"
+        android:layout_marginLeft="80dp"
+    />
+    <LinearLayout
+        android:onClick="userLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginVertical="10dp"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginHorizontal="20dp"
+            android:src="@drawable/logout_icon"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            android:textSize="20dp"
+            android:textColor="#555"/>
+    </LinearLayout>
 </LinearLayout>
