@@ -42,7 +42,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import com.android.volley.AuthFailureError;
@@ -58,7 +57,16 @@ import com.android.volley.toolbox.Volley;
 //import com.google.gson.Gson;
 import org.json.JSONObject;
 
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Arrays;
+import android.os.Bundle;
+import android.util.Log;
 public class GroupMeetingActivity extends AppCompatActivity implements OnMapReadyCallback {
+    String tokens = "";
+    RequestQueue requestQueue;
     SupportMapFragment meetingPlaceMapFragment;
    // LatLng meetingPlace;
     GoogleMap mMap;
@@ -86,9 +94,8 @@ public class GroupMeetingActivity extends AppCompatActivity implements OnMapRead
     private String meetingDate;
     private  String meetingTime;
     private  String meetingHost;
-    private RequestQueue requestQueue;
     private EditText meetingAgenda_et;
-    String tokens="";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +103,6 @@ public class GroupMeetingActivity extends AppCompatActivity implements OnMapRead
         setContentView(R.layout.activity_group_meeting);
 
         requestQueue = Volley.newRequestQueue(this);
-        this.setTitle("Organize Meeting");
         usersLastLocation=new ArrayList<>();
         groupCode =new ArrayList<>();
         groupName =new ArrayList<>();
@@ -463,10 +469,7 @@ public void hostMeeting(View v){
                              Log.d("ONADDCLICK",pushId);
                              meetings.add(pushId);
                              db.setValue(meetings);
-                             Log.d("NOTIFICATION_SEND","before sending notification");
                              sendNotification();
-                             Log.d("NOTIFICATION_SEND","after sending notification");
-
                          }
 
                          @Override
@@ -494,7 +497,6 @@ public void hostMeeting(View v){
 
 //            URL url = new URL("http://" + cloudserverip + "/VMMCloudMessaging/GetTokenOfMobileno?packagename=" + packagenameofapp + "&mobileno=" +);
             String url = "http://" + cloudserverip + "/VMMCloudMessaging/GetTokenOfMobileno?packagename=" + packagenameofapp + "&mobileno=9780338031";
-          Log.d("\n\n\nNOTIFICATION_SEND\n\n\n",url);
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                     new Response.Listener<String>() {
                         @Override
@@ -502,8 +504,6 @@ public void hostMeeting(View v){
 
                             Log.d("MYMESSAGE", "RESPONSE " + response);
                             tokens = tokens+response+",";
-                            Log.d("NEW_TOKEN",tokens+"-------");
-
 
                         }
                     },
@@ -519,70 +519,68 @@ public void hostMeeting(View v){
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        Log.d("NEW_TOKEN","BER=FORE THR IF LENGTH:"+tokens.length());
 
-        if(tokens.length()!=0)
-        {       Log.d("NEW_TOKEN1","inside the token if");
-            tokens = tokens.substring(0,tokens.length()-1);
-            Log.d("NEW_TOKEN",tokens+"");
-            try
-            {
-                String cloudserverip = "server1.vmm.education";
-
-                String url = "http://"+ cloudserverip +"/VMMCloudMessaging/SendSimpleNotificationUsingTokens";
-
-                JSONObject jsonBody = new JSONObject();
-                jsonBody.put("serverkey", "AAAAgidu1XE:APA91bEz09Ck8vQWBXEz0gOtC-xCAofLIMnt5t6nHsKY7RQHKn40QkDrG7FpeXk89rBulrSEMQzdVzwbs8I5ZzUvkK-ppa3VtQP6vYyCNsw-dQx8WYZMvGRSOp-JpPKKOcpjgSWIjRAJ");
-                jsonBody.put("tokens", tokens);
-                jsonBody.put("title", " testing notification");
-                jsonBody.put("message", "invite whomever");
-                final String requestBody = jsonBody.toString();
-
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.i("VOLLEY", response);
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("VOLLEY", error.toString());
-                    }
-                }) {
-                    @Override
-                    public String getBodyContentType() {
-                        return "application/json; charset=utf-8";
-                    }
-
-                    @Override
-                    public byte[] getBody() throws AuthFailureError {
-                        try {
-                            return requestBody == null ? null : requestBody.getBytes("utf-8");
-                        } catch (UnsupportedEncodingException uee) {
-                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                            return null;
-                        }
-                    }
-
-                    @Override
-                    protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                        String responseString = "";
-                        if (response != null) {
-                            responseString = String.valueOf(response.data);
-                            // can get more details such as response.headers
-                        }
-                        return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-                    }
-                };
-
-                requestQueue.add(stringRequest);
-            }
-            catch(Exception ex)
-            {
-                ex.printStackTrace();
-            }
-
-        }
+//        if(tokens.length()!=0)
+//        {
+//            tokens = tokens.substring(0,tokens.length()-1);
+//            try
+//            {
+//                String cloudserverip = "server1.vmm.education";
+//
+//                String url = "http://"+ cloudserverip +"/VMMCloudMessaging/SendSimpleNotificationUsingTokens";
+//
+//                JSONObject jsonBody = new JSONObject();
+//                jsonBody.put("serverkey", "AAAAgidu1XE:APA91bEz09Ck8vQWBXEz0gOtC-xCAofLIMnt5t6nHsKY7RQHKn40QkDrG7FpeXk89rBulrSEMQzdVzwbs8I5ZzUvkK-ppa3VtQP6vYyCNsw-dQx8WYZMvGRSOp-JpPKKOcpjgSWIjRAJ");
+//                jsonBody.put("tokens", tokens);
+//                jsonBody.put("title", "This%20is%20an%20invite");
+//                jsonBody.put("message", "invite");
+//                final String requestBody = jsonBody.toString();
+//
+//                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Log.i("VOLLEY", response);
+//                    }
+//                }, new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Log.e("VOLLEY", error.toString());
+//                    }
+//                }) {
+//                    @Override
+//                    public String getBodyContentType() {
+//                        return "application/json; charset=utf-8";
+//                    }
+//
+//                    @Override
+//                    public byte[] getBody() throws AuthFailureError {
+//                        try {
+//                            return requestBody == null ? null : requestBody.getBytes("utf-8");
+//                        } catch (UnsupportedEncodingException uee) {
+//                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+//                            return null;
+//                        }
+//                    }
+//
+//                    @Override
+//                    protected Response<String> parseNetworkResponse(NetworkResponse response) {
+//                        String responseString = "";
+//                        if (response != null) {
+//                            responseString = String.valueOf(response.data);
+//                            // can get more details such as response.headers
+//                        }
+//                        return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+//                    }
+//                };
+//
+//                requestQueue.add(stringRequest);
+//            }
+//            catch(Exception ex)
+//            {
+//                ex.printStackTrace();
+//            }
+//
+//        }
 
     }
 }
