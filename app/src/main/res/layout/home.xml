@@ -27,7 +27,7 @@
             android:textSize="25sp"
             android:gravity="center"
             android:layout_margin="20dp"
-            android:text="Location tracker will help you to keep track on your beloved ones where every they go"
+            android:text="Location tracker will help you to keep track on your beloved ones where ever they go"
             android:textColor="#fff"
             />
 

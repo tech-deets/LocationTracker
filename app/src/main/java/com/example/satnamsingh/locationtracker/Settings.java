@@ -95,4 +95,9 @@ public class Settings extends AppCompatActivity {
         alert.show();
         alert.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorPrimary));
     }
+    void changeName(View v)
+    {
+        Intent changeNameDialog = new Intent(getApplicationContext(),ChangeUserName.class);
+        startActivity(changeNameDialog);
+    }
 }

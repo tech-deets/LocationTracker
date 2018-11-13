@@ -65,11 +65,13 @@
         android:layout_marginLeft="80dp"
         />
     <LinearLayout
+        android:id="@+id/change_name_settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="5dp"
         android:layout_marginVertical="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:onClick="changeName">
         <ImageView
             android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
@@ -111,4 +113,10 @@
             android:textSize="20dp"
             android:textColor="#555"/>
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="80dp"
+        android:background="#ccc"
+        />
 </LinearLayout>
