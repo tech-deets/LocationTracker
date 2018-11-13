@@ -93,8 +93,9 @@ public class GetToken extends FirebaseInstanceIdService
         String packagenameofapp = getPackageName();
         String cloudserverip = "server1.vmm.education";
 
-        String url="http://"+ cloudserverip +"/VMMCloudMessaging/RecordDeviceInfo?devicetoken="+refreshedToken+"&packagenameofapp="+packagenameofapp;
+        String url="http://"+ cloudserverip +"/VMMCloudMessaging/RecordDeviceInfo?devicetoken="+refreshedToken+"&packagenameofapp="+packagenameofapp+"&mobileno="+GlobalData.phoneNumber;
 
+        Log.d("MYMSG",url);
         StringRequest stringRequest = new StringRequest(  Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
