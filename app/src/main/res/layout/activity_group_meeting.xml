@@ -10,48 +10,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginVertical="5dp"
-            android:weightSum="10">
-
-            <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/groups_spinner_meetingPlace"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="5dp"
-                android:layout_gravity="center"
-                android:layout_marginVertical="7dp"
-                android:layout_weight="7"
-                />
-
-            <Button
-                android:onClick="showGroupMembersForMeeting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/buttontheme"
-                android:layout_weight="3"
-                android:text="Select"
-                android:textColor="#fff"
-                android:layout_marginHorizontal="20dp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/group_rcv_meetingPlace"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scrollbars="horizontal"
-                android:orientation="horizontal"
-                />
-        </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -89,10 +47,70 @@
             android:layout_weight="15"
             />
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ccc"
+        />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="5dp"
+        android:weightSum="10">
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/groups_spinner_meetingPlace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_gravity="center"
+            android:layout_marginVertical="7dp"
+            android:layout_weight="7"
+            />
+
+        <Button
+            android:onClick="showGroupMembersForMeeting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/buttontheme"
+            android:layout_weight="3"
+            android:text="Select"
+            android:textColor="#fff"
+            android:layout_marginHorizontal="20dp"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ccc"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/group_rcv_meetingPlace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="horizontal"
+            android:orientation="horizontal"
+            />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ccc"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginVertical="5dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -101,17 +119,23 @@
             android:textSize="20sp"
             android:layout_marginVertical="5dp"
             android:layout_marginHorizontal="10dp"
+            android:layout_gravity="center"
             />
 
         <EditText
             android:id="@+id/meetingAgenda_et"
             android:layout_width="220dp"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:layout_marginLeft="20dp"
             android:background="@drawable/edittext_disable_theme"
             android:gravity="center"
             android:hint="Meeting Title" />
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ccc"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -125,6 +149,7 @@
             android:textSize="20sp"
             android:layout_marginVertical="5dp"
             android:layout_marginHorizontal="10dp"
+            android:layout_gravity="center"
             />
 
         <LinearLayout
@@ -145,7 +170,7 @@
                 android:gravity="center"
                 android:layout_marginVertical="2dp"
                 android:layout_marginHorizontal="2dp"
-                android:background="#f9fafd"
+                android:background="#f5f5f5"
                 android:textColor="#333"
                 android:layout_gravity="center"
                 />
@@ -157,7 +182,11 @@
                 />
         </LinearLayout>
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ccc"
+        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -170,6 +199,7 @@
             android:textSize="20sp"
             android:layout_marginVertical="5dp"
             android:layout_marginHorizontal="10dp"
+            android:layout_gravity="center"
             />
         <LinearLayout
             android:id="@+id/time_Lout"
@@ -189,7 +219,7 @@
                 android:gravity="center"
                 android:layout_marginVertical="2dp"
                 android:layout_marginHorizontal="2dp"
-                android:background="#f9fafd"
+                android:background="#f5f5f5"
                 android:textColor="#333"
                 android:layout_gravity="center"
                 />
@@ -202,12 +232,18 @@
 
         </LinearLayout>
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ccc"
+        />
 
     <Button
         android:onClick="hostMeeting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="120dp"
+        android:layout_marginVertical="15dp"
         android:text="ADD"
         android:background="@drawable/buttontheme"
         android:textColor="#fff"

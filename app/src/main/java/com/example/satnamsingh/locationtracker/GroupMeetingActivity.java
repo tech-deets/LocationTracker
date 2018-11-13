@@ -78,6 +78,7 @@ public class GroupMeetingActivity extends AppCompatActivity implements OnMapRead
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_meeting);
+        this.setTitle("Organize Meeting");
         usersLastLocation=new ArrayList<>();
         groupCode =new ArrayList<>();
         groupName =new ArrayList<>();
