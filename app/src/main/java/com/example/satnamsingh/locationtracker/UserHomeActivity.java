@@ -15,6 +15,7 @@ import android.os.Bundle;
 
 import android.provider.ContactsContract;
 import android.support.annotation.DrawableRes;
+import android.support.design.internal.NavigationMenuView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -23,6 +24,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -97,14 +99,6 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
         intent.setAction("START SIGNAL");
         startService(intent);
                 Log.d("MYMESSAGE","after calling service");
-
-
-
-
-
-
-
-
         usersLastLocation=new ArrayList<>();
         groupCode =new ArrayList<>();
         groupName =new ArrayList<>();
@@ -114,11 +108,9 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
         //start the service through new thread to cut off the load from main thread
         mapFragmentv= (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-
-
-
         drawer=findViewById(R.id.drawer);
         navigationView =findViewById(R.id.nav_view);
+
         toolbar = findViewById(R.id.toolbar_user_home);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -162,36 +154,13 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
                     Intent locationService =new Intent(getApplicationContext(),MyGroupsActivity.class);
                     startActivity(locationService);
                 }else if(menuItem.getItemId()==R.id.m4) {
+                    Intent settingsIntent = new Intent(getApplicationContext(),Settings.class);
+                    startActivity(settingsIntent);
 
                 }else if(menuItem.getItemId() == R.id.group_meeting)
                 {
                     Intent groupMeeting = new Intent(getApplicationContext(),GroupMeetingActivity.class);
                     startActivity(groupMeeting);
-                }
-                else if (menuItem.getItemId()==R.id.menu_logout)
-                    {
-                        AlertDialog.Builder logOutDialog = new AlertDialog.Builder(UserHomeActivity.this);
-                        logOutDialog.setTitle("Log Out");
-                        logOutDialog.setMessage("Are you sure to Log out?");
-                        logOutDialog.setPositiveButton("Log Out",(dialog, which) ->{
-                            Intent stopServiceIntent = new Intent(UserHomeActivity.this,LocationTrackerService.class);
-                            stopServiceIntent.setAction("STOP SIGNAL");
-                            startService(stopServiceIntent);
-                            SharedPreferences sharedPreferences =getSharedPreferences("LocationTrackerUser.txt",MODE_PRIVATE);
-                            SharedPreferences.Editor editor =sharedPreferences.edit();
-                            editor.putString("phoneNumber","");
-                            editor.commit();
-                            Intent logoutintent = new Intent(getApplicationContext(),Home.class);
-                            finishAffinity();
-                            startActivity(logoutintent);
-                        });
-                        /////////////this is cancel button do nothing /////////////
-                        logOutDialog.setNegativeButton("Cancel",(dialog,which)-> {
-
-                        });
-                        AlertDialog alert = logOutDialog.create();
-                        alert.show();
-                        alert.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorPrimary));
                 }
                 //Close Drawer after logic is executed
                 drawer.closeDrawer(GravityCompat.START);

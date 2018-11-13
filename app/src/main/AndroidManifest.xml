@@ -65,7 +65,8 @@
 
         <activity android:name=".LiveTrackingActivity" />
         <activity android:name=".MemberHistoryActivity" />
-        <activity android:name=".GroupMeetingActivity"></activity>
+        <activity android:name=".GroupMeetingActivity" />
+        <activity android:name=".Settings"></activity>
     </application>
 
 </manifest>
