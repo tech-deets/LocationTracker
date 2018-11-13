@@ -297,7 +297,7 @@ public class MyInvitations extends AppCompatActivity {
 
                     AlertDialog ad = builder.create();
                     ad.show();
-
+                    ad.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorPrimary));
                 }
             });
             localcardview.setOnClickListener(new View.OnClickListener() {
