@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class MemberHistoryActivity extends AppCompatActivity implements OnMapRea
     private TextView date_tv;
     private int day,month1,year1;
     private Button show_bt;
+    private LinearLayout select_date_lout;
     ArrayList<LatLng> userLocation_al;
     SupportMapFragment historyMapFragment;
     GoogleMap mMap;
@@ -48,6 +50,7 @@ public class MemberHistoryActivity extends AppCompatActivity implements OnMapRea
         setContentView(R.layout.activity_member_history);
         userLocation_al=new ArrayList<>();
         date_tv = findViewById(R.id.date_tv);
+        select_date_lout = findViewById(R.id.select_date_lout);
         historyMapFragment= (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.historyMap);
         calendar = Calendar.getInstance();
@@ -58,7 +61,7 @@ public class MemberHistoryActivity extends AppCompatActivity implements OnMapRea
         Intent in=getIntent();
         user=in.getStringExtra("member");
 
-        date_tv.setOnClickListener(new View.OnClickListener() {
+        select_date_lout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "inside button click listener", Toast.LENGTH_SHORT).show();
@@ -114,7 +117,7 @@ public class MemberHistoryActivity extends AppCompatActivity implements OnMapRea
     private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener(){
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            //textView.setText("");
+            date_tv.setText("");
             day=dayOfMonth;
             month1 = month+1;
             year1=year;
