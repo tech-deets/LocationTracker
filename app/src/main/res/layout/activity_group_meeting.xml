@@ -103,6 +103,7 @@
             />
 
         <EditText
+            android:id="@+id/meetingAgenda_et"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -202,6 +203,7 @@
     </LinearLayout>
 
     <Button
+        android:onClick="hostMeeting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="120dp"
