@@ -84,7 +84,8 @@
         </service>
 
         <activity android:name=".MyMeetingsActivity" />
-        <activity android:name=".sendnotification"></activity>
+        <activity android:name=".MeetingInfoDialog"
+            android:theme="@style/CustomDialogTheme"></activity>
     </application>
 
 </manifest>

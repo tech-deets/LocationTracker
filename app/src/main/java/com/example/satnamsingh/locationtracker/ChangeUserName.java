@@ -1,11 +1,13 @@
 package com.example.satnamsingh.locationtracker;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.TestLooperManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,19 +27,23 @@ public class ChangeUserName extends AppCompatActivity {
         cancel = findViewById(R.id.cancel_name_bt);
         name_tv = findViewById(R.id.change_name_tv);
         ok.setOnClickListener((view)->{
-            name = (String)name_tv.getText();
+            name = name_tv.getText().toString();
             if (name==null||name.equals(""))
                 Toast.makeText(this, "Please ENTER Name first", Toast.LENGTH_SHORT).show();
             else
             {
                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
                         .child(GlobalData.phoneNumber).child("name");
+
+                InputMethodManager inputManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+
                 AlertDialog.Builder nameChangeDialog = new AlertDialog.Builder(ChangeUserName.this);
                 nameChangeDialog.setTitle("Change users name");
                 nameChangeDialog.setMessage("Are you sure to Change your user name?");
                 nameChangeDialog.setPositiveButton("Change",(dialog, which) -> {
                     databaseReference.setValue(name);
-                    });
+                });
                 /////////////this is cancel button do nothing /////////////
                 nameChangeDialog.setNegativeButton("Cancel",(dialog,which)-> {
 
