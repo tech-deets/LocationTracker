@@ -23,8 +23,6 @@
         android:background="#ffffff"
         android:orientation="horizontal"
         android:weightSum="10">
-
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,9 +35,9 @@
                 android:id="@+id/my_meeting_title_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:paddingLeft="10sp"
-                android:textColor="#000000"
+                android:layout_marginVertical="5dp"
+                android:layout_marginHorizontal="10dp"
+                android:textColor="#000"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -62,7 +60,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:text="Date:-"
+                            android:text="Date :- "
                             android:textColor="#000000"
                             android:textSize="16sp" />
                         <TextView
@@ -81,7 +79,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Time:-"
+                            android:text="Time :- "
                             android:layout_marginTop="5dp"
                             />
                         <TextView
@@ -107,6 +105,7 @@
             android:layout_marginTop="25dp"
             android:layout_gravity="center"
             android:layout_marginHorizontal="2dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/info_icon"/>
 
     </LinearLayout>

@@ -39,9 +39,9 @@ public class MyMeetingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_meetings);
             this.setTitle("My Meetings");
-        meetings=new ArrayList<>();
+            meetings=new ArrayList<>();
 
-        Intent in=getIntent();
+            Intent in=getIntent();
             my_total_meetings_tv = findViewById(R.id.my_total_meetings_tv);
             recyclerView = (RecyclerView) (findViewById(R.id.my_meetings_rcv));
             myMeetingsAdapter = new MeetingsListRecycler();
@@ -166,6 +166,11 @@ public class MyMeetingsActivity extends AppCompatActivity {
 
 
                 }
+                my_meeting_info_iv.setOnClickListener((view)->
+                {
+                    Intent meetingInfoIntent = new Intent(getApplicationContext(),MeetingInfoDialog.class);
+                    startActivity(meetingInfoIntent);
+                });
 
                 localcardview.setOnClickListener(new View.OnClickListener() {
                     @Override
