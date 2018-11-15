@@ -21,7 +21,7 @@
     <item
         android:id="@+id/my_meetings_menu"
         android:title="My Meetings"
-        android:icon="@drawable/group_icon"
+        android:icon="@drawable/my_meeting_icon"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/m4"
@@ -29,7 +29,8 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/group_meeting"
-        android:title="Group Meeting"
+        android:title="Arrange Meeting"
+        android:icon="@drawable/arrange_meeting_icon"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_settings"
