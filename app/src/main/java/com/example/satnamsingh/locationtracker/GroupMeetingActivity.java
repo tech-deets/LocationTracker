@@ -504,6 +504,67 @@ public void hostMeeting(View v){
 
                             Log.d("MYMESSAGE", "RESPONSE " + response);
                             tokens = tokens+response+",";
+                            Log.d("NEW_TOKEN",tokens.length()+"");
+                            Log.d("NEW_TOKEN",tokens+"");
+
+                            if(tokens.length()!=0) {
+                                Log.d("NEW_TOKEN",tokens.length()+"inside if statement");
+
+                                tokens = tokens.substring(0, tokens.length() - 1);
+                                try {
+                                    String cloudserverip = "server1.vmm.education";
+
+                                    String url = "http://" + cloudserverip + "/VMMCloudMessaging/SendSimpleNotificationUsingTokens";
+
+                                    JSONObject jsonBody = new JSONObject();
+                                    jsonBody.put("serverkey", "AAAAgidu1XE:APA91bEz09Ck8vQWBXEz0gOtC-xCAofLIMnt5t6nHsKY7RQHKn40QkDrG7FpeXk89rBulrSEMQzdVzwbs8I5ZzUvkK-ppa3VtQP6vYyCNsw-dQx8WYZMvGRSOp-JpPKKOcpjgSWIjRAJ");
+                                    jsonBody.put("tokens", tokens);
+                                    jsonBody.put("title", "This%20is%20an%20invite");
+                                    jsonBody.put("message", "invite");
+                                    final String requestBody = jsonBody.toString();
+
+                                    StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
+                                            Log.i("VOLLEY", response);
+                                        }
+                                    }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            Log.e("VOLLEY", error.toString());
+                                        }
+                                    }) {
+                                        @Override
+                                        public String getBodyContentType() {
+                                            return "application/json; charset=utf-8";
+                                        }
+
+                                        @Override
+                                        public byte[] getBody() throws AuthFailureError {
+                                            try {
+                                                return requestBody == null ? null : requestBody.getBytes("utf-8");
+                                            } catch (UnsupportedEncodingException uee) {
+                                                VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                                                return null;
+                                            }
+                                        }
+
+                                        @Override
+                                        protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                                            String responseString = "";
+                                            if (response != null) {
+                                                responseString = String.valueOf(response.data);
+                                                // can get more details such as response.headers
+                                            }
+                                            return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                                        }
+                                    };
+
+                                    requestQueue.add(stringRequest);
+                                } catch (Exception ex) {
+                                    ex.printStackTrace();
+                                }
+                            }
 
                         }
                     },
@@ -579,7 +640,7 @@ public void hostMeeting(View v){
 //            {
 //                ex.printStackTrace();
 //            }
-//
+
 //        }
 
     }
