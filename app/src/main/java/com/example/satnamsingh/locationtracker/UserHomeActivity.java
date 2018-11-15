@@ -87,9 +87,13 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
     private NavigationMenuView navigationMenuView;
     String memberPhone;
     GoogleMap mMap;
+    private boolean showLiveLocation=true;
    // ArrayList<LastLocations> lastLocation;
     SupportMapFragment mapFragmentv;
     private boolean mapStatus=false;
+    private  boolean groupSelected=false;
+    private int previousGroupSelected=0;
+    private boolean loadingGroupMembers=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +113,8 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
         //start the service through new thread to cut off the load from main thread
         mapFragmentv= (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        mapFragmentv.getMapAsync(UserHomeActivity.this::onMapReady);
+
         drawer=findViewById(R.id.drawer);
         navigationView =findViewById(R.id.nav_view);
         NavigationMenuView navMenuView = (NavigationMenuView) navigationView.getChildAt(0);
@@ -165,6 +171,9 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
                     startActivity(groupMeeting);
                 }else if (menuItem.getItemId() == R.id.menu_settings){
                     Intent settingsIntent = new Intent(getApplicationContext(),Settings.class);
+                    startActivity(settingsIntent);
+                }else if (menuItem.getItemId() == R.id.my_meetings_menu){
+                    Intent settingsIntent = new Intent(getApplicationContext(),MyMeetingsActivity.class);
                     startActivity(settingsIntent);
                 }
                 //Close Drawer after logic is executed
@@ -274,11 +283,11 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
         public void onDataChange(DataSnapshot dataSnapshot) {
             Log.d("MYMESSAGE","FETCHING THE GROUP NAMES");
             if(dataSnapshot==null){
-                System.out.println("referring gnull");
+              //  System.out.println("referring gnull");
                 Log.d("MYMSG","----reffering null");
 
             }
-            Log.d("MYMSG","not null=----");
+            //Log.d("MYMSG","not null=----");
 
             groupName=(ArrayList<String>)dataSnapshot.getValue();
             groupName.add(0,"--Select Group--");
@@ -292,36 +301,54 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
             groups_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    userData.clear();
-                    members.clear();
-                    if (position!= 0) {
-                        Log.d("MYMESSAGE","---"+groupName.get(position));
-
-                        //Toast.makeText(UserHomeActivity.this, "Please selecct a group", Toast.LENGTH_SHORT).show();
-                        FirebaseDatabase firebaseDatabase =FirebaseDatabase.getInstance();
-                        DatabaseReference databaseReference=firebaseDatabase.getReference("Groups").
-                                child(groupCode.get(position)).child("groupMembers");
-
-                        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                members = (ArrayList<String>) dataSnapshot.getValue();
-                                if(members == null){
-                                    members = new ArrayList<>();
-                                }
-                                Log.d("MYMSG: Size: ", members.size()+"");
-
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
+                    Log.d("MYMSG","PREVIOUS GROUP"+previousGroupSelected);
+                    Log.d("MYMSG","current GROUP"+position);
+                    Log.d("MYMSG","loadinggroupstatus"+loadingGroupMembers);
 
 
-                    }
+                 //   if(previousGroupSelected==position){
+
+                 //   }
+                   // else{
+                        previousGroupSelected=position;
+                         if(loadingGroupMembers==false){
+                             loadingGroupMembers=true;
+                             //userData.clear();
+                             members.clear();
+                             if (position!= 0) {
+                                 Log.d("MYMESSAGE","---"+groupName.get(position));
+
+                                 //Toast.makeText(UserHomeActivity.this, "Please selecct a group", Toast.LENGTH_SHORT).show();
+                                 FirebaseDatabase firebaseDatabase =FirebaseDatabase.getInstance();
+                                 DatabaseReference databaseReference=firebaseDatabase.getReference("Groups").
+                                         child(groupCode.get(position)).child("groupMembers");
+
+                                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                     @Override
+                                     public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                         members = (ArrayList<String>) dataSnapshot.getValue();
+                                         if(members == null){
+                                             members = new ArrayList<>();
+                                         }
+                                         Log.d("MYMSG: Size: ", members.size()+"FOR THE POSITION "+position);
+                                         showGroupMembers();
+
+
+                                     }
+
+                                     @Override
+                                     public void onCancelled(DatabaseError databaseError) {
+
+                                     }
+                                 });
+
+
+                             }
+                         }
+
+                   // }
+
 
                 }
 
@@ -340,7 +367,7 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
   //  Log.d("MYMSG",GlobalData.phoneNumber);
 
    }
-    public void showGroupMembers(View v){
+    public void showGroupMembers(){
 
         userData.clear();
         usersLastLocation.clear();
@@ -374,7 +401,9 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
                                  usersLastLocation.add(new Locations(lc.getLatitude(),lc.getLongitude()));
 //                                 userDataIndex=0;
                     mapFragmentv.getMapAsync(UserHomeActivity.this::onMapReady);
-                                    }
+                    groupListAdapter.notifyDataSetChanged();
+
+                }
 
             }
 
@@ -383,7 +412,7 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
 
             }
         });
-                   groupListAdapter.notifyDataSetChanged();
+//                   groupListAdapter.notifyDataSetChanged();
 
                 }
 
@@ -410,89 +439,129 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
         }
         mMap = googleMap;
         mapStatus=true;
-        Log.d("MYMESSAGE", "starting of onmap ready");
+        if(showLiveLocation){
+            FirebaseDatabase firebaseDatabase =FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference=firebaseDatabase.getReference("Users").child(GlobalData.phoneNumber)
+                .child("LastLocation");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null){
+                    final double[] latitude = new double[1];
+                final double[] longitude = new double[1];
+                final DatabaseReference[] db_latitude = {databaseReference.child("latitude")};
+                final DatabaseReference[] db_longitude = {databaseReference.child("longitude")};
+                db_latitude[0].addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-        Log.d("MYMESSAGE", members.size() + "==========");
+                        latitude[0] = (double) dataSnapshot.getValue();
+                        Log.d("LOCATION",latitude[0]+"");
+                        db_longitude[0].addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                longitude[0] = (double) dataSnapshot.getValue();
+//                                mMap = googleMap;
+//                                mMap.clear();
 
-        for(int i=userDataIndex;i<usersLastLocation.size();i++){
+                                LatLng lastLocation = new LatLng(latitude[0],longitude[0]);
+                                Log.d("MYLOCATIONONMAP",latitude[0]+"    "+longitude[0]);
+                                mMap.addMarker(new MarkerOptions().position(lastLocation).title("Current Location"));
+                                mMap.addMarker(new MarkerOptions().position(lastLocation).title("cc"));
+                                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lastLocation,16));
+                                showLiveLocation=false;
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        }else{
+            Log.d("MYMESSAGE", "starting of onmap ready");
+            Log.d("MYMESSAGE", members.size() + "==========");
 
 
-            userDataIndex++;
-        Log.d("LOOPCALLEDTIMES ", i + "-----======");
-        // Locations lastLocation=;
+
+
+
+                //   Log.d("MYLOCATIONONMAP",latitude[0]+"    "+longitude[0]);
+//            new MyAsyncTask().execute("https://picsum.photos/200/300/?random");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for(int i=userDataIndex;i<usersLastLocation.size();i++){
+                        userDataIndex++;
+                        Log.d("LOOPCALLEDTIMES ", i + "-----======");
+                        // Locations lastLocation=;
 //                       Log.d("MYMESSAGE",userData.get(i).getName()+"\n");
 //            Log.d("MYMESSAGE",userData.get(i).getName()+"\n");
 
-        double latitude = usersLastLocation.get(i).getLatitude();
-        double longitude = usersLastLocation.get(i).getLongitude();
-        Log.d("LOCATIONONMAPREADY", "=----" + i + "---- " + latitude + "\n" + longitude);
+                        double latitude = usersLastLocation.get(i).getLatitude();
+                        double longitude = usersLastLocation.get(i).getLongitude();
+                        Log.d("LOCATIONONMAPREADY", "=----" + i + "---- " + latitude + "\n" + longitude);
 
-        LatLng lastLocation = new LatLng(latitude, longitude);
-        //   Log.d("MYLOCATIONONMAP",latitude[0]+"    "+longitude[0]);
-//            new MyAsyncTask().execute("https://picsum.photos/200/300/?random");
-        final int s = i;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+                        LatLng lastLocation = new LatLng(latitude, longitude);
 
-                try {
-
-                    URL url = new URL(userData.get(s).getPhoto());
-                    Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Marker marker;
-
-                            marker= mMap.addMarker(new MarkerOptions().position(lastLocation).title(userData.get(s).getName())
-                                    .icon(BitmapDescriptorFactory.fromBitmap(createCustomMarker(getApplicationContext(),
-                                            image, userData.get(s).getName()))));
-                            marker.setTag(userData.get(s).getPhoneNumber());
-                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, 4));
-                           // final int index=i;
-                            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                        try {
+                            final int s = i;
+                            URL url = new URL(userData.get(i).getPhoto());
+                            Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                            runOnUiThread(new Runnable() {
                                 @Override
-                                public boolean onMarkerClick(Marker marker) {
-                                    BottomSheetGroup bottomSheet = new BottomSheetGroup();
 
-                                    bottomSheet.show(getSupportFragmentManager(), "BottomSheetGroup");
-                                    //Intent in=new Intent(getApplicationContext(),BottomSheetGroup.class);
-                                    memberPhone=marker.getTag().toString();
-                                    Log.d("MARKERCLICKED","---value of "+marker.getTag());
+                                public void run() {
+                                    Marker marker;
 
-                                    Log.d("MARKERCLICKED","---"+memberPhone);
-                                    Toast.makeText(UserHomeActivity.this, "marker clicked"+marker.getTitle(), Toast.LENGTH_SHORT).show();
-                                    return false;
+                                    marker= mMap.addMarker(new MarkerOptions().position(lastLocation).title(userData.get(s).getName())
+                                            .icon(BitmapDescriptorFactory.fromBitmap(createCustomMarker(getApplicationContext(),
+                                                    image, userData.get(s).getName()))));
+                                    marker.setTag(userData.get(s).getPhoneNumber());
+                                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, 4));
+                                    // final int index=i;
+                                    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                                        @Override
+                                        public boolean onMarkerClick(Marker marker) {
+                                            BottomSheetGroup bottomSheet = new BottomSheetGroup();
+
+                                            bottomSheet.show(getSupportFragmentManager(), "BottomSheetGroup");
+                                            //Intent in=new Intent(getApplicationContext(),BottomSheetGroup.class);
+                                            memberPhone=marker.getTag().toString();
+                                            Log.d("MARKERCLICKED","---value of "+marker.getTag());
+
+                                            Log.d("MARKERCLICKED","---"+memberPhone);
+                                            Toast.makeText(UserHomeActivity.this, "marker clicked"+marker.getTitle(), Toast.LENGTH_SHORT).show();
+                                            return false;
+                                        }
+                                    });
                                 }
                             });
+
+                        } catch (IOException e) {
+                            System.out.println(e);
                         }
-                    });
+                    }
 
-                } catch (IOException e) {
-                    System.out.println(e);
-                }
+                } //run ed here
+                }).start();
 
+            ////for loop end here
+        }
 
-            }
-        }).start();
-//        final int index=i;
-//            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-//                @Override
-//                public boolean onMarkerClick(Marker marker) {
-//                    BottomSheetGroup bottomSheet = new BottomSheetGroup();
-//
-//                    bottomSheet.show(getSupportFragmentManager(), "BottomSheetGroup");
-//                    //Intent in=new Intent(getApplicationContext(),BottomSheetGroup.class);
-//                    memberPhone=userData.get(index).getPhoneNumber();
-//
-//                    Log.d("MARKERCLICKED","---"+memberPhone);
-//                    Toast.makeText(UserHomeActivity.this, "marker clicked"+marker.getTitle(), Toast.LENGTH_SHORT).show();
-//                    return false;
-//                }
-//            });
-
-        //mMap.addMarker(new MarkerOptions().position(lastLocation).title("cc"));
-    }
 
     }
     //listener for bottomsheet's button clicked////////////////////
@@ -516,6 +585,7 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     class SelectGroup extends RecyclerView.Adapter<SelectGroup.MyViewHolder> {
+        int iteratingValue=1;
                    // Define ur own View Holder (Refers to Single Row)
                 class MyViewHolder extends RecyclerView.ViewHolder {
                        CardView singlecardview;
@@ -559,6 +629,12 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
                        Glide.with(getApplicationContext()).load(u.getPhoto()).apply(RequestOptions.circleCropTransform())
                                .thumbnail(0.3f).into(image);
                        name.setText(u.getName());
+                       if(iteratingValue==userData.size()){
+                           loadingGroupMembers=false;
+                           iteratingValue=0;
+
+                       }
+                       iteratingValue++;
 
 
                    }
@@ -567,6 +643,7 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
                        Log.d("MYMESSAGE", "get Item Count Called");
                        return userData.size();
                    }
+
                }
 
 

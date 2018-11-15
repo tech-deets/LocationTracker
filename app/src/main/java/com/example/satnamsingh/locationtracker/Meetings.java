@@ -15,7 +15,17 @@ public class Meetings {
 
     public Meetings() {
     }
-
+    public Meetings(Meetings meeting){
+        this.groupCode = meeting.groupCode;
+        this.groupMembers = meeting.groupMembers;
+        this.meetingLocation = meeting.meetingLocation;
+        this.latitude = meeting.latitude;
+        this.longitude = meeting.longitude;
+        this.meetingAgenda = meeting.meetingAgenda;
+        this.meetingDate = meeting.meetingDate;
+        this.meetingTime = meeting.meetingTime;
+        this.meetingHost = meeting.meetingHost;
+    }
     public Meetings(String groupCode, ArrayList<String> groupMembers, String meetingLocation, double latitude, double longitude, String meetingAgenda, String meetingDate, String meetingTime, String meetingHost) {
         this.groupCode = groupCode;
         this.groupMembers = groupMembers;
