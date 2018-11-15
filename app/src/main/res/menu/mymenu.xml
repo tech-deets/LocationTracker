@@ -2,7 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
-
     <item
         android:id="@+id/menu_create_group"
         android:title="Create Group"
@@ -21,16 +20,22 @@
     <item
         android:id="@+id/my_meetings_menu"
         android:title="My Meetings"
-        android:icon="@drawable/group_icon"
+        android:icon="@drawable/my_meeting_icon"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/group_meeting"
+        android:title="Arrange Meeting"
+        android:icon="@drawable/arrange_meeting_icon"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/m4"
         android:title="four"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/group_meeting"
-        android:title="Group Meeting"
-        app:showAsAction="ifRoom" />
+        android:id="@+id/danger_location"
+        android:title="Mark Danger Location"
+        android:icon="@drawable/danger_location_icon"
+        />
     <item
         android:id="@+id/danger_Zone"
         android:title="Danger Zones"
