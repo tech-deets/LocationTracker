@@ -83,7 +83,8 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".MyMeetingsActivity"></activity>
+        <activity android:name=".MyMeetingsActivity" />
+        <activity android:name=".sendnotification"></activity>
     </application>
 
 </manifest>
