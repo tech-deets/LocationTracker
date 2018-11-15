@@ -40,6 +40,7 @@ public class MyMeetingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_meetings);
             this.setTitle("My Meetings");
             meetings=new ArrayList<>();
+            meetingsData=new ArrayList<>();
 
             Intent in=getIntent();
             my_total_meetings_tv = findViewById(R.id.my_total_meetings_tv);
@@ -152,6 +153,7 @@ public class MyMeetingsActivity extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     Meetings meetingData=dataSnapshot.getValue(Meetings.class);
+                                    meetingsData.add(new Meetings(meetingData));
                                     my_meeting_title_tv.setText(meetingData.getMeetingAgenda());
                                     my_meeting_date_tv.setText(meetingData.getMeetingDate());
                                     my_meeting_time_tv.setText(meetingData.getMeetingTime());
@@ -169,6 +171,8 @@ public class MyMeetingsActivity extends AppCompatActivity {
                 my_meeting_info_iv.setOnClickListener((view)->
                 {
                     Intent meetingInfoIntent = new Intent(getApplicationContext(),MeetingInfoDialog.class);
+                    meetingInfoIntent.putExtra("meeting",meetingsData.get(position).getMeetingId());
+                    Log.d("MEETING_CODE",meetingsData.get(position).getMeetingId());
                     startActivity(meetingInfoIntent);
                 });
 

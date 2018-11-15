@@ -32,6 +32,11 @@
         android:title="Group Meeting"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/danger_Zone"
+        android:title="Danger Zones"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/menu_settings"
         android:title="Settings"
         android:icon="@drawable/settings_icon"

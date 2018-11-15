@@ -99,7 +99,7 @@ public class GroupMeetingActivity extends AppCompatActivity implements OnMapRead
     private String meetingTime;
     private String meetingHost;
     private EditText meetingAgenda_et;
-    private boolean notificationSent=false;
+    private boolean notificationSent = false;
 
 
     @Override
@@ -442,7 +442,7 @@ public class GroupMeetingActivity extends AppCompatActivity implements OnMapRead
     };
 
     public void hostMeeting(View v) {
-        notificationSent=false;
+        notificationSent = false;
         meetingAgenda = meetingAgenda_et.getText().toString();
         meetingHost = GlobalData.phoneNumber;
         if (groupSelected == null || meetingLocationName == null || meetingAgenda == null) {
@@ -454,12 +454,13 @@ public class GroupMeetingActivity extends AppCompatActivity implements OnMapRead
                 if (meetingAgenda == null) {
                     Toast.makeText(getApplicationContext(), "Please mention Meeting Agenda", Toast.LENGTH_SHORT).show();
                 } else {
-                    Meetings meetingDetails = new Meetings(groupSelected, members, meetingLocationName
-                            , meetingLocation.latitude, meetingLocation.longitude, meetingAgenda,
-                            meetingDate, meetingTime, meetingHost);
+
                     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Meetings");
                     DatabaseReference pushData = databaseReference.push();
                     final String pushId = pushData.getKey();
+                    Meetings meetingDetails = new Meetings(pushId, groupSelected, members, meetingLocationName
+                            , meetingLocation.latitude, meetingLocation.longitude, meetingAgenda,
+                            meetingDate, meetingTime, meetingHost);
                     databaseReference.child(pushId).setValue(meetingDetails);
                     DatabaseReference users_db = FirebaseDatabase.getInstance().getReference("Users");
                     for (String member : members) {
@@ -477,8 +478,8 @@ public class GroupMeetingActivity extends AppCompatActivity implements OnMapRead
                                 Log.d("ONADDCLICK", pushId);
                                 meetings.add(pushId);
                                 db.setValue(meetings);
-                                if(notificationSent==false){
-                                    notificationSent=true;
+                                if (notificationSent == false) {
+                                    notificationSent = true;
                                     sendNotification();
 
                                 }
@@ -501,106 +502,105 @@ public class GroupMeetingActivity extends AppCompatActivity implements OnMapRead
 
     public void sendNotification() {
         String notifyMember;
-for(int i=0;i<members.size();i++) {
-    notifyMember = members.get(i);
-Log.d("SENDING_INVITE_TO",notifyMember);
+        for (int i = 0; i < members.size(); i++) {
+            notifyMember = members.get(i);
+            Log.d("SENDING_INVITE_TO", notifyMember);
 
-    try {
-        String packagenameofapp = getPackageName();
+            try {
+                String packagenameofapp = getPackageName();
 
-        String cloudserverip = "server1.vmm.education";
+                String cloudserverip = "server1.vmm.education";
 
 //            URL url = new URL("http://" + cloudserverip + "/VMMCloudMessaging/GetTokenOfMobileno?packagename=" + packagenameofapp + "&mobileno=" +);
-        String url = "http://" + cloudserverip + "/VMMCloudMessaging/GetTokenOfMobileno?packagename=" + packagenameofapp + "&mobileno="+notifyMember;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                String url = "http://" + cloudserverip + "/VMMCloudMessaging/GetTokenOfMobileno?packagename=" + packagenameofapp + "&mobileno=" + notifyMember;
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
 
-                        Log.d("MYMESSAGE", "RESPONSE " + response);
-                  //   tokens = tokens + response + ",";
-                        tokens =  response + ",";
+                                Log.d("MYMESSAGE", "RESPONSE " + response);
+                                //   tokens = tokens + response + ",";
+                                tokens = response + ",";
 
-                        Log.d("NEW_TOKEN", tokens.length() + "");
+                                Log.d("NEW_TOKEN", tokens.length() + "");
 
-                        Log.d("NEW_TOKEN", tokens + "");
+                                Log.d("NEW_TOKEN", tokens + "");
 
-                        if (tokens.length() != 0) {
-                            Log.d("NEW_TOKEN", tokens.length() + "inside if statement");
-                            SharedPreferences sharedPreferences = getSharedPreferences("mypref1", MODE_PRIVATE);
-                            String myToken = sharedPreferences.getString("devicetoken", "");
-                            tokens = tokens.substring(0, tokens.length() - 1);
-                            Log.d("TOKEN: ", tokens);
-                            try {
-                                String cloudserverip = "server1.vmm.education";
+                                if (tokens.length() != 0) {
+                                    Log.d("NEW_TOKEN", tokens.length() + "inside if statement");
+                                    SharedPreferences sharedPreferences = getSharedPreferences("mypref1", MODE_PRIVATE);
+                                    String myToken = sharedPreferences.getString("devicetoken", "");
+                                    tokens = tokens.substring(0, tokens.length() - 1);
+                                    Log.d("TOKEN: ", tokens);
+                                    try {
+                                        String cloudserverip = "server1.vmm.education";
 
-                                String url = "http://" + cloudserverip + "/VMMCloudMessaging/SendSimpleNotificationUsingTokens?serverkey=AAAAgidu1XE:APA91bEz09Ck8vQWBXEz0gOtC-xCAofLIMnt5t6nHsKY7RQHKn40QkDrG7FpeXk89rBulrSEMQzdVzwbs8I5ZzUvkK-ppa3VtQP6vYyCNsw-dQx8WYZMvGRSOp-JpPKKOcpjgSWIjRAJ&tokens=" + tokens + "&title=INVITE FROM SHIVAM&message=MOVE TO LONDON";
+                                        String url = "http://" + cloudserverip + "/VMMCloudMessaging/SendSimpleNotificationUsingTokens?serverkey=AAAAgidu1XE:APA91bEz09Ck8vQWBXEz0gOtC-xCAofLIMnt5t6nHsKY7RQHKn40QkDrG7FpeXk89rBulrSEMQzdVzwbs8I5ZzUvkK-ppa3VtQP6vYyCNsw-dQx8WYZMvGRSOp-JpPKKOcpjgSWIjRAJ&tokens=" + tokens + "&title=INVITE FROM SHIVAM&message=MOVE TO LONDON";
 
-                                JSONObject jsonBody = new JSONObject();
-                                jsonBody.put("serverkey", "AAAAgidu1XE:APA91bEz09Ck8vQWBXEz0gOtC-xCAofLIMnt5t6nHsKY7RQHKn40QkDrG7FpeXk89rBulrSEMQzdVzwbs8I5ZzUvkK-ppa3VtQP6vYyCNsw-dQx8WYZMvGRSOp-JpPKKOcpjgSWIjRAJ");
-                                jsonBody.put("tokens", tokens);
-                                jsonBody.put("title", "This%20is%20an%20invite");
-                                jsonBody.put("message", "invite");
-                                final String requestBody = jsonBody.toString();
+                                        JSONObject jsonBody = new JSONObject();
+                                        jsonBody.put("serverkey", "AAAAgidu1XE:APA91bEz09Ck8vQWBXEz0gOtC-xCAofLIMnt5t6nHsKY7RQHKn40QkDrG7FpeXk89rBulrSEMQzdVzwbs8I5ZzUvkK-ppa3VtQP6vYyCNsw-dQx8WYZMvGRSOp-JpPKKOcpjgSWIjRAJ");
+                                        jsonBody.put("tokens", tokens);
+                                        jsonBody.put("title", "This%20is%20an%20invite");
+                                        jsonBody.put("message", "invite");
+                                        final String requestBody = jsonBody.toString();
+                                        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                                            @Override
+                                            public void onResponse(String response) {
+                                                Log.i("VOLLEY", response);
+                                            }
+                                        }, new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                Log.e("VOLLEY", error.toString());
+                                            }
+                                        }) {
+                                            @Override
+                                            public String getBodyContentType() {
+                                                return "application/json; charset=utf-8";
+                                            }
 
-                                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                                    @Override
-                                    public void onResponse(String response) {
-                                        Log.i("VOLLEY", response);
+                                            @Override
+                                            public byte[] getBody() throws AuthFailureError {
+                                                try {
+                                                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                                                } catch (UnsupportedEncodingException uee) {
+                                                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                                                    return null;
+                                                }
+                                            }
+
+                                            @Override
+                                            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                                                String responseString = "";
+                                                if (response != null) {
+                                                    responseString = String.valueOf(response.data);
+                                                    // can get more details such as response.headers
+                                                }
+                                                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                                            }
+                                        };
+
+                                        requestQueue.add(stringRequest);
+                                    } catch (Exception ex) {
+                                        ex.printStackTrace();
                                     }
-                                }, new Response.ErrorListener() {
-                                    @Override
-                                    public void onErrorResponse(VolleyError error) {
-                                        Log.e("VOLLEY", error.toString());
-                                    }
-                                }) {
-                                    @Override
-                                    public String getBodyContentType() {
-                                        return "application/json; charset=utf-8";
-                                    }
+                                }
 
-                                    @Override
-                                    public byte[] getBody() throws AuthFailureError {
-                                        try {
-                                            return requestBody == null ? null : requestBody.getBytes("utf-8");
-                                        } catch (UnsupportedEncodingException uee) {
-                                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                                            return null;
-                                        }
-                                    }
-
-                                    @Override
-                                    protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                                        String responseString = "";
-                                        if (response != null) {
-                                            responseString = String.valueOf(response.data);
-                                            // can get more details such as response.headers
-                                        }
-                                        return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-                                    }
-                                };
-
-                                requestQueue.add(stringRequest);
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
                             }
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("MYMESSAGE", error.toString());
-                    }
-                });
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("MYMESSAGE", error.toString());
+                            }
+                        });
 
 
-        requestQueue.add(stringRequest);
-    } catch (Exception ex) {
-        ex.printStackTrace();
-    }
-}
+                requestQueue.add(stringRequest);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
 
 //        if(tokens.length()!=0)
 //        {
@@ -663,7 +663,6 @@ Log.d("SENDING_INVITE_TO",notifyMember);
 //            }
 
 //        }
-
 
 
     }

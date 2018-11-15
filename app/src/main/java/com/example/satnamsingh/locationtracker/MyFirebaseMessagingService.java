@@ -3,6 +3,8 @@ package com.example.satnamsingh.locationtracker;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
@@ -172,9 +174,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService
 
         Uri ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         builder.setSound(ringtoneUri);
+        Intent in=new Intent(this,MyMeetingsActivity.class);
+        PendingIntent pin=PendingIntent.getActivity(this,0,in,0);
+
+        builder.setContentIntent(pin);
 
         //Create Notification Object
         Notification n = builder.build();
+
 
         //Create Notification Manager Instance
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

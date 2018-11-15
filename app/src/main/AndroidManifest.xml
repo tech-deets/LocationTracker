@@ -84,8 +84,10 @@
         </service>
 
         <activity android:name=".MyMeetingsActivity" />
-        <activity android:name=".MeetingInfoDialog"
-            android:theme="@style/CustomDialogTheme"></activity>
+        <activity
+            android:name=".MeetingInfoDialog"
+            android:theme="@style/CustomDialogTheme" />
+        <activity android:name=".DangerZoneActivity"></activity>
     </application>
 
 </manifest>

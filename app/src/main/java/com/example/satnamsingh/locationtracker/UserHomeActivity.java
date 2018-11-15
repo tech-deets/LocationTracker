@@ -1,6 +1,5 @@
 package com.example.satnamsingh.locationtracker;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
@@ -8,20 +7,13 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.location.Location;
-import android.media.Image;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
-import android.provider.ContactsContract;
-import android.support.annotation.DrawableRes;
 import android.support.design.internal.NavigationMenuView;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DividerItemDecoration;
@@ -58,8 +50,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -175,6 +165,9 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
                 }else if (menuItem.getItemId() == R.id.my_meetings_menu){
                     Intent settingsIntent = new Intent(getApplicationContext(),MyMeetingsActivity.class);
                     startActivity(settingsIntent);
+                }else if (menuItem.getItemId() == R.id.danger_Zone){
+                    Intent dangerZoneIntent = new Intent(getApplicationContext(),DangerZoneActivity.class);
+                    startActivity(dangerZoneIntent);
                 }
                 //Close Drawer after logic is executed
                 drawer.closeDrawer(GravityCompat.START);
@@ -268,6 +261,8 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
             groupCode=(ArrayList<String>)dataSnapshot.getValue();
+            if(groupCode==null)
+                groupCode=new ArrayList<>();
             groupCode.add(0,"--Select Group--");
         }
 
@@ -290,6 +285,9 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
             //Log.d("MYMSG","not null=----");
 
             groupName=(ArrayList<String>)dataSnapshot.getValue();
+            if(groupName==null){
+                groupName=new ArrayList<>();
+            }
             groupName.add(0,"--Select Group--");
 
             Log.d("MYMSG","--"+groupName.toString());

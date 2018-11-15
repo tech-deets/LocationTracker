@@ -3,6 +3,7 @@ package com.example.satnamsingh.locationtracker;
 import java.util.ArrayList;
 
 public class Meetings {
+    private String meetingId;
     private String groupCode;
     private ArrayList<String> groupMembers;
     private String meetingLocation; //location name
@@ -16,6 +17,7 @@ public class Meetings {
     public Meetings() {
     }
     public Meetings(Meetings meeting){
+        this.meetingId=meeting.meetingId;
         this.groupCode = meeting.groupCode;
         this.groupMembers = meeting.groupMembers;
         this.meetingLocation = meeting.meetingLocation;
@@ -26,7 +28,8 @@ public class Meetings {
         this.meetingTime = meeting.meetingTime;
         this.meetingHost = meeting.meetingHost;
     }
-    public Meetings(String groupCode, ArrayList<String> groupMembers, String meetingLocation, double latitude, double longitude, String meetingAgenda, String meetingDate, String meetingTime, String meetingHost) {
+    public Meetings(String meetingId,String groupCode, ArrayList<String> groupMembers, String meetingLocation, double latitude, double longitude, String meetingAgenda, String meetingDate, String meetingTime, String meetingHost) {
+        this.meetingId=meetingId;
         this.groupCode = groupCode;
         this.groupMembers = groupMembers;
         this.meetingLocation = meetingLocation;
@@ -36,6 +39,14 @@ public class Meetings {
         this.meetingDate = meetingDate;
         this.meetingTime = meetingTime;
         this.meetingHost = meetingHost;
+    }
+
+    public String getMeetingId() {
+        return meetingId;
+    }
+
+    public void setMeetingId(String meetingId) {
+        this.meetingId = meetingId;
     }
 
     public String getGroupCode() {
