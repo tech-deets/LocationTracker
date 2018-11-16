@@ -89,7 +89,7 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_home);
-
+        //deleteEntries();
         Intent intent=new Intent(this, LocationTrackerService.class);
         intent.setAction("START SIGNAL");
         startService(intent);
@@ -667,8 +667,10 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
         return bitmap1;
     }
 
-public void deleteEntries(){
-        
+public void deleteEntries() {
+    DatabaseReference db = FirebaseDatabase.getInstance().getReference("Users")
+            .child(GlobalData.phoneNumber).child("Locations");
+    db.setValue("");
 }
 }
 

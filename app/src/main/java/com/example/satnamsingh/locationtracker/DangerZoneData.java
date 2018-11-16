@@ -10,7 +10,14 @@ public class DangerZoneData {
 
     public DangerZoneData() {
     }
-
+public DangerZoneData(DangerZoneData zone){
+    this.zoneId    =    zone.zoneId;
+    this.markedBy  =    zone.markedBy;
+    this.latitude  =    zone.latitude;
+    this.longitude =    zone.longitude;
+    this.name      =    zone.name;
+    this.comment   =    zone.comment;
+}
     public DangerZoneData(String zoneId, String markedBy, double latitude, double longitude, String name, String comment) {
         this.zoneId = zoneId;
         this.markedBy = markedBy;

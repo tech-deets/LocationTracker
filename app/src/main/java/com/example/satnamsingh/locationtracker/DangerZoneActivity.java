@@ -39,54 +39,60 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class DangerZoneActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationClickListener ,GoogleMap.OnMyLocationButtonClickListener {
+public class DangerZoneActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMyLocationButtonClickListener {
     SupportMapFragment danger_zone_map_fragment;
     private static final double DEFAULT_RADIUS_METERS = 1000000;
     private static final int MAX_WIDTH_PX = 50;
     private static final int MAX_HUE_DEGREES = 360;
     private static final int MAX_ALPHA = 255;
     EditText danger_zone_comment_et;
-    private String zoneName="Unknown Location";
+    private String zoneName = "Unknown Location";
     Geocoder geocoder;
-private LatLng dangerZone;
+    private LatLng dangerZone;
+    String locAddress = "";
+    ArrayList<DangerZoneData> dangerZones;
+    GoogleMap mMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_danger_zone);
+        dangerZones=new ArrayList<>();
         geocoder = new Geocoder(this, Locale.getDefault());
-        danger_zone_comment_et=findViewById(R.id.danger_zone_comment_et);
-        danger_zone_map_fragment=(SupportMapFragment)getSupportFragmentManager()
+        danger_zone_comment_et = findViewById(R.id.danger_zone_comment_et);
+        danger_zone_map_fragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.danger_zone_map_fragment);
         danger_zone_map_fragment.getMapAsync(this);
-
 
 
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        GoogleMap mMap=googleMap;
+         mMap = googleMap;
+
 
         //mMap.setMyLocationEnabled(true);
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
 
-      //boolean s=onMyLocationButtonClick();
+        //boolean s=onMyLocationButtonClick();
         //PlaceDetectionClient.getCurrentPlace();
         // //mMap.setOnMapClickListener(this);
-        FirebaseDatabase firebaseDatabase =FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference=firebaseDatabase.getReference("Users").child(GlobalData.phoneNumber)
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Users").child(GlobalData.phoneNumber)
                 .child("LastLocation");
-        DatabaseReference latitude_db=databaseReference.child("latitude");
-        DatabaseReference longitude_db=databaseReference.child("longitude");
+        DatabaseReference latitude_db = databaseReference.child("latitude");
+        DatabaseReference longitude_db = databaseReference.child("longitude");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot!=null){
-                  Locations location=dataSnapshot.getValue(Locations.class);
-                  mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(),location.getLongitude())));
-                  mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                          new LatLng(location.getLatitude(),location.getLongitude()),15));
+                if (dataSnapshot != null) {
+                    Locations location = dataSnapshot.getValue(Locations.class);
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                            new LatLng(location.getLatitude(), location.getLongitude()), 15));
+                    showDangerZOnes();
                 }
             }
 
@@ -95,16 +101,15 @@ private LatLng dangerZone;
 
             }
         });
-        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener()
-        {
+        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
-            public void onMapClick(LatLng arg)
-            { dangerZone = arg;
+            public void onMapClick(LatLng arg) {
+                dangerZone = arg;
                 AlertDialog.Builder builder = new AlertDialog.Builder(DangerZoneActivity.this);
                 builder.setTitle("Confirm");
                 builder.setMessage("Do you really want to add the tapped  location as danger zone");
-                Marker marker= mMap.addMarker(new MarkerOptions().position(dangerZone));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(dangerZone,15));
+                Marker marker = mMap.addMarker(new MarkerOptions().position(dangerZone));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(dangerZone, 15));
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -115,18 +120,17 @@ private LatLng dangerZone;
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
+                        Log.d("Danger_Zone: ", addresses.toString());
                         Address address = addresses.get(0);
+                        //Log.d("Danger_ZONE!: ", address.toString());
                         if (address != null) {
-                            StringBuilder sb = new StringBuilder();
-                            for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
-                                sb.append(address.getAddressLine(i) + "\n");
-                            }
-                            zoneName = sb.toString();
+                            locAddress = address.getAddressLine(0);
+                            zoneName=locAddress;
+                            Log.d("Danger_Zone: ", locAddress);
                             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(dangerZone, 15));
                             CircleOptions circleOptions = new CircleOptions()
                                     .center(dangerZone).fillColor(Color.argb(70, 50, 50, 156)).strokeColor(Color.BLUE).strokeWidth(15f)
-                                    .radius(300);
+                                    .radius(100);
                             Circle circle = mMap.addCircle(circleOptions);
 
 
@@ -145,9 +149,7 @@ private LatLng dangerZone;
             }
         });
 
-            }
-
-
+    }
 
 
     @Override
@@ -155,7 +157,6 @@ private LatLng dangerZone;
 
         Toast.makeText(this, "hello thers----:\n" + location, Toast.LENGTH_LONG).show();
     }
-
 
 
     @Override
@@ -172,19 +173,55 @@ private LatLng dangerZone;
 //
 //
 //    }
-    public void  addDangerZone(View view){
-        String comment=danger_zone_comment_et.getText().toString();
-        if(comment==null){
+    public void addDangerZone(View view) {
+        String comment = danger_zone_comment_et.getText().toString();
+        if (comment == null) {
             Toast.makeText(DangerZoneActivity.this, "Please enter ", Toast.LENGTH_SHORT).show();
-        }else{
-            DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("DangerZones");
-            DatabaseReference pushKeyReference=databaseReference.push();
-            final String pushKey=pushKeyReference.getKey();
-            DangerZoneData dangerZoneData=new DangerZoneData(pushKey,GlobalData.phoneNumber,
-                    dangerZone.latitude,dangerZone.longitude,zoneName,comment);
-           databaseReference.child(pushKey).setValue(dangerZoneData);
-           Log.d("DANGER_ZONE","THE ZONE IS ADDED");
+        } else {
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("DangerZones");
+            DatabaseReference pushKeyReference = databaseReference.push();
+            final String pushKey = pushKeyReference.getKey();
+            DangerZoneData dangerZoneData = new DangerZoneData(pushKey, GlobalData.phoneNumber,
+                    dangerZone.latitude, dangerZone.longitude, zoneName, comment);
+            databaseReference.child(pushKey).setValue(dangerZoneData);
+            Log.d("DANGER_ZONE", "THE ZONE IS ADDED");
         }
 
+    }
+    public void showDangerZOnes(){
+
+        DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("DangerZones");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                dangerZones.clear();
+                Toast.makeText(DangerZoneActivity.this, "showing danger zones", Toast.LENGTH_SHORT).show();
+                Log.d("DANGER_AREA",dataSnapshot.toString());
+                if(dataSnapshot!=null){
+                     int i=0;
+
+                    for(DataSnapshot ds:dataSnapshot.getChildren()){
+                        dangerZones.add(new DangerZoneData(ds.getValue(DangerZoneData.class)));
+                        Log.d("DANGER_ZONE",i+"   "+dangerZones.get(i).getLongitude()+"");
+                      Marker marker=  mMap.addMarker(new MarkerOptions().position(new LatLng(dangerZones.get(i).getLatitude(),
+                                dangerZones.get(i).getLongitude())));
+                        CircleOptions circleOptions = new CircleOptions()
+                                .center(new LatLng(dangerZones.get(i).getLatitude(),dangerZones.get(i).getLongitude())
+                                ).fillColor(Color.argb(70, 102, 153, 253)).strokeColor(Color.BLUE).strokeWidth(15f)
+                                .radius(100);
+                        Circle circle = mMap.addCircle(circleOptions);
+                        i++;
+
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }
