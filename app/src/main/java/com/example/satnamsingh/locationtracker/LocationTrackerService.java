@@ -269,7 +269,7 @@ public class LocationTrackerService extends Service {
     {
         public void onLocationChanged(Location location)
         {
-            Toast.makeText(getApplicationContext(), "Calling the location service", Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(getApplicationContext(), "Calling the location service", Toast.LENGTH_SHORT).show();
             new Thread(new myjob(location)).start();
 
         }

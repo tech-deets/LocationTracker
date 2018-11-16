@@ -26,10 +26,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Comment:"/>
-            <TextView
+            <EditText
+                android:id="@+id/danger_zone_comment_et"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <Button
+                android:onClick="addDangerZone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Add"/>

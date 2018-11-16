@@ -153,8 +153,6 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
                     Toast.makeText(UserHomeActivity.this, "groups is clicked", Toast.LENGTH_LONG).show();
                     Intent locationService =new Intent(getApplicationContext(),MyGroupsActivity.class);
                     startActivity(locationService);
-                }else if(menuItem.getItemId()==R.id.m4) {
-
                 }else if(menuItem.getItemId() == R.id.group_meeting)
                 {
                     Intent groupMeeting = new Intent(getApplicationContext(),GroupMeetingActivity.class);
@@ -165,7 +163,7 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
                 }else if (menuItem.getItemId() == R.id.my_meetings_menu){
                     Intent settingsIntent = new Intent(getApplicationContext(),MyMeetingsActivity.class);
                     startActivity(settingsIntent);
-                }else if (menuItem.getItemId() == R.id.danger_Zone){
+                }else if (menuItem.getItemId() == R.id.danger_zone){
                     Intent dangerZoneIntent = new Intent(getApplicationContext(),DangerZoneActivity.class);
                     startActivity(dangerZoneIntent);
                 }
@@ -669,6 +667,8 @@ public class UserHomeActivity extends AppCompatActivity implements OnMapReadyCal
         return bitmap1;
     }
 
-
+public void deleteEntries(){
+        
+}
 }
 

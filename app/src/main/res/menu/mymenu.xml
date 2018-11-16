@@ -27,20 +27,12 @@
         android:title="Arrange Meeting"
         android:icon="@drawable/arrange_meeting_icon"
         app:showAsAction="ifRoom" />
+
     <item
-        android:id="@+id/m4"
-        android:title="four"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/danger_location"
-        android:title="Mark Danger Location"
+        android:id="@+id/danger_zone"
+        android:title="Danger Zone"
         android:icon="@drawable/danger_location_icon"
         />
-    <item
-        android:id="@+id/danger_Zone"
-        android:title="Danger Zones"
-        app:showAsAction="ifRoom" />
-
     <item
         android:id="@+id/menu_settings"
         android:title="Settings"
