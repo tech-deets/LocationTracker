@@ -110,7 +110,7 @@ public class LocationTrackerService extends Service {
             }).start();
             Notification mynotif = simpleNotification("hello","Foreground Notification Running");
 
-            startForeground(1,mynotif);
+//            startForeground(1,mynotif);
         }
 
 
@@ -199,7 +199,7 @@ public class LocationTrackerService extends Service {
         public void run() {
             userLocations=new ArrayList<>();
             Notification mynotif = simpleNotification("Location sharing" ,"updating location");
-            startForeground(1,mynotif);
+//            startForeground(1,mynotif);
             double latitude,longitude;
             SharedPreferences sharedPreferences =getSharedPreferences("LocationTrackerUser.txt",MODE_PRIVATE);
             String phoneNumber=sharedPreferences.getString("phoneNumber","");

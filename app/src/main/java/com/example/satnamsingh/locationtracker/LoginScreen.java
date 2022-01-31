@@ -52,7 +52,6 @@ public class LoginScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
-
         loginPhone_et=findViewById(R.id.loginPhone_et);
         login_bt = findViewById(R.id.login_bt);
         login_tv1 = findViewById(R.id.login_tv1);
@@ -62,12 +61,11 @@ public class LoginScreen extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         code_et=findViewById(R.id.code_et);
         verify_bt=findViewById(R.id.verify_bt);
-
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
             @Override
             public void onVerificationCompleted(PhoneAuthCredential credential) {
                 code_et.setText(credential.getSmsCode());
+                flag = false;
                 loginPhone_et.setEnabled(false);
                 code_et.setEnabled(false);
                 GlobalData.phoneNumber=loginPhone;
@@ -77,7 +75,9 @@ public class LoginScreen extends AppCompatActivity {
             @Override
             public void onVerificationFailed(FirebaseException e) {
                 Log.d("MYMSG", "onVerificationFailed");
-                Toast.makeText(LoginScreen.this, "Users Authentication failed\nPlease Check PhoneNumber or Internet connection"
+                flag = false;
+                Toast.makeText(LoginScreen.this,
+                        "Users Authentication failed\nPlease Check PhoneNumber or Internet connection"
                         , Toast.LENGTH_LONG).show();
             }
 
@@ -102,18 +102,25 @@ public class LoginScreen extends AppCompatActivity {
             login_timer.setVisibility(View.VISIBLE);
             otpThread =new Thread(() ->
             {
-                for (int i = 120; i > 0; i--) {
+                for (int i = 120; i > 0; i--)
+                {
+                    if (!flag)
+                    {
+                        break;
+                    }
                     final int j = i;
                     runOnUiThread(() -> {
                         login_timer.setText(j + " sec");
                     });
                     try {
-
                         Thread.sleep(1000);
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     }
                 }
+                runOnUiThread(() -> {
+                    login_timer.setVisibility(View.GONE);
+                });
                 flag = false;
             });
             otpThread.start();
@@ -132,9 +139,6 @@ public class LoginScreen extends AppCompatActivity {
                     if (dataSnapshot.getValue() == null) {
                         Toast.makeText(LoginScreen.this, "User does not exist\nplease SignUp first", Toast.LENGTH_LONG).show();
                         flag = false;
-                        otpThread.stop();
-                        login_timer.setVisibility(View.GONE);
-
                     } else {
                         PhoneAuthProvider.getInstance().verifyPhoneNumber(loginPhone, 120, TimeUnit.SECONDS, LoginScreen.this, mCallbacks);
                         Log.d("MYMSG", " Veification Started");
@@ -144,6 +148,7 @@ public class LoginScreen extends AppCompatActivity {
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
+                    flag = false;
                     Toast.makeText(LoginScreen.this, "Error while fetching Cloud Data", Toast.LENGTH_LONG).show();
                 }
             });
@@ -153,13 +158,10 @@ public class LoginScreen extends AppCompatActivity {
     public void verifyCode(View v) {
         if (!(code_et.getText() == null || code_et.getText().equals(""))) {
             String code = code_et.getText().toString();
-
             InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(VerificationId, code);
             signInWithPhoneAuthCredential(credential);
-
         }
         else{
             Toast.makeText(this, "Please enter the OTP ", Toast.LENGTH_LONG).show();
@@ -172,11 +174,10 @@ public class LoginScreen extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            login_timer.setVisibility(View.GONE);
+                            flag = false;
                             loginPhone_et.setEnabled(false);
                             code_et.setEnabled(false);
                             GlobalData.phoneNumber=loginPhone;
-
                             userHomeActivity();
                         } else {
                             if (task.getException() instanceof
@@ -195,37 +196,26 @@ public class LoginScreen extends AppCompatActivity {
         SharedPreferences.Editor editor =sharedPreferences.edit();
         editor.putString("phoneNumber",loginPhone);
         editor.commit();
-
         new Thread(new task()).start();
-
-
     }
 
     class task implements Runnable
     {
-
         @Override
         public void run() {
 
             SharedPreferences sharedPreferences = getSharedPreferences("mypref1",MODE_PRIVATE);
             String refreshedToken = sharedPreferences.getString("devicetoken",null);
-
-
             RequestQueue requestQueue = Volley.newRequestQueue(LoginScreen.this);
-
             String packagenameofapp = getPackageName();
             String cloudserverip = "server1.vmm.education";
-
             String url="http://"+ cloudserverip +"/VMMCloudMessaging/RecordDeviceInfo?devicetoken="+refreshedToken+"&packagenameofapp="+packagenameofapp+"&mobileno="+GlobalData.phoneNumber;
-
             Log.d("MYMSG",url);
             StringRequest stringRequest = new StringRequest(  Request.Method.GET, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-
                             Log.d("MYMESSAGE", "RESPONSE "+response);
-
                         }
                     },
                     new Response.ErrorListener() {
@@ -234,10 +224,7 @@ public class LoginScreen extends AppCompatActivity {
                             Log.d("MYMESSAGE", error.toString());
                         }
                     }  );
-
-
             requestQueue.add(stringRequest);
-
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -248,10 +235,6 @@ public class LoginScreen extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-
         }
     }
-
-
 }
-

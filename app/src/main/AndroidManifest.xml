@@ -28,7 +28,7 @@
             android:label="Mobile Verification" />
         <activity
             android:name=".Home"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
