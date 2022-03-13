@@ -12,7 +12,7 @@ This project is cloud based location tracking android application. Users have to
 ![s7](https://user-images.githubusercontent.com/44474973/158000666-354c768e-a216-4d2f-9065-2a0fc2ffac14.PNG)
 ![s8](https://user-images.githubusercontent.com/44474973/158000667-3765e403-1e19-4b0d-8cd3-1485d735f2f1.PNG)
 ![s9](https://user-images.githubusercontent.com/44474973/158000668-fe8ce91f-b91c-48d3-b1e6-a3426d6412c8.PNG)
-# Following are screenshots DFD and ER Diagram
+# Following are screenshots DFD and ER Diagrams
 ![one](https://user-images.githubusercontent.com/44474973/158000749-ddfbdba4-2ec6-4d45-91b2-ef96149300f2.PNG)
 ![two](https://user-images.githubusercontent.com/44474973/158000745-099cdf74-af85-4fdd-bd91-8b3a6d07d423.PNG)
 ![three](https://user-images.githubusercontent.com/44474973/158000743-3042ca59-0b55-4a53-86b7-f3980bb7c195.PNG)
